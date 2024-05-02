@@ -1,6 +1,13 @@
 #pragma once
 
-class rect {
+#include <stdlib.h>
+
+class Rect {
 public:
-	rect();
+	int x;
+	int y;
+	char type;
+	Rect();
+	Rect(int type);
+	void setRandomPos();
 };

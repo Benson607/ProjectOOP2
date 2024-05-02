@@ -2,7 +2,7 @@
 
 #include "entity.h"
 
-class role :public entity {
+class Role :public Entity {
 public:
-	role();
+	Role(int num);
 };

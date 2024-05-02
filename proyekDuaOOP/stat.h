@@ -1,15 +1,27 @@
 #pragma once
 
-class stat {
-public:
-	double Vitality;
-	double Focus;
-	double Speed;
-	double Accuracy;
-	double PAttack;
-	double MAttack;
-	double PDefense;
-	double MDefense;
+#include <stdlib.h>
 
-	stat();
+class Stat {
+public:
+	double vitality;
+	double focus;
+	double speed;
+	double accuracy;
+	double pAttack;
+	double mAttack;
+	double pDefense;
+	double mDefense;
+
+	Stat();
 };
+/*
+生命值(Vitality)
+專注力(Focus)
+速度(Speed)
+命中率(Accuracy)
+物理攻擊力(PAttack)
+魔法攻擊力(MAttack)
+物理防禦力(PDefense)
+魔法防禦力(MDefense)
+*/

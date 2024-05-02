@@ -1,6 +1,6 @@
 #pragma once
 
-class equipment {
+class Equipment {
 public:
-	equipment();
+	Equipment();
 };

@@ -139,10 +139,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bag.cpp" />
+    <ClCompile Include="dice.cpp" />
+    <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="entity.cpp" />
+    <ClCompile Include="equipment.cpp" />
+    <ClCompile Include="event.cpp" />
+    <ClCompile Include="item.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map.cpp" />
+    <ClCompile Include="money.cpp" />
     <ClCompile Include="money.h" />
+    <ClCompile Include="rect.cpp" />
+    <ClCompile Include="role.cpp" />
+    <ClCompile Include="shop.cpp" />
+    <ClCompile Include="stat.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bag.h" />
     <ClInclude Include="dice.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="entity.h" />

@@ -1,6 +1,6 @@
 #pragma once
 
-class item {
+class Item {
 public:
-	item();
+	Item();
 };

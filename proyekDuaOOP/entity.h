@@ -1,8 +1,10 @@
 #pragma once
 
 #include "stat.h"
+#include "rect.h"
 
-class entity :public stat {
+class Entity :public Stat {
 public:
-	entity();
+	Rect rect;
+	Entity(int type);
 };

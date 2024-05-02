@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-class dice {
+class Dice {
 public:
-	dice();
+	Dice();
 };

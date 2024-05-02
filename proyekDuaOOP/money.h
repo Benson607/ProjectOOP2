@@ -1,5 +1,6 @@
 #pragma once
 
-class money {
-
+class Money {
+public:
+	Money();
 };

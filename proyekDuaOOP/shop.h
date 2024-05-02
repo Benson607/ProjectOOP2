@@ -1,8 +1,9 @@
 #pragma once
 
-class shop {
+class Shop {
 public:
 	int posx;
 	int posy;
 	char face;
+	Shop();
 };

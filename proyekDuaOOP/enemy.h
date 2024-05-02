@@ -2,7 +2,7 @@
 
 #include "entity.h"
 
-class enemy :public entity {
+class Enemy :public Entity {
 public:
-	enemy();
+	Enemy();
 };
