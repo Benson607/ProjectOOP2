@@ -60,6 +60,9 @@
     <ClCompile Include="bag.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="draw.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="enemy.h">
@@ -96,6 +99,9 @@
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="bag.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="draw.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

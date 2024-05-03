@@ -10,3 +10,36 @@ Stat::Stat() {
 	pDefense = rand() % 21;
 	mDefense = rand() % 21;
 }
+
+double Stat::operator[](int i)
+{
+	switch (i)
+	{
+	case 0:
+		return vitality;
+		break;
+	case 1:
+		return focus;
+		break;
+	case 2:
+		return speed;
+		break;
+	case 3:
+		return accuracy;
+		break;
+	case 4:
+		return pAttack;
+		break;
+	case 5:
+		return mAttack;
+		break;
+	case 6:
+		return pDefense;
+		break;
+	case 7:
+		return mDefense;
+		break;
+	default:
+		break;
+	}
+}

@@ -1,5 +1,9 @@
 #include "map.h"
 
+void setWindowSize() {
+	
+}
+
 void SetColor(int color = 7) {
 	HANDLE hConsole;
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);

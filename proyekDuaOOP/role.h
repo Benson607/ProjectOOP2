@@ -4,5 +4,5 @@
 
 class Role :public Entity {
 public:
-	Role(int num);
+	Role(int num, std::string name = "");
 };

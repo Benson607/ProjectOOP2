@@ -14,6 +14,7 @@ public:
 	double mDefense;
 
 	Stat();
+	double operator[](int i);
 };
 /*
 ¥Í©R­È(Vitality)
