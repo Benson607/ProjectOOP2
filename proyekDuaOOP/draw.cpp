@@ -14,9 +14,9 @@ void Draw::draw(std::vector<std::string> out, int x, int y) {
 void Draw::gotoxy(int x, int y)
 {
 	COORD scrn;
-	HANDLE hOuput = GetStdHandle(STD_OUTPUT_HANDLE);
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	scrn.X = x; scrn.Y = y;
-	SetConsoleCursorPosition(hOuput, scrn);
+	SetConsoleCursorPosition(hConsole, scrn);
 }
 
 void Draw::inRange() {
@@ -25,9 +25,9 @@ void Draw::inRange() {
 	GetConsoleScreenBufferInfo(hConsole, &bufferInfo);
 	int right = bufferInfo.srWindow.Right;
 	int bottom = bufferInfo.srWindow.Bottom;
-	if (right != 155 || bottom != 40) {
+	if (right < 155 || bottom < 40) {
 		system("CLS");
-		cout << "請把視窗放大到最大";
+		cout << "Please enlarge the window to its maximum size or reduce the font size";
 	}
 	else {
 		return;
@@ -37,10 +37,10 @@ void Draw::inRange() {
 		if (right != bufferInfo.srWindow.Right || bottom != bufferInfo.srWindow.Bottom) {
 			right = bufferInfo.srWindow.Right;
 			bottom = bufferInfo.srWindow.Bottom;
-			if (right != 155 || bottom != 40) {
+			if (right < 155 || bottom < 40) {
 				system("CLS");
-				cout << "請把視窗放大到最大";
+				cout << "Please enlarge the window to its maximum size or reduce the font size";
 			}
 		}
-	} while (bufferInfo.srWindow.Right != 155 || bufferInfo.srWindow.Bottom != 40);
+	} while (bufferInfo.srWindow.Right < 155 || bufferInfo.srWindow.Bottom < 40);
 }

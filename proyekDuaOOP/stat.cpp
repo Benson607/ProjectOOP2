@@ -11,7 +11,7 @@ Stat::Stat() {
 	mDefense = rand() % 21;
 }
 
-double Stat::operator[](int i)
+double& Stat::operator[](int i)
 {
 	switch (i)
 	{
@@ -41,5 +41,11 @@ double Stat::operator[](int i)
 		break;
 	default:
 		break;
+	}
+}
+
+void Stat::operator+=(Stat value) {
+	for (int i = 0; i < 8; i++) {
+		this[0][i] += value[i];
 	}
 }
