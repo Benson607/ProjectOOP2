@@ -14,9 +14,9 @@ void Draw::draw(std::vector<std::string> out, int x, int y) {
 void Draw::gotoxy(int x, int y)
 {
 	COORD scrn;
-	HANDLE hOuput = GetStdHandle(STD_OUTPUT_HANDLE);
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	scrn.X = x; scrn.Y = y;
-	SetConsoleCursorPosition(hOuput, scrn);
+	SetConsoleCursorPosition(hConsole, scrn);
 }
 
 void Draw::inRange() {
@@ -27,7 +27,7 @@ void Draw::inRange() {
 	int bottom = bufferInfo.srWindow.Bottom;
 	if (right < 155 || bottom < 40) {
 		system("CLS");
-		cout << "Please zoom to FULL Screen";
+		cout << "Please enlarge the window to its maximum size or reduce the font size";
 	}
 	else {
 		return;
@@ -39,8 +39,14 @@ void Draw::inRange() {
 			bottom = bufferInfo.srWindow.Bottom;
 			if (right < 155 || bottom < 40) {
 				system("CLS");
-				cout << "Please zoom to FULL Screen";
+				cout << "Please enlarge the window to its maximum size or reduce the font size";
 			}
 		}
 	} while (bufferInfo.srWindow.Right < 155 || bufferInfo.srWindow.Bottom < 40);
+}
+
+void Draw::setColor(int color) {
+	HANDLE hConsole;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, color);
 }

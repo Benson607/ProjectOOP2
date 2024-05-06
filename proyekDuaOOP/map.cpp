@@ -1,7 +1,9 @@
 #include "map.h"
 
-void setWindowSize() {
-	
+using namespace Draw;
+
+Map::Map() :std::vector<std::vector<Rect>>(140, std::vector<Rect>(50, Rect(5))) {
+
 }
 
 void SetColor(int color = 7) {
@@ -39,28 +41,28 @@ void Map::show() {
 		for (int j = 0; j < 50; j++) {
 			switch (this[0][i][j].type) {
 			case ' ':
-				SetColor(136);
+				setColor(136);
 				break;
 			case '1':
-				SetColor(230);
+				setColor(230);
 				break;
 			case '2':
-				SetColor(230);
+				setColor(230);
 				break;
 			case '3':
-				SetColor(230);
+				setColor(230);
 				break;
 			case 'E':
-				SetColor(236);
+				setColor(236);
 				break;
 			case '.':
-				SetColor(224);
+				setColor(224);
 				break;
 			default:
 				break;
 			}
 			std::cout << this[0][i][j].type;
-			SetColor();
+			setColor();
 		}
 		std::cout << std::endl;
 	}

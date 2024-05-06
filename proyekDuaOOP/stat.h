@@ -4,6 +4,15 @@
 
 class Stat {
 public:
+	double vitality_max;
+	double focus_max;
+	double speed_max;
+	double accuracy_max;
+	double pAttack_max;
+	double mAttack_max;
+	double pDefense_max;
+	double mDefense_max;
+
 	double vitality;
 	double focus;
 	double speed;
@@ -14,15 +23,17 @@ public:
 	double mDefense;
 
 	Stat();
+	void operator=(Stat value);
 	double& operator[](int i);
+	void operator+=(Stat value);
 };
 /*
-¥Í©R­È(Vitality)
-±Mª`¤O(Focus)
-³t«×(Speed)
-©R¤¤²v(Accuracy)
-ª«²z§ğÀ»¤O(PAttack)
-Å]ªk§ğÀ»¤O(MAttack)
-ª«²z¨¾¿m¤O(PDefense)
-Å]ªk¨¾¿m¤O(MDefense)
+ç”Ÿå‘½å€¼(Vitality)
+å°ˆæ³¨åŠ›(Focus)
+é€Ÿåº¦(Speed)
+å‘½ä¸­ç‡(Accuracy)
+ç‰©ç†æ”»æ“ŠåŠ›(PAttack)
+é­”æ³•æ”»æ“ŠåŠ›(MAttack)
+ç‰©ç†é˜²ç¦¦åŠ›(PDefense)
+é­”æ³•é˜²ç¦¦åŠ›(MDefense)
 */
