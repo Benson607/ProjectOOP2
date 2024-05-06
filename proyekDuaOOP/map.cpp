@@ -6,6 +6,16 @@ Map::Map() :std::vector<std::vector<Rect>>(140, std::vector<Rect>(50, Rect(5))) 
 
 }
 
+void SetColor(int color = 7) {
+	HANDLE hConsole;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, color);
+}
+
+Map::Map() :std::vector<std::vector<Rect>>(140, std::vector<Rect>(50, Rect(5))) {
+
+}
+
 void Map::setRect(Rect obj) {
 	do {
 		obj.setRandomPos();

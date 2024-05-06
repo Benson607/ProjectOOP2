@@ -40,6 +40,7 @@ std::vector<std::string> Entity::output() {
 	}
 	return out;
 }
+
 void Entity::addActionTimes(){
 	actionTimes++;
 	priority = (actionTimes + 1) / speed * 100;

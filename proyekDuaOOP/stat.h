@@ -1,5 +1,5 @@
 #pragma once
-
+#include<time.h>
 #include <stdlib.h>
 
 class Stat {
@@ -28,12 +28,12 @@ public:
 	void operator+=(Stat value);
 };
 /*
-¥Í©R­È(Vitality)
-±Mª`¤O(Focus)
-³t«×(Speed)
-©R¤¤²v(Accuracy)
-ª«²z§ğÀ»¤O(PAttack)
-Å]ªk§ğÀ»¤O(MAttack)
-ª«²z¨¾¿m¤O(PDefense)
-Å]ªk¨¾¿m¤O(MDefense)
+ç”Ÿå‘½å€¼(Vitality)
+å°ˆæ³¨åŠ›(Focus)
+é€Ÿåº¦(Speed)
+å‘½ä¸­ç‡(Accuracy)
+ç‰©ç†æ”»æ“ŠåŠ›(PAttack)
+é­”æ³•æ”»æ“ŠåŠ›(MAttack)
+ç‰©ç†é˜²ç¦¦åŠ›(PDefense)
+é­”æ³•é˜²ç¦¦åŠ›(MDefense)
 */
