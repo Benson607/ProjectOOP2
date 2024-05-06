@@ -1,5 +1,6 @@
 #pragma once
 
+#include "draw.h"
 #include "rect.h"
 #include <vector>
 #include <iostream>

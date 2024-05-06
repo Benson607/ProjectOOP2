@@ -44,3 +44,9 @@ void Draw::inRange() {
 		}
 	} while (bufferInfo.srWindow.Right < 155 || bufferInfo.srWindow.Bottom < 40);
 }
+
+void Draw::setColor(int color) {
+	HANDLE hConsole;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, color);
+}

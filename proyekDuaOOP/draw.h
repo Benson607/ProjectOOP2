@@ -6,11 +6,11 @@
 #include <string>
 #include <Windows.h>
 
-class Draw {
-public:
+namespace Draw {
 	void draw(std::vector<std::string> out, int x, int y);
 	void gotoxy(int x, int y);
 	void inRange();
+	void setColor(int color = 7);
 };
 
 #endif // !DRAW_H

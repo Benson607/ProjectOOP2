@@ -1,11 +1,11 @@
 #include "role.h"
 #include "enemy.h"
 #include "map.h"
-#include "draw.h"
 
 #include <conio.h>
 
 using namespace std;
+using namespace Draw;
 
 vector<string> pic = {
 	"                                                                                                                                                           ",
@@ -50,30 +50,18 @@ vector<string> pic = {
 	"                                                                                                                                                           "
 };
 
-void fight() {
+void fight(vector<Role*>& roles, vector<Enemy*>& enemys) {
 	system("CLS");
-	Role player1(1, "chen-yon-fa");
-	Role player2(2, "Alus");
-	Role player3(3, "boring bowling");
-	player1.setPosDraw(110, 32);
-	player2.setPosDraw(125, 32);
-	player3.setPosDraw(140, 32);
-	Enemy enemy1("tai-wen-kai");
-	Enemy enemy2("ju-ciau");
-	Enemy enemy3("shui-cin-chun");
-	enemy1.setPosDraw(0, 0);
-	enemy2.setPosDraw(15, 0);
-	enemy3.setPosDraw(30, 0);
-	vector<Role> roles = { player1, player2, player3 };
-	vector<Enemy> enemys = { enemy1, enemy2, enemy3 };
 	vector<Entity*> entitys;
-	entitys.push_back(&player1);
-	entitys.push_back(&player2);
-	entitys.push_back(&player3);
-	entitys.push_back(&enemy1);
-	entitys.push_back(&enemy2);
-	entitys.push_back(&enemy3);
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < roles.size(); i++) {
+		roles[i]->setPosDraw(110 + i * 15, 32);
+		entitys.push_back(roles[i]);
+	}
+	for (int i = 0; i < enemys.size(); i++) {
+		enemys[i]->setPosDraw(i * 15, 0);
+		entitys.push_back(enemys[i]);
+	}
+	for (int i = 0; i < entitys.size(); i++) {
 		entitys[i]->actionTimes = -1;
 		entitys[i]->addActionTimes();
 	}
@@ -83,49 +71,35 @@ void fight() {
 		if (input == 27) {
 			break;
 		}
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < entitys.size(); i++) {
 			int min = i;
-			for (int j = i + 1; j < 6; j++) {
-				if (entitys[j]->priority < entitys[min]->priority) {
+			for (int j = i + 1; j < entitys.size(); j++) {
+				if (entitys[j]->cmp(*entitys[min])) {
 					min = j;
-				}
-				else if (entitys[j]->priority == entitys[min]->priority) {
-					if (entitys[j]->speed > entitys[min]->speed) {
-						min = j;
-					}
-					else if (entitys[j]->speed < entitys[min]->speed) {
-						continue;
-					}
-					else if (entitys[j]->pAttack + entitys[j]->mAttack > entitys[min]->pAttack + entitys[min]->mAttack) {
-						min = j;
-					}
-					else if (entitys[j]->pAttack + entitys[j]->mAttack < entitys[min]->pAttack + entitys[min]->mAttack) {
-						continue;
-					}
-					else if (entitys[j]->pDefense + entitys[j]->mDefense > entitys[min]->pDefense + entitys[min]->mDefense) {
-						min = j;
-					}
-					else if (entitys[j]->pDefense + entitys[j]->mDefense < entitys[min]->pDefense + entitys[min]->mDefense) {
-						continue;
-					}
-					else if (entitys[j]->vitality > entitys[min]->vitality) {
-						min = j;
-					}
-					else if (entitys[j]->vitality < entitys[min]->vitality) {
-						continue;
-					}
 				}
 			}
 			Entity* temp = entitys[i];
 			entitys[i] = entitys[min];
 			entitys[min] = temp;
 		}
-		Draw().draw(player1.output(), player1.xDraw, player1.yDraw);
-		Draw().draw(player2.output(), player2.xDraw, player2.yDraw);
-		Draw().draw(player3.output(), player3.xDraw, player3.yDraw);
-		Draw().draw(enemy1.output(), enemy1.xDraw, enemy1.yDraw);
-		Draw().draw(enemy2.output(), enemy2.xDraw, enemy2.yDraw);
-		Draw().draw(enemy3.output(), enemy3.xDraw, enemy3.yDraw);
+		for (int i = 0; i < entitys.size(); i++) {
+			entitys[i]->inAction = 0;
+		}
+		entitys[0]->inAction = 1;
+		for (int i = 0; i < roles.size(); i++) {
+			if (roles[i]->inAction) {
+				setColor(207);
+			}
+			draw(roles[i]->output(), roles[i]->xDraw, roles[i]->yDraw);
+			setColor();
+		}
+		for (int i = 0; i < enemys.size(); i++) {
+			if (enemys[i]->inAction) {
+				setColor(207);
+			}
+			draw(enemys[i]->output(), enemys[i]->xDraw, enemys[i]->yDraw);
+			setColor();
+		}
 		vector<string> space = {
 			"               ",
 			"               ",
@@ -134,9 +108,9 @@ void fight() {
 			"               ",
 			"               "
 		};
-		Draw().draw(space, 0, 32);
+		draw(space, 0, 32);
 		for (int i = 0; i < 6; i++) {
-			Draw().gotoxy(0, 32 + i);
+			gotoxy(0, 32 + i);
 			cout << entitys[i]->name;
 		}
 		entitys[0]->addActionTimes();
@@ -145,8 +119,16 @@ void fight() {
 }
 
 int main() {
-	Draw().inRange();
-	Draw().draw(pic, 0, 0);
+	inRange();
+	draw(pic, 0, 0);
+	Role player1(1, "chen-yon-fa");
+	Role player2(2, "Alus");
+	Role player3(3, "boring bowling");
+	Enemy enemy1("tai-wen-kai");
+	Enemy enemy2("ju-ciau");
+	Enemy enemy3("shui-cin-chun");
+	vector<Role*> roles = { &player1, &player2, &player3 };
+	vector<Enemy*> enemys = { &enemy1, &enemy2, &enemy3 };
 	int input = -1;
 	input = _getch();
 	system("CLS");
@@ -162,5 +144,5 @@ int main() {
 	system("CLS");
 	Map map;
 	map.setWall();
-	fight();
+	fight(roles, enemys);
 }

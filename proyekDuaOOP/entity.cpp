@@ -16,6 +16,7 @@ Entity::Entity(int type, std::string name) : Stat(), name(name) {
 	xDraw = 0;
 	yDraw = 0;
 	rect = Rect(type);
+	inAction = 0;
 	actionTimes = 0;
 }
 
@@ -46,4 +47,37 @@ void Entity::addActionTimes(){
 void Entity::setPosDraw(int x, int y) {
 	xDraw = x;
 	yDraw = y;
+}
+
+bool Entity::cmp(Entity other) {
+	if (priority < other.priority) {
+		return true;
+	}
+	else if (priority == other.priority) {
+		if (speed > other.speed) {
+			return true;
+		}
+		else if (speed < other.speed) {
+			return false;
+		}
+		else if (pAttack + mAttack > other.pAttack + other.mAttack) {
+			return true;
+		}
+		else if (pAttack + mAttack < other.pAttack + other.mAttack) {
+			return false;
+		}
+		else if (pDefense + mDefense > other.pDefense + other.mDefense) {
+			return true;
+		}
+		else if (pDefense + mDefense < other.pDefense + other.mDefense) {
+			return false;
+		}
+		else if (vitality > other.vitality) {
+			return true;
+		}
+		else if (vitality < other.vitality) {
+			return false;
+		}
+	}
+	return false;
 }
