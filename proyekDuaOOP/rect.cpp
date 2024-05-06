@@ -29,6 +29,9 @@ Rect::Rect(int type) {
 	else if (type == 5) {
 		this->type = '.';
 	}
+	else if (type == 6) {
+        this->type = '$';
+    }
 }
 
 void Rect::setRandomPos() {

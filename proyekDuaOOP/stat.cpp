@@ -64,36 +64,3 @@ void Stat::operator+=(Stat value) {
 		this[0][i] += value[i];
 	}
 }
-
-double& Stat::operator[](int i)
-{
-	switch (i)
-	{
-	case 0:
-		return vitality;
-		break;
-	case 1:
-		return focus;
-		break;
-	case 2:
-		return speed;
-		break;
-	case 3:
-		return accuracy;
-		break;
-	case 4:
-		return pAttack;
-		break;
-	case 5:
-		return mAttack;
-		break;
-	case 6:
-		return pDefense;
-		break;
-	case 7:
-		return mDefense;
-		break;
-	default:
-		break;
-	}
-}

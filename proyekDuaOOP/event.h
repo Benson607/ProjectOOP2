@@ -3,6 +3,9 @@
 #include<stdlib.h>
 #include<time.h>
 
+#include "money.h"
+#include "stat.h"
+
 class Event {
 public:
 	Event();

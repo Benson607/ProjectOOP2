@@ -1,10 +1,9 @@
 #include "shop.h"
-#include "money.h"
 
 Shop::Shop() {
 	pos_x = 0;
 	pos_y = 0;
-	icon = '$';
+    rect   = Rect();
 	buying = 1;
 	//alt
 	shop_ui = {

@@ -2,8 +2,11 @@
 #include <conio.h>
 #include <string>
 #include <vector>
-#include "Map.h"
+#include "rect.h"
 #include "bag.h"
+#include "money.h"
+#include "equipment.h"
+#include "item.h"
 
 class Shop {
 public:
@@ -11,7 +14,7 @@ public:
 	int pos_x;
 	int pos_y;
 	int buying;
-	char icon;
+	Rect rect;
 	Shop();
 	void select_item();
 	int get_x();

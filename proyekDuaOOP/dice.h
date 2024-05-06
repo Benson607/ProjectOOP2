@@ -1,7 +1,8 @@
 #pragma once
 
 #include <stdlib.h>
-#include<vector>
+#include <vector>
+#include "stat.h"
 
 class Dice {
 public:
