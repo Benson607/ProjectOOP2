@@ -1,5 +1,5 @@
 #pragma once
-
+#include<time.h>
 #include <stdlib.h>
 
 class Stat {
@@ -14,6 +14,7 @@ public:
 	double mDefense;
 
 	Stat();
+	double& operator[](int i);
 };
 /*
 ¥Í©R­È(Vitality)
