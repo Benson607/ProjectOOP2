@@ -13,7 +13,7 @@ Stat::Stat() {
 	vitality = vitality_max;
 	focus = focus_max;
 	speed = speed_max;
-	hitRate = hitRate_max;
+	accuracy = accuracy_max;
 	pAttack = pAttack_max;
 	mAttack = mAttack_max;
 	pDefense = pDefense_max;
@@ -40,7 +40,7 @@ double& Stat::operator[](int i)
 		return speed;
 		break;
 	case 3:
-		return hitRate;
+		return accuracy;
 		break;
 	case 4:
 		return pAttack;
