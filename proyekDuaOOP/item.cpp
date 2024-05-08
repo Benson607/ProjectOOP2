@@ -5,7 +5,7 @@ Item::Item() {
 	status.focus = 0;
 }
 
-void Item::use_items(int kind)
+void Item::use_items(Stat stat, int kind)
 {
 	switch (kind)
 	{

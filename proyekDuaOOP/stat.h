@@ -7,7 +7,7 @@ public:
 	double vitality_max;
 	double focus_max;
 	double speed_max;
-	double accuracy_max;
+	double hitRate_max;
 	double pAttack_max;
 	double mAttack_max;
 	double pDefense_max;
@@ -16,7 +16,7 @@ public:
 	double vitality;
 	double focus;
 	double speed;
-	double accuracy;
+	double hitRate;
 	double pAttack;
 	double mAttack;
 	double pDefense;

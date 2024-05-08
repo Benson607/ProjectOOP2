@@ -2,8 +2,13 @@
 
 using namespace Draw;
 
-Map::Map() :std::vector<std::vector<Rect>>(140, std::vector<Rect>(50, Rect(5))) {
-
+Map::Map() :std::vector<std::vector<Rect>>(50, std::vector<Rect>(140, Rect(5))) {
+	for (int i = 0; i < 50; i++) {
+		for (int j = 0; j < 140; j++) {
+			this[0][i][j].x = i;
+			this[0][i][j].y = j;
+		}
+	}
 }
 
 void Map::setRect(Rect obj) {
@@ -15,8 +20,8 @@ void Map::setRect(Rect obj) {
 
 void Map::setWall() {
 	for (int i = 0; i < 5; i++) {
-		int x = rand() % 140;
-		int y = rand() % 50;
+		int x = rand() % 50;
+		int y = rand() % 140;
 		if (this[0][x][y].type == '.') {
 			this[0][x][y] = Rect(0);
 		}
@@ -27,8 +32,8 @@ void Map::setWall() {
 }
 
 void Map::show() {
-	for (int i = 0; i < 140; i++) {
-		for (int j = 0; j < 50; j++) {
+	for (int i = 0; i < 50; i++) {
+		for (int j = 0; j < 140; j++) {
 			switch (this[0][i][j].type) {
 			case ' ':
 				setColor(136);
@@ -47,6 +52,9 @@ void Map::show() {
 				break;
 			case '.':
 				setColor(224);
+				break;
+			case '$':
+				setColor(240);
 				break;
 			default:
 				break;

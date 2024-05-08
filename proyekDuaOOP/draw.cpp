@@ -11,8 +11,44 @@ void Draw::draw(std::vector<std::string> out, int x, int y) {
 	}
 }
 
-void Draw::gotoxy(int x, int y)
-{
+void Draw::drawMap(vector<vector<Rect>> map, int fromx, int fromy, int x, int y, int sizex, int sizey) {
+	gotoxy(x, y);
+	for (int i = 0; i < sizex; i++) {
+		for (int j = 0; j < sizey; j++) {
+			switch (map[i][j].type) {
+			case ' ':
+				setColor(136);
+				break;
+			case '1':
+				setColor(230);
+				break;
+			case '2':
+				setColor(230);
+				break;
+			case '3':
+				setColor(230);
+				break;
+			case 'E':
+				setColor(236);
+				break;
+			case '.':
+				setColor(224);
+				break;
+			case '$':
+				setColor(240);
+				break;
+			default:
+				break;
+			}
+			cout << map[i][j].type;
+			setColor();
+		}
+		y++;
+		gotoxy(x, y);
+	}
+}
+
+void Draw::gotoxy(int x, int y) {
 	COORD scrn;
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	scrn.X = x; scrn.Y = y;

@@ -68,6 +68,14 @@ void fight(vector<Role*>& roles, vector<Enemy*>& enemys) {
 	}
 	int input = -1;
 	system("CLS");
+	vector<string> space = {
+	"               ",
+	"               ",
+	"               ",
+	"               ",
+	"               ",
+	"               "
+	};
 	while (1) {
 		if (input == 27) {
 			break;
@@ -101,14 +109,6 @@ void fight(vector<Role*>& roles, vector<Enemy*>& enemys) {
 			draw(enemys[i]->output(), enemys[i]->xDraw, enemys[i]->yDraw);
 			setColor();
 		}
-		vector<string> space = {
-			"               ",
-			"               ",
-			"               ",
-			"               ",
-			"               ",
-			"               "
-		};
 		draw(space, 0, 32);
 		for (int i = 0; i < 6; i++) {
 			gotoxy(0, 32 + i);
@@ -122,12 +122,12 @@ void fight(vector<Role*>& roles, vector<Enemy*>& enemys) {
 int main() {
 	inRange();
 	draw(pic, 0, 0);
-	Role player1(1, "chen-yon-fa");
+	Role player1(1, "Chen-Yon-Fa");
 	Role player2(2, "Alus");
-	Role player3(3, "boring bowling");
-	Enemy enemy1("tai-wen-kai");
-	Enemy enemy2("ju-ciau");
-	Enemy enemy3("shui-cin-chun");
+	Role player3(3, "Boring Bowling");
+	Enemy enemy1("Tai-Wen-Kai");
+	Enemy enemy2("Ju-Ciau");
+	Enemy enemy3("Shui-Cin-Chun");
 	vector<Role*> roles = { &player1, &player2, &player3 };
 	vector<Enemy*> enemys = { &enemy1, &enemy2, &enemy3 };
 	int input = -1;
@@ -145,5 +145,13 @@ int main() {
 	system("CLS");
 	Map map;
 	map.setWall();
-	fight(roles, enemys);
+	map.setRect(player1.rect);
+	map.setRect(player2.rect);
+	map.setRect(player3.rect);
+	map.setRect(enemy1.rect);
+	map.setRect(enemy2.rect);
+	map.setRect(enemy3.rect);
+	//fight(roles, enemys);
+	//map.show();
+	drawMap(map, 0, 0);
 }

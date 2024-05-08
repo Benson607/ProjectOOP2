@@ -1,15 +1,14 @@
 #include "rect.h"
-#include <stdlib.h>
 
 Rect::Rect() {
 	type = ' ';
-	x = rand() % 140;
-	y = rand() % 50;
+	x = rand() % 50;
+	y = rand() % 140;
 }
 
 Rect::Rect(int type) {
-	x = rand() % 140;
-	y = rand() % 50;
+	x = rand() % 50;
+	y = rand() % 140;
 	this->type = 0;
 	if (type == 0) {
 		this->type = ' ';
@@ -35,6 +34,6 @@ Rect::Rect(int type) {
 }
 
 void Rect::setRandomPos() {
-	x = rand() % 140;
-	y = rand() % 50;
+	x = rand() % 50;
+	y = rand() % 140;
 }

@@ -30,7 +30,7 @@ std::vector<std::string> Entity::output() {
 		"vitality:",
 		"focus:",
 		"speed:",
-		"accuracy:",
+		"hitRate:",
 		"pAttack:",
 		"mAttack:",
 		"pDefense:",
