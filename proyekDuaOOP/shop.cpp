@@ -106,5 +106,5 @@ int Shop::get_y()
 //vector item (2) vector equit(13)
 // random --> vector price
 // for --> draw 
-// for Ó‹Ëãx,y
-//½ðåX²»×ã
+// for Ó‹ï¿½ï¿½x,y
+//ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½

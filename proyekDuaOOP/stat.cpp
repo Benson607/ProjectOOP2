@@ -4,6 +4,7 @@ Stat::Stat() {
 	vitality_max = rand()%15 + 30;
 	focus_max = 3;
 	speed_max = rand()%25 + 30;
+
 	hitrate_max = rand() % 20 + 40;
 	pAttack_max = rand() % 11 + 5;
 	mAttack_max = rand() % 11 + 5;
