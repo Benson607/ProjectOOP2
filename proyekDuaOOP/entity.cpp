@@ -31,6 +31,7 @@ Entity::Entity(int type, std::string name) : Stat(), name(name) {
 }
 
 Entity::~Entity() {
+
 }
 
 void Entity::setName(std::string name) {

@@ -1,5 +1,6 @@
 #include "map.h"
 #include <conio.h>
+
 using namespace Draw;
 
 Map::Map() :std::vector<std::vector<Rect>>(50, std::vector<Rect>(140, Rect(5))) {
@@ -58,6 +59,8 @@ void Map::show() {
 			case '.':
 				setColor(224);
 				break;
+			case 'R'://random events
+				//setColor(211);
 			case '$':
 				setColor(240);
 				break;

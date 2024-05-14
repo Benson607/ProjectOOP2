@@ -1,10 +1,12 @@
 #pragma once
 #include "stat.h"
+#include <string>
 
 class Equipment {
 public:
 	Equipment();
-	void Weapon(int kind);
+	Stat status;
+	void Weapon(std::string kind);
 	void Armour(int kind);
 	void Accessory(int kind);
 };
