@@ -1,11 +1,15 @@
 #include "shop.h"
-#include "money.h"
 
 Shop::Shop() {
 	pos_x = 0;
 	pos_y = 0;
-	icon = '$';
+	rect = Rect();
 	buying = 1;
+	items = { Item("w"),Item("x") ,Item("y") ,Item("z") };
+	items.erase(items.begin() + rand() % 4);
+	items.erase(items.begin() + rand() % 3);
+	equit = std::vector<Equipment>(13);
+	price = std::vector<int>(15);
 	//alt
 	shop_ui = {
 		"Products---------------------------------------------------------------------------------------------------------------------------------------------------",
@@ -52,7 +56,7 @@ Shop::Shop() {
 	};
 }
 
-void Shop::select_item()
+void Shop::select_product()
 {
 	int input = _getch();
 	switch (input)
@@ -98,3 +102,9 @@ int Shop::get_y()
 {
 	return 0;
 }
+
+//vector item (2) vector equit(13)
+// random --> vector price
+// for --> draw 
+// for Ó‹Ëãx,y
+//½ðåX²»×ã

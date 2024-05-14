@@ -1,5 +1,6 @@
 #pragma once
 
+#include "item.h"
 #include "stat.h"
 #include "rect.h"
 #include <string>

@@ -18,6 +18,7 @@ Entity::Entity(int type, std::string name) : Stat(), name(name) {
 	rect = Rect(type);
 	inAction = 0;
 	actionTimes = 0;
+	Item().use_items(*this, 1);
 }
 
 void Entity::setName(std::string name) {
