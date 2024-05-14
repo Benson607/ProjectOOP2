@@ -1,5 +1,5 @@
-#include "event.h"
-
+//#include "event.h"
+/*
 Event::Event() {
     random_event  = 0;
     stat.focus    = 0;
@@ -28,3 +28,4 @@ void Event::Random_Event() {
             break;
     }
 }
+*/

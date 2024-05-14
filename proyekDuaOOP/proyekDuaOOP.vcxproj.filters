@@ -18,16 +18,10 @@
     <ClCompile Include="main.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="money.h">
-      <Filter>標頭檔</Filter>
-    </ClCompile>
     <ClCompile Include="stat.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
     <ClCompile Include="dice.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="money.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
     <ClCompile Include="event.cpp">

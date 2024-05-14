@@ -5,4 +5,5 @@
 class Enemy :public Entity {
 public:
 	Enemy(std::string name = "");
+	~Enemy();
 };

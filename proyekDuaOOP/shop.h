@@ -4,7 +4,7 @@
 #include <vector>
 #include "rect.h"
 #include "bag.h"
-#include "money.h"
+//#include "money.h"
 #include "equipment.h"
 #include "item.h"
 

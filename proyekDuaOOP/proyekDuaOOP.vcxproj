@@ -149,8 +149,6 @@
     <ClCompile Include="item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
-    <ClCompile Include="money.cpp" />
-    <ClCompile Include="money.h" />
     <ClCompile Include="rect.cpp" />
     <ClCompile Include="role.cpp" />
     <ClCompile Include="shop.cpp" />

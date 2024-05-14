@@ -1,5 +1,5 @@
-#include "money.h"
-
+//#include "money.h"
+/*
 int Money::money = 0;
 
 Money::Money() {
@@ -14,4 +14,4 @@ int Money::money_deduct(int amount) {
 int Money::money_increase(int amount) {
 	money += amount;
 	return money;
-}
+}*/
