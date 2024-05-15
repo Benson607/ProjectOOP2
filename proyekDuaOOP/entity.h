@@ -4,7 +4,6 @@
 #include <vector>
 #include <conio.h>
 
-#include "item.h"
 #include "rect.h"
 #include "stat.h"
 #include "draw.h"

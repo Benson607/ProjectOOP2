@@ -1,12 +1,9 @@
-#pragma once
+/*#pragma once
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
 
 //#include "money.h"
-#include "stat.h"
-
-#include "money.h"
 #include "stat.h"
 
 class Event {
@@ -15,5 +12,6 @@ public:
 	Stat stat;
 	//Money mon;
 	int random_event;
-	void Random_Event(Stat& status);
+	void Random_Event();
 };
+*/
