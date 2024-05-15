@@ -143,7 +143,6 @@ int main() {
 	} while (playerName == "Tai-Wen-Kai");
 	system("CLS");
 
-
 	Map map;
 	map.setWall();  //Wall
 	map.setRect(player1.rect);   //Player1
@@ -283,5 +282,7 @@ int main() {
 	}
 
 
+	fight(roles, enemys);
+	
 	return 0;
 }

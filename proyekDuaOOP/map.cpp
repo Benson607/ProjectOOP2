@@ -32,6 +32,11 @@ void Map::setWall() {
 	}
 }
 
+void Map::setObject() {
+	setWall();
+
+}
+
 void Map::show() {
 	for (int i = 0; i < 50; i++) {
 		for (int j = 0; j < 140; j++) {
@@ -106,6 +111,5 @@ void Map::getinput(int player) {
 	default:
 		break;
 	}
-	
 	this[0][nowx][nowy].type = player+48;
 }
