@@ -149,6 +149,7 @@
     <ClCompile Include="item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
+    <ClCompile Include="money.cpp" />
     <ClCompile Include="rect.cpp" />
     <ClCompile Include="role.cpp" />
     <ClCompile Include="shop.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="event.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="money.h" />
     <ClInclude Include="rect.h" />
     <ClInclude Include="role.h" />
     <ClInclude Include="shop.h" />

@@ -10,7 +10,7 @@ Dice::Dice() {
 	success_percent = 0;
 }
 
-void Dice::action(Stat& status)
+void Dice::action(Stat& status)  //map
 {
 	//focus
 	max_movement_points = floor(stat.speed / 10);
@@ -24,7 +24,6 @@ void Dice::action(Stat& status)
 	int tmp_max = max_movement_points;
 
 	while (tmp_max--) {
-
 		movement_points++;
 	}
 
@@ -35,7 +34,7 @@ void Dice::action(Stat& status)
 
 	}
 
-	dollar.money_increase(2 * isSuccess);
+	//dollar.money_increase(2 * isSuccess);
 	for (int i = 0; i < movement_points; i++) {
 		
 	}

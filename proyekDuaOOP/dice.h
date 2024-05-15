@@ -14,7 +14,7 @@ public:
 	Dice();
 	std::vector<int> result;
 	Stat stat;
-	Money dollar;
+	//Money dollar;
 	double max_movement_points;
 	double movement_points;
 	double success_percent;
