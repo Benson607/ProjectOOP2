@@ -1,4 +1,4 @@
-/*#pragma once
+#pragma once
 
 #include<string>
 
@@ -9,4 +9,3 @@ public:
 	int money_deduct(int amount);
 	int money_increase(int amount);
 };
-*/
