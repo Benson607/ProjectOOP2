@@ -1,5 +1,6 @@
 #include "map.h"
 #include <conio.h>
+
 using namespace Draw;
 
 Map::Map() :std::vector<std::vector<Rect>>(50, std::vector<Rect>(140, Rect(5))) {
@@ -31,11 +32,6 @@ void Map::setWall() {
 	}
 }
 
-void Map::setObject() {
-	setWall();
-
-}
-
 void Map::show() {
 	for (int i = 0; i < 50; i++) {
 		for (int j = 0; j < 140; j++) {
@@ -58,6 +54,8 @@ void Map::show() {
 			case '.':
 				setColor(224);
 				break;
+			case 'R'://random events
+				//setColor(211);
 			case '$':
 				setColor(240);
 				break;
@@ -108,5 +106,6 @@ void Map::getinput(int player) {
 	default:
 		break;
 	}
+	
 	this[0][nowx][nowy].type = player+48;
 }

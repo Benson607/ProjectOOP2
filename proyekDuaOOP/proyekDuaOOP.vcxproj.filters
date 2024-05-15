@@ -18,16 +18,10 @@
     <ClCompile Include="main.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="money.h">
-      <Filter>標頭檔</Filter>
-    </ClCompile>
     <ClCompile Include="stat.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
     <ClCompile Include="dice.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="money.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
     <ClCompile Include="event.cpp">
@@ -61,6 +55,9 @@
       <Filter>來源檔案</Filter>
     </ClCompile>
     <ClCompile Include="draw.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="money.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
   </ItemGroup>
@@ -102,6 +99,9 @@
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="draw.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="money.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
