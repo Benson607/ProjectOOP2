@@ -20,7 +20,7 @@ void Map::setRect(Rect& obj) {
 }
 
 void Map::setWall() {
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 40; i++) {
 		int x = rand() % 50;
 		int y = rand() % 140;
 		if (this[0][x][y].type == '.') {

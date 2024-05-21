@@ -122,14 +122,14 @@ int main() {
 	inRange();
 	draw(pic, 0, 0);
 	Role player1(1, "chen-yon-fa");
-	Role           player2(2, "Alus");
-	Role           player3(3, "boring bowling");
-	Enemy          enemy1("tai-wen-kai");
-	Enemy          enemy2("ju-ciau");
-	Enemy          enemy3("shui-cin-chun");
-	std::vector<Entity*>  roles = { &player1, &player2, &player3 };
+	Role player2(2, "Alus");
+	Role player3(3, "boring bowling");
+	Enemy enemy1("tai-wen-kai");
+	Enemy enemy2("ju-ciau");
+	Enemy enemy3("shui-cin-chun");
+	std::vector<Entity*> roles = { &player1, &player2, &player3 };
 	std::vector<Entity*> enemys = { &enemy1, &enemy2, &enemy3 };
-	int            input = -1;
+	int input = -1;
 	input = _getch();
 	system("CLS");
 	std::string playerName = "";
@@ -144,14 +144,17 @@ int main() {
 	system("CLS");
 
 	Map map;
-	map.setWall();  //Wall
-	map.setRect(player1.rect);   //Player1
-	map.setRect(player2.rect);   //Player2
-	map.setRect(player3.rect);   //Palyer3
-	map.setRect(enemy1.rect);   //Enemy1
-	map.setRect(enemy2.rect);   //Enemy2
+	map.setWall();
+	map.setRect(player1.rect);
+	map.setRect(player2.rect);
+	map.setRect(player3.rect);
+	map.setRect(enemy1.rect);
+	map.setRect(enemy2.rect);
 	map.setRect(enemy3.rect);
-	map.show();
+
+	Draw::drawMap(map,0,0);
+
+	//map.show();
 
 	// decide the orders
 	int turn[3] = { 0 };
@@ -192,7 +195,7 @@ int main() {
 	// operate
 	int move_time = 0;
 	Dice dice;
-	while (1) {  //while enemy still exist,loop
+	/*while (1) {  //while enemy still exist,loop
 		for (int i = 0; i < 3; i++) {
 			if (turn[i] == player1.speed) {  //player1 move
 				dice.action(player1);
@@ -284,5 +287,5 @@ int main() {
 
 	fight(roles, enemys);
 
-	return 0;
+	return 0;*/
 }
