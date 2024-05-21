@@ -1,6 +1,6 @@
 #include "entity.h"
 
-Entity* attack;
+Entity* attacker;
 Entity* choosen;
 
 namespace Skill {
@@ -9,6 +9,17 @@ namespace Skill {
 	}
 	void weaponAttack() {
 		choosen->vitality--;
+	}
+	void provoke() {
+	}
+	void shock_blast() {
+
+	}
+	void heal() {
+
+	}
+	void speedUp() {
+
 	}
 }
 
@@ -31,7 +42,12 @@ Entity::Entity(int type, std::string name) : Stat(), name(name) {
 	inAction = 0;
 	actionTimes = -1;
 	addActionTimes();
-	attack = Skill::hand;
+	att = Skill::hand;
+	pro = NULL;
+	sb = NULL;
+	hl = NULL;
+	su = NULL;
+	CD = std::vector<int>(4, -1);
 }
 
 Entity::~Entity() {
@@ -112,6 +128,8 @@ bool Entity::actionForFight(std::vector<Entity*>& roles, std::vector<Entity*>& e
 				input = _getch();
 				if (input == 'y') {
 					Draw::draw(temp, 64, 18);
+					attacker = NULL;
+					choosen = NULL;
 					return true;
 				}
 			} while (input != 'y' && input != 'n');
@@ -149,7 +167,7 @@ bool Entity::actionForFight(std::vector<Entity*>& roles, std::vector<Entity*>& e
 				case 13://enter
 					out = true;
 					choosen = enemys[choose];
-					attack();
+					att();
 					actionEnd = true;
 					break;
 				default:
@@ -164,5 +182,7 @@ bool Entity::actionForFight(std::vector<Entity*>& roles, std::vector<Entity*>& e
 
 		}
 	}
+	attacker = NULL;
+	choosen = NULL;
 	return false;
 }

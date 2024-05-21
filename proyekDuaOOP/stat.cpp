@@ -61,6 +61,14 @@ double& Stat::operator[](int i)
 }
 
 void Stat::operator+=(Stat value) {
+	vitality_max += value.vitality_max;
+	focus_max += value.focus_max;
+	speed_max += value.speed_max;
+	hitrate_max += value.hitrate_max;
+	pAttack_max += value.pAttack_max;
+	mAttack_max += value.mAttack_max;
+	pDefense_max += value.pDefense_max;
+	mDefense_max += value.mDefense_max;
 	for (int i = 0; i < 8; i++) {
 		this[0][i] += value[i];
 	}

@@ -11,35 +11,41 @@ void Draw::draw(std::vector<std::string> out, int x, int y) {
 
 void Draw::drawMap(std::vector<std::vector<Rect>> map, int fromx, int fromy, int x, int y, int sizex, int sizey) {
 	gotoxy(x, y);
-	for (int i = 0; i < sizex; i++) {
-		for (int j = 0; j < sizey; j++) {
-			switch (map[i][j].type) {
-			case ' ':
-				setColor(136);
-				break;
-			case '1':
-				setColor(230);
-				break;
-			case '2':
-				setColor(230);
-				break;
-			case '3':
-				setColor(230);
-				break;
-			case 'E':
-				setColor(236);
-				break;
-			case '.':
-				setColor(224);
-				break;
-			case '$':
-				setColor(240);
-				break;
-			default:
-				break;
+	for (int i = fromx; i < fromx + sizex; i++) {
+		for (int j = fromy; j < fromy + sizey; j++) {
+			if (i >= 0 && i < 50 && j >= 0 && j < 140) {
+				switch (map[i][j].type) {
+				case ' ':
+					setColor(136);
+					break;
+				case '1':
+					setColor(230);
+					break;
+				case '2':
+					setColor(230);
+					break;
+				case '3':
+					setColor(230);
+					break;
+				case 'E':
+					setColor(236);
+					break;
+				case '.':
+					setColor(224);
+					break;
+				case '$':
+					setColor(240);
+					break;
+				default:
+					break;
+				}
+				std::cout << map[i][j].type;
+				setColor();
 			}
-			std::cout << map[i][j].type;
-			setColor();
+			else {
+				setColor();
+				std::cout << " ";
+			}
 		}
 		y++;
 		gotoxy(x, y);
