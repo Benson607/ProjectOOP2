@@ -7,9 +7,27 @@
 class Item {
 public:
 	Item();
-	Item(std::string name);
-	std::string name;
 	Stat status;
 	std::vector<std::string> item_names;
-	void use_items(Stat& target, int kind);
+};
+
+class GoldenRoot :public Item {
+	GoldenRoot();
+	void use_items(Stat& target);
+};
+
+class Godsbeard :public Item {
+	Godsbeard();
+	void use_items(Stat& target);
+};
+
+
+class TeleportScroll :public Item {
+	TeleportScroll();
+	void use_items();
+};
+
+class Tent :public Item {
+	Tent();
+	void use_items(Stat& target);
 };
