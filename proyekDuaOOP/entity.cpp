@@ -7,6 +7,9 @@ namespace Skill {
 	void hand() {
 		choosen->vitality--;
 	}
+	void weaponAttack() {
+		choosen->vitality--;
+	}
 }
 
 std::string itos(int x) {
