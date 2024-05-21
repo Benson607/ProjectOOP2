@@ -1,8 +1,9 @@
 #pragma once
 
-#include "stat.h"
 #include <string>
 #include <vector>
+
+#include "stat.h"
 
 class Item {
 public:

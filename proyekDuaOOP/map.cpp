@@ -111,5 +111,5 @@ void Map::getinput(int player) {
 	default:
 		break;
 	}
-	this[0][nowx][nowy].type = player+48;
+	this[0][nowx][nowy].type = player + 48;
 }

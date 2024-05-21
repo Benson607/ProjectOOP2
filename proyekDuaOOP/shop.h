@@ -14,7 +14,6 @@ using namespace Draw;
 class Shop {
 public:
 	Shop();
-	//Map map;
 	int pos_x;
 	int pos_y;
 	int buying;

@@ -13,7 +13,7 @@ public:
 	Dice();
 	std::vector<char> result;
 	Stat stat;
-	Money dollar;
+	//Money dollar;
 	double max_movement_points;
 	double movement_points = 0.0;
 	double success_percent;

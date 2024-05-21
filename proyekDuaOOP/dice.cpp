@@ -20,7 +20,6 @@ void Dice::action(Stat& status, int used_focus)
 	if (success_percent > 0.9) {
 		success_percent = 0.9;
 	}
-
 	isSuccess += used_focus;
 	for (int i = 0; i < isSuccess; i++) {
 		result.push_back('T');
