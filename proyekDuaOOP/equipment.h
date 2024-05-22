@@ -1,6 +1,7 @@
 #pragma once
-#include "stat.h"
+
 #include <string>
+#include "stat.h"
 
 class Equipment {
 public:

@@ -5,7 +5,7 @@ Shop::Shop() {
 	pos_y = 0;
 	rect = Rect();
 	buying = 1;
-	items = { Item("w"),Item("x") ,Item("y") ,Item("z") };
+	//items = { Godsbeard(),GoldenRoot() , ,Item() };
 	items.erase(items.begin() + rand() % 4);
 	items.erase(items.begin() + rand() % 3);
 	equit = std::vector<Equipment>(13);
@@ -106,5 +106,3 @@ int Shop::get_y()
 //vector item (2) vector equit(13)
 // random --> vector price
 // for --> draw 
-// for Ӌ��x,y
-//���X����
