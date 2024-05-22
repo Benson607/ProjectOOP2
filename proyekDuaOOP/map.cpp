@@ -32,9 +32,17 @@ void Map::setWall() {
 	}
 }
 
-void Map::setObject() {
-	setWall();
-
+void Map::setShop() {
+	for (int i = 0; i < 3; i++) {
+		int x = rand() % 50;
+		int y = rand() % 140;
+		if (this[0][x][y].type == '.') {
+			this[0][x][y] = Rect(6);
+		}
+		else {
+			i--;
+		}
+	}
 }
 
 void Map::show() {
@@ -73,14 +81,6 @@ void Map::show() {
 		std::cout << std::endl;
 	}
 
-	/*for (int i = 0; i < 50; i++) {
-		for (int j = 0; j < 140; j++) {
-			if (this[0][i][j].type == '1') {
-				std::cout << i << " " << j;
-				std::cout << "be a point" << nowx << " " << nowy << std::endl;
-			}
-		}
-	}*/
 }
 
 void Map::getinput(int player) {
@@ -89,27 +89,34 @@ void Map::getinput(int player) {
 	switch (input)
 	{
 	case 119:  //w
-		if (nowx > 0) {
+		if (nowx > 0 && this[0][nowx-1][nowy].type != ' ') {
 			nowx -= 1;
 		}
 		break;
 	case 97:  //a
-		if (nowy > 0) {
+		if (nowy > 0 && this[0][nowx][nowy-1].type != ' ') {
 			nowy -= 1;
 		}
 		break;
 	case 115:  //s
-		if (nowx < 50) {
+		if (nowx < 50 && this[0][nowx+1][nowy].type != ' ') {
 			nowx += 1;
 		}
 		break;
 	case 100:  //d
-		if (nowy < 140) {
+		if (nowy < 140 && this[0][nowx][nowy+1].type != ' ') {
 			nowy += 1;
 		}
+		break;
+
+	case 105:  //i
+		//open backpack
 		break;
 	default:
 		break;
 	}
 	this[0][nowx][nowy].type = player + 48;
+	if (this[0][nowx][nowy].type == '$') {
+		//Open Shop
+	}
 }

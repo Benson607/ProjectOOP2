@@ -15,6 +15,8 @@ void Dice::action(Stat& stat, int used_focus)
 	srand(time(NULL));
 	int isFail = 0;
 	int isSuccess = 0;
+	result.clear();
+	movement_points = 0;
 
 	max_movement_points = floor(stat.speed / 10);
 	success_percent = floor(stat.speed / 100); //max = 90
@@ -24,6 +26,7 @@ void Dice::action(Stat& stat, int used_focus)
 	isSuccess += used_focus;
 	for (int i = 0; i < isSuccess; i++) {
 		result.push_back('T');
+		movement_points++;
 	}
 	//the numbers of used focus cannot be bigger than max_movement point
 	//another 1000 face dice --> if 90% <=90 -->Success 
