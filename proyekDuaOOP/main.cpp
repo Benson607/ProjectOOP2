@@ -50,6 +50,60 @@ std::vector<std::string> pic = {
   "            fortheking        fortheking  fortheking  fortheking                forthekingfortheking                fortheking                             ",
   "                                                                                                                                                           " };
 
+std::vector<std::string> map_ui = {
+  "||--------------------------------------------------------------------------------|",
+  "||--------------------------------------------------|-----------------------------|",
+  "||                                                  |Turn :                       |",
+  "||                                                  |Player Name :                |",
+  "||                                                  |Action Points :              |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |___________Helper____________|",
+  "||                                                  |Arrow Key : Move             |",
+  "||                                                  |'P' Key : End Turn           |",
+  "||                                                  |'I' Key  : Open Bag,         |",
+  "||                                                  |   : Wall, . : Road, $ : Shop|",
+  "||----|--------------------|---|--------------------|---|--------------------|----|",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|-----|--------------------|---|--------------------|---|--------------------|----|"};
+
+std::vector<std::string> choice_player = {
+"|--------------------|",
+"|                    |",
+"|                    |", 
+"|                    |", 
+"|                    |", 
+"|                    |", 
+"|                    |", 
+"|                    |",
+"|                    |", 
+"|                    |",
+"|--------------------|"};
+
 void fight(std::vector<Entity*>& roles, std::vector<Entity*>& enemys) {
 	system("CLS");
 	std::vector<Entity*> entitys;
@@ -144,20 +198,42 @@ int main() {
 	system("CLS");
 
 	Map map;
-	map.setWall();
-	map.setRect(player1.rect);
-	map.setRect(player2.rect);
-	map.setRect(player3.rect);
-	map.setRect(enemy1.rect);
-	map.setRect(enemy2.rect);
+	map.setWall();  //Wall
+	map.setShop();
+	map.setRect(player1.rect);   //Player1
+	map.setRect(player2.rect);   //Player2
+	map.setRect(player3.rect);   //Palyer3
+	map.setRect(enemy1.rect);    //Enemy1
+	map.setRect(enemy2.rect);    //Enemy2
 	map.setRect(enemy3.rect);
-
-	Draw::drawMap(map,0,0);
-
 	//map.show();
+	draw(map_ui, 0, 0);
+	gotoxy(54, 27);
+	setColor(136);
+	std::cout << " ";
+	gotoxy(64, 27);
+	setColor(224);
+	std::cout << ".";
+	gotoxy(74, 27);
+	setColor(240);
+	std::cout << "$";
+	setColor();
+
+	std::vector<Entity*> Entity_map;
+	for (int i = 0; i < roles.size(); i++) {
+		roles[i]->setPosDraw(7 + 26 * i, 29);
+		Entity_map.push_back(roles[i]);
+	}
+	for (int i = 0; i < roles.size(); i++) {
+		if (roles[i]->inAction) {
+			setColor(207);
+		}
+		draw(roles[i]->output(), roles[i]->xDraw, roles[i]->yDraw);
+		setColor();
+	}
 
 	// decide the orders
-	int turn[3] = { 0 };
+	int turn[3] = {0};
 	if (player1.cmp(player2) || player1.cmp(player3)) {
 		turn[0] = player1.speed;
 		if (player2.cmp(player3)) {
@@ -193,56 +269,115 @@ int main() {
 	}
 
 	// operate
-	int move_time = 0;
+	int wheather_use_focus = 0;
+	int Turn_Counted = 1;
 	Dice dice;
 	/*while (1) {  //while enemy still exist,loop
 		for (int i = 0; i < 3; i++) {
+			gotoxy(59, 2);
+			setColor();
+			std::cout << Turn_Counted;
 			if (turn[i] == player1.speed) {  //player1 move
-				dice.action(player1);
-				move_time = dice.movement_points;
-				gotoxy(0, 51);
-				setColor(7);
-				std::cout << "Player1 move time :" << move_time << std::endl;
-				for (int j = move_time; j > 0; j--) { //how many step player1 can move
+				Draw::drawMap(map, player1.rect.x-12, player1.rect.y-25);
+				gotoxy(66, 3);
+				std::cout << "               ";
+				gotoxy(66, 3);
+				std::cout << player1.name;
+				gotoxy(68, 4);
+				std::cout << "          ";
+
+				setColor(10);
+				draw(choice_player, 6, 28);
+				setColor();
+				draw(choice_player, 31, 28);
+				draw(choice_player, 56, 28);
+				for (int i = 0; i < roles.size(); i++) {
+					if (roles[i]->inAction) {
+						setColor(207);
+					}
+					draw(roles[i]->output(), roles[i]->xDraw, roles[i]->yDraw);
+					setColor();
+				}
+
+				gotoxy(0, 40);
+				setColor();
+				std::cout << "Do you wnat to use focus?" << std::endl;
+				std::cin >> wheather_use_focus;
+				dice.action(player1, wheather_use_focus);
+
+				gotoxy(68, 4);
+				for (int k = 0; k < dice.result.size(); k++) {
+					if (dice.result[k] == 'T') {
+						setColor(14);
+						std::cout << "T";
+					}
+					else if(dice.result[k] == 'F') {
+						setColor(8);
+						std::cout << "F";
+					}
+				}
+
+				for (int j = dice.movement_points; j > 0; j--) { //how many step player1 can move
 					map.nowx = player1.rect.x;
 					map.nowy = player1.rect.y;
-
 					map.getinput(1);
-					gotoxy(player1.rect.y, player1.rect.x);
-					setColor(224);
-					std::cout << ".";
-					gotoxy(map.nowy, map.nowx);
-					setColor(230);
-					std::cout << "1";
-
 					player1.rect.x = map.nowx;
 					player1.rect.y = map.nowy;
+					Draw::drawMap(map, player1.rect.x - 12, player1.rect.y - 25);
 					while ((player1.rect.x == enemy1.rect.x && player1.rect.y == enemy1.rect.y) || (player1.rect.x == enemy2.rect.x && player1.rect.y == enemy2.rect.y) || (player1.rect.x == enemy3.rect.x && player1.rect.y == enemy3.rect.y)) {
 						system("CLS");
 						setColor(7);
 						fight(roles, enemys);
 					}
-
 				}
 			}
 			else if (turn[i] == player2.speed) {  //player2 move
-				dice.action(player2);
-				move_time = dice.movement_points;
-				gotoxy(0, 51);
-				setColor(7);
-				std::cout << "Player2 move time :" << move_time << std::endl;
-				for (int j = move_time; j > 0; j--) { //how many step player1 can move
+				Draw::drawMap(map, player2.rect.x-12, player2.rect.y-25);
+				gotoxy(66, 3);
+				std::cout << "               ";
+				gotoxy(66, 3);
+				setColor();
+				std::cout << player2.name;
+				gotoxy(68, 4);
+				std::cout << "          ";
+
+				draw(choice_player, 6, 28);
+				setColor(10);
+				draw(choice_player, 31, 28);
+				setColor();
+				draw(choice_player, 56, 28);
+
+				for (int i = 0; i < roles.size(); i++) {
+					if (roles[i]->inAction) {
+						setColor(207);
+					}
+					draw(roles[i]->output(), roles[i]->xDraw, roles[i]->yDraw);
+					setColor();
+				}
+
+				gotoxy(0, 40);
+				setColor();
+				std::cout << "Do you wnat to use focus?" << std::endl;
+				std::cin >> wheather_use_focus;
+				dice.action(player2, wheather_use_focus);
+
+				gotoxy(68, 4);
+				for (int k = 0; k < dice.result.size(); k++) {
+					if (dice.result[k] == 'T') {
+						setColor(14);
+						std::cout << "T";
+					}
+					else if (dice.result[k] == 'F') {
+						setColor(8);
+						std::cout << "F";
+					}
+				}
+
+				for (int j = dice.movement_points; j > 0; j--) { //how many step player1 can move
 					map.nowx = player2.rect.x;
 					map.nowy = player2.rect.y;
-
 					map.getinput(2);
-					gotoxy(player2.rect.y, player2.rect.x);
-					setColor(224);
-					std::cout << ".";
-					gotoxy(map.nowy, map.nowx);
-					setColor(230);
-					std::cout << "2";
-
+					Draw::drawMap(map, player2.rect.x - 12, player2.rect.y - 25);
 					player2.rect.x = map.nowx;
 					player2.rect.y = map.nowy;
 					while ((player2.rect.x == enemy1.rect.x && player2.rect.y == enemy1.rect.y) || (player2.rect.x == enemy2.rect.x && player2.rect.y == enemy2.rect.y) || (player2.rect.x == enemy3.rect.x && player2.rect.y == enemy3.rect.y)) {
@@ -250,27 +385,55 @@ int main() {
 						setColor(7);
 						fight(roles, enemys);
 					}
-
 				}
 			}
 			else if (turn[i] == player3.speed) {  //player 3 move
-				dice.action(player3);
-				move_time = dice.movement_points;
-				gotoxy(0, 51);
-				setColor(7);
-				std::cout << "Player3 move time :" << move_time << std::endl;
-				for (int j = move_time; j > 0; j--) { //how many step player1 can move
+				Draw::drawMap(map, player3.rect.x-12, player3.rect.y-25);
+				gotoxy(66, 3);
+				std::cout << "               ";
+				gotoxy(66, 3);
+				setColor();
+				std::cout << player3.name;
+				gotoxy(68, 4);
+				std::cout << "          ";
+
+				draw(choice_player, 6, 28);
+				draw(choice_player, 31, 28);
+				setColor(10);
+				draw(choice_player, 56, 28);
+
+				setColor();
+				for (int i = 0; i < roles.size(); i++) {
+					if (roles[i]->inAction) {
+						setColor(207);
+					}
+					draw(roles[i]->output(), roles[i]->xDraw, roles[i]->yDraw);
+					setColor();
+				}
+
+				gotoxy(0, 40);
+				setColor();
+				std::cout << "Do you wnat to use focus?" << std::endl;
+				std::cin >> wheather_use_focus;
+				dice.action(player3, wheather_use_focus);
+
+				gotoxy(68, 4);
+				for (int k = 0; k < dice.result.size(); k++) {
+					if (dice.result[k] == 'T') {
+						setColor(14);
+						std::cout << "T";
+					}
+					else if (dice.result[k] == 'F') {
+						setColor(8);
+						std::cout << "F";
+					}
+				}
+
+				for (int j = dice.movement_points; j > 0; j--) { //how many step player1 can move
 					map.nowx = player3.rect.x;
 					map.nowy = player3.rect.y;
-
 					map.getinput(3);
-					gotoxy(player3.rect.y, player3.rect.x);
-					setColor(224);
-					std::cout << ".";
-					gotoxy(map.nowy, map.nowx);
-					setColor(230);
-					std::cout << "3";
-
+					Draw::drawMap(map, player3.rect.x-12, player3.rect.y-25);
 					player3.rect.x = map.nowx;
 					player3.rect.y = map.nowy;
 					while ((player3.rect.x == enemy1.rect.x && player3.rect.y == enemy1.rect.y) || (player3.rect.x == enemy2.rect.x && player3.rect.y == enemy2.rect.y) || (player3.rect.x == enemy3.rect.x && player3.rect.y == enemy3.rect.y)) {
@@ -278,12 +441,11 @@ int main() {
 						setColor(7);
 						fight(roles, enemys);
 					}
-
 				}
 			}
+			Turn_Counted++;
 		}
 	}
-
 
 	fight(roles, enemys);
 
