@@ -12,16 +12,17 @@
 using ptr = void(*)();
 
 class Entity : public Stat {
+private:
+	int priority;
+	std::vector<int> CD;
 public:
 	int xDraw;
 	int yDraw;
-	int priority;
-	ptr attack;
-	ptr flee;
-	ptr provoke;
-	ptr shock_blast;
-	ptr heal;
-	ptr speedUp;
+	ptr att;
+	ptr pro;
+	ptr sb;
+	ptr hl;
+	ptr su;
 	Rect rect;
 	std::string name;
 	bool inAction;
@@ -35,4 +36,10 @@ public:
 	void setPosDraw(int x, int y);
 	bool cmp(Entity other);
 	bool actionForFight(std::vector<Entity*>& roles, std::vector<Entity*>& enemys);
+	enum {
+		provoke,
+		shock_blast,
+		heal,
+		speedUp
+	};
 };

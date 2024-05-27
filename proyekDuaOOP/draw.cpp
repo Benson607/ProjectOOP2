@@ -11,9 +11,9 @@ void Draw::draw(std::vector<std::string> out, int x, int y) {
 
 void Draw::drawMap(std::vector<std::vector<Rect>> map, int fromx, int fromy, int x, int y, int sizex, int sizey) {
 	gotoxy(x, y);
-	for (int i = fromx; i < fromx+sizex; i++) {
-		for (int j = fromy; j < fromy+sizey; j++) {
-			if (i>=0 && j>=0 && i < 50 && j < 140) {
+	for (int i = fromx; i < fromx + sizex; i++) {
+		for (int j = fromy; j < fromy + sizey; j++) {
+			if (i >= 0 && i < 50 && j >= 0 && j < 140) {
 				switch (map[i][j].type) {
 				case ' ':
 					setColor(136);
