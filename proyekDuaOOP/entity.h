@@ -30,7 +30,6 @@ private:
 		angry,
 		dizziness,
 		poisoned,
-		speedUp
 	};
 
 	ptr att;
