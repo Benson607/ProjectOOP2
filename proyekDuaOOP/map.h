@@ -13,7 +13,7 @@ public:
 	Map();
 	void setRect(Rect& obj);
 	void setWall();
-	void setShop();
+	void setObject();
 	void show();
 	void getinput(int player);
 };
