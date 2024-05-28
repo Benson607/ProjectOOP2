@@ -5,6 +5,7 @@
 #include "map.h"
 #include "role.h"
 #include "dice.h"
+#include "shop.h"
 
 using namespace Draw;
 
@@ -450,4 +451,7 @@ int main() {
 	fight(roles, enemys);
 
 	return 0;*/
+	Shop shop;
+	shop.show();
+	shop.select_product();
 }
