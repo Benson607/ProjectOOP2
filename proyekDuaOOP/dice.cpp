@@ -26,6 +26,7 @@ void Dice::action(Stat& stat, int used_focus)
 	isSuccess += used_focus;
 	for (int i = 0; i < isSuccess; i++) {
 		result.push_back('T');
+		movement_points++;
 	}
 	//the numbers of used focus cannot be bigger than max_movement point
 	//another 1000 face dice --> if 90% <=90 -->Success 
@@ -69,21 +70,11 @@ void Dice::attack(Stat& stat, int used_focus, int num_of_dice, double success)
 		int dice_result = rand() % 100;
 		if (dice_result <= success_percent * 100) {
 			result.push_back('T');
-			movement_points+=1;
-	success_percent = success;
-
-	for (int i = 0; i < num_of_dice - isSuccess; i++) {
-		int dice_result = rand() % 100;
-		if (dice_result <= success_percent * 100) {
-			result.push_back('T');
-			isSuccess++;
-		}
-		else {
-			result.push_back('F');
-			isFail++;
+			movement_points += 1;
+			success_percent = success;
 		}
 	}
-
+	Money::money += 2 * isSuccess;
 	if (isFail == num_of_dice) {
 		stat.vitality_max *= 0.9;
 	}

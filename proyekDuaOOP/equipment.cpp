@@ -23,7 +23,7 @@ void Equipment::Weapon(std::string kind)
 	if (kind == "WoodenSword") {
 		status[4] = 5;
 		status[3] = 10;
-		skills.push_back("SpeedUp")
+		skills.push_back("SpeedUp");
 
 	}
 	else if (kind == "Hammer") {

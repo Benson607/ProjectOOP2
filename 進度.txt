@@ -1,0 +1,50 @@
+前情提要
+Map UI、Map 物件設定、操作順序、顯示當前操作者、顯示回合數、投骰子決定移動次數、顯示擲骰結果(T or F)、進入戰鬥已完成
+
+5/28 進度
+角色移動的重疊、防撞牆已完成
+
+
+修改內容
+1. main.cpp : 
+	map.getinput(1); -> map.getinput(1, player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y, player3.rect.x, 	player3.rect.y);
+	以及Player 2、3的此部分。
+	
+	大改fight、顯示Map UI的部分。
+
+2.map.h : 
+	修改void getinput(int player); -> void getinput(int player, int player1_x, int player1_y, int player2_x, int player2_y, int player3_x, int player3_y);
+	理由會在第3點解釋。
+	
+	新增void set_new_rect_type(int x,int y,char T);
+	理由:如果Player進到戰鬥，要判斷是否將敵人打死再來決定角色位置要步要改變，所以多寫這個function來改變Rect.type。
+
+3.map.cpp : 
+	Map::getinput多加參數 -> void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int player2_y, int player3_x, int player3_y)
+	作用 : 給每個玩家的位置來判斷是否重疊。
+	還有多加判斷是否重疊的if..else
+	還有Enemy
+	
+	讀取input=_getch();
+	因為要判斷是否為牆面，且不能走進牆面，如果強行往牆面方向走不扣移動次數。所以在switch外多包一層do...while，並新增bool can_walk;判斷此次移動是否成立。
+
+	void Map::set_new_rect_type(int x,int y,char T) {
+		this[0][x][y].type = T;
+	}
+	用於戰鬥階段
+
+4.dice.cpp :
+	在Dice::action的
+	for (int i = 0; i < isSuccess; i++) {
+		result.push_back('T');
+	}
+
+	多加一行movement_points++; 如下
+	for (int i = 0; i < isSuccess; i++) {
+		result.push_back('T');
+		movement_points++;
+	}
+
+5.draw.h :
+	修改void drawMap(std::vector<std::vector<Rect>> map, int fromx, int fromy, int x = 0, int y = 0, int sizex = 25, int sizey = 50);
+	 -> void drawMap(std::vector<std::vector<Rect>> map, int fromx, int fromy, int x = 2, int y = 2, int sizex = 25, int sizey = 50);
