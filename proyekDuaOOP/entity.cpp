@@ -47,7 +47,8 @@ Entity::Entity(int type, std::string name) : Stat(), name(name) {
 	sb = NULL;
 	hl = NULL;
 	su = NULL;
-	CD = std::vector<int>(4, -1);
+	CD = std::vector<int>(5, -1);
+	buff = std::vector<int>(4, -1);
 }
 
 Entity::~Entity() {
@@ -185,4 +186,77 @@ bool Entity::actionForFight(std::vector<Entity*>& roles, std::vector<Entity*>& e
 	attacker = NULL;
 	choosen = NULL;
 	return false;
+}
+
+void Entity::action() {
+	addActionTimes();
+	for (int& i : CD) {
+		if (i > 0) {
+			i--;
+		}
+	}
+	for (int& i : buff) {
+		if (i > 0) {
+			i--;
+		}
+	}
+}
+
+void Entity::use(Equipment equipment) {
+	switch (equipment.type)
+	{
+	case 0:
+		weapon = equipment;
+		break;
+	case 1:
+		armour = equipment;
+		break;
+	case 2:
+		accessory = equipment;
+		break;
+	default:
+		break;
+	}
+	for (std::string i : equipment.skills) {
+		if (i == "Provoke") {
+			pro = Skill::provoke;
+			CD[provoke] = 0;
+		}
+		else if (i == "Shock-Blast") {
+			sb = Skill::shock_blast;
+			CD[shock_blast] = 0;
+		}
+		else if (i == "Heal") {
+			pro = Skill::heal;
+			CD[heal] = 0;
+		}
+		else if (i == "SpeedUp") {
+			pro = Skill::speedUp;
+			CD[speedUp] = 0;
+		}
+	}
+}
+
+void Entity::takeOff(int type) {
+	switch (type)
+	{
+	case 0:
+		for (std::string i : weapon.skills) {
+
+		}
+		weapon = Equipment();
+		break;
+	case 1:
+		armour = Equipment();
+		break;
+	case 2:
+		accessory = Equipment();
+		break;
+	default:
+		break;
+	}
+}
+
+void Entity::use(Item item) {
+
 }

@@ -1,9 +1,8 @@
 #include "money.h"
 
-int Money::money = 0;
+int Money::money = 600;
 
 Money::Money() {
-	money = 600;
 }
 
 int Money::money_deduct(int amount) {

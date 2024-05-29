@@ -1,4 +1,9 @@
 #include "map.h"
+#include "role.h"
+#include "dice.h"
+#include "shop.h"
+#include "draw.h"
+#include "enemy.h"
 #include <conio.h>
 
 using namespace Draw;
@@ -97,6 +102,8 @@ void Map::show() {
 }
 
 void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int player2_y, int player3_x, int player3_y) {
+	Bag bag;
+	Shop shop;
 	int input;
 	bool can_walk = 0;
 	if (player == 1) {
@@ -168,7 +175,11 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 			break;
 
 		case 105:  //i
-			system("CLS");
+			for (int i = 0; i < 26; i++) {
+				gotoxy(54, 2+0);
+				std::cout << "                             ";
+			}
+			//bag.items
 			//open backpack
 			break;
 
@@ -178,19 +189,21 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 		}
 	} while (can_walk != 1);
 
-	if (this[0][nowx][nowy].type =='E')  //if new position meet enemy, return, and fight
+	if (this[0][nowx][nowy].type == 'E')  //if new position meet enemy, return, and fight
 		return;
 
 	this[0][nowx][nowy].type = player + 48;
 
 	if (this[0][nowx][nowy].type == '$') {
 		system("CLS");
-		//Open Shop
+		shop.show();
+		shop.select_product();
+		system("CLS");
 		return;
 	}
 	return;
 }
 
-void Map::set_new_rect_type(int x,int y,char T) {
+void Map::set_new_rect_type(int x, int y, char T) {
 	this[0][x][y].type = T;
 }
