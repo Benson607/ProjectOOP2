@@ -27,8 +27,7 @@ void Stat::operator=(Stat value) {
 	}
 }
 
-double& Stat::operator[](int i)
-{
+double& Stat::operator[](int i) {
 	switch (i)
 	{
 	case 0:
@@ -60,16 +59,52 @@ double& Stat::operator[](int i)
 	}
 }
 
+double& Stat::getMax(int i) {
+	switch (i)
+	{
+	case 0:
+		return vitality_max;
+		break;
+	case 1:
+		return focus_max;
+		break;
+	case 2:
+		return speed_max;
+		break;
+	case 3:
+		return hitrate_max;
+		break;
+	case 4:
+		return pAttack_max;
+		break;
+	case 5:
+		return mAttack_max;
+		break;
+	case 6:
+		return pDefense_max;
+		break;
+	case 7:
+		return mDefense_max;
+		break;
+	default:
+		break;
+	}
+}
+
 void Stat::operator+=(Stat value) {
-	vitality_max += value.vitality_max;
-	focus_max += value.focus_max;
-	speed_max += value.speed_max;
-	hitrate_max += value.hitrate_max;
-	pAttack_max += value.pAttack_max;
-	mAttack_max += value.mAttack_max;
-	pDefense_max += value.pDefense_max;
-	mDefense_max += value.mDefense_max;
+	for (int i = 0; i < 8; i++) {
+		getMax(i) += value.getMax(i);
+	}
 	for (int i = 0; i < 8; i++) {
 		this[0][i] += value[i];
+	}
+}
+
+void Stat::operator-=(Stat value) {
+	for (int i = 0; i < 8; i++) {
+		getMax(i) -= value.getMax(i);
+	}
+	for (int i = 0; i < 8; i++) {
+		this[0][i] -= value[i];
 	}
 }

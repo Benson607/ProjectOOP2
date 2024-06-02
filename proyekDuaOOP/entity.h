@@ -8,6 +8,7 @@
 #include "item.h"
 #include "rect.h"
 #include "stat.h"
+#include "dice.h"
 #include "draw.h"
 
 using ptr = void(*)();
@@ -41,9 +42,7 @@ private:
 public:
 	int xDraw;
 	int yDraw;
-	Equipment weapon;
-	Equipment armour;
-	Equipment accessory;
+	std::vector<Equipment> equip;
 	Rect rect;
 	Rect under;
 	std::string name;
@@ -56,10 +55,11 @@ public:
 	void addActionTimes();
 	void setPosDraw(int x, int y);
 	bool cmp(Entity other);
-	bool actionForFight(std::vector<Entity*>& roles, std::vector<Entity*>& enemys);
+	bool actionForFight(Entity& enemy);
 	void action();
 	void use(Equipment equipment);
 	void takeOff(int type);
 	void use(Item item);
 
+	bool flee();
 };

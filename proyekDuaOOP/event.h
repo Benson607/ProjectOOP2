@@ -11,7 +11,6 @@ class Event {
 public:
 	Event();
 	Stat stat;
-	Money mon;
 	int random_event;
 	void Random_Event(Stat& status);
 };

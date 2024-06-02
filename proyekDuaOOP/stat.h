@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <time.h>
@@ -27,5 +26,7 @@ public:
 	Stat();
 	void operator=(Stat value);
 	double& operator[](int i);
+	double& getMax(int i);
 	void operator+=(Stat value);
+	void operator-=(Stat value);
 };

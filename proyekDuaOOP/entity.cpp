@@ -4,6 +4,11 @@ Entity* attacker;
 Entity* choosen;
 
 namespace Skill {
+	int attackDice = 1;
+	int provokeDice = 1;
+	int sbDice = 3;
+	int healDice = 2;
+	int suDice = 2;
 	void hand() {
 		choosen->vitality--;
 	}
@@ -49,6 +54,7 @@ Entity::Entity(int type, std::string name) : Stat(), name(name) {
 	su = NULL;
 	CD = std::vector<int>(5, -1);
 	buff = std::vector<int>(4, -1);
+	equip = std::vector<Equipment>(3);
 }
 
 Entity::~Entity() {
@@ -108,14 +114,23 @@ bool Entity::cmp(Entity other) {
 	return false;
 }
 
-bool Entity::actionForFight(std::vector<Entity*>& roles, std::vector<Entity*>& enemys) {
+bool Entity::actionForFight(Entity& enemy) {
 	int input = -1;
 	std::vector<std::string> fleeCheck = {
 		"------------------------------",
 		"| You sure you want to flee? |",
 		"|                            |",
 		"|       YES         NO       |",
-		"|        y          n        |",
+		"|      enter        esc      |",
+		"------------------------------"
+	};
+	std::vector<std::string> focusCheck = {
+		"------------------------------",
+		"|     Enter fucus amount     |",
+		"|                            |",
+		"|                            |",
+		"|                            |",
+		"|           enter            |",
 		"------------------------------"
 	};
 	std::vector<std::string> temp;
@@ -133,53 +148,50 @@ bool Entity::actionForFight(std::vector<Entity*>& roles, std::vector<Entity*>& e
 					choosen = NULL;
 					return true;
 				}
-			} while (input != 'y' && input != 'n');
+			} while (input != 13 && input != 27);
 			Draw::draw(temp, 64, 18);
 		}
 		if (input == '1') {
-			int lastChoose = 0;
-			int choose = 0;
-			bool out = false;
-			while (!out) {
-				temp = Draw::readSpace(15 * lastChoose, 0, 9, 15);
-				Draw::setColor();
-				Draw::draw(temp, 15 * lastChoose, 0);
-				temp = Draw::readSpace(15 * choose, 0, 9, 15);
-				Draw::setColor(160);
-				Draw::draw(temp, 15 * choose, 0);
-				Draw::setColor();
+			temp = Draw::readSpace(64, 18, 7, 30);
+			std::string num = "";
+			int keep = 0;;
+			int number = 0;
+			do {
+				Draw::draw(focusCheck, 64, 18);
+				std::string numberStr = itos(number) + "/3";
+				Draw::gotoxy(78 - numberStr.length() / 2, 21);
+				std::cout << numberStr;
 				input = _getch();
-				switch (input) {
-				case 27:
-					out = true;
-					break;
-				case 'a':
-					if (choose > 0) {
-						lastChoose = choose;
-						choose--;
-					}
-					break;
-				case 'd':
-					if (choose < 2) {
-						lastChoose = choose;
-						choose++;
-					}
-					break;
-				case 13://enter
-					out = true;
-					choosen = enemys[choose];
-					att();
-					actionEnd = true;
-					break;
-				default:
-					break;
+				if (input >= '0' && input <= '9' && number<=100000000) {
+					number *= 10;
+					number += input - '0';
 				}
-			}
-			temp = Draw::readSpace(15 * choose, 0, 9, 15);
-			Draw::setColor();
-			Draw::draw(temp, 15 * choose, 0);
+				else if (input == 8) {
+					number /= 10;
+				}
+				else if (input == 13) {
+					if (number <= focus) {
+						Draw::draw(temp, 64, 18);
+						break;
+					}
+				}
+			} while (1);
+			Dice dice;
+			dice.attack(*this, number, Skill::attackDice, hitrate);
+			choosen = &enemy;
+			att();
+			actionEnd = true;
 		}
-		else {
+		else if (input == '2') {
+
+		}
+		else if (input == '3') {
+
+		}
+		else if (input == '4') {
+
+		}
+		else if (input == '5') {
 
 		}
 	}
@@ -203,19 +215,11 @@ void Entity::action() {
 }
 
 void Entity::use(Equipment equipment) {
-	switch (equipment.type)
-	{
-	case 0:
-		weapon = equipment;
-		break;
-	case 1:
-		armour = equipment;
-		break;
-	case 2:
-		accessory = equipment;
-		break;
-	default:
-		break;
+	*this += equipment.status;
+	takeOff(equipment.type);
+	equip[equipment.type] = equipment;
+	if (equipment.name == "MagicWand" || equipment.name == "RitualSword") {
+		att = Skill::weaponAttack;
 	}
 	for (std::string i : equipment.skills) {
 		if (i == "Provoke") {
@@ -238,25 +242,36 @@ void Entity::use(Equipment equipment) {
 }
 
 void Entity::takeOff(int type) {
-	switch (type)
-	{
-	case 0:
-		for (std::string i : weapon.skills) {
-
-		}
-		weapon = Equipment();
-		break;
-	case 1:
-		armour = Equipment();
-		break;
-	case 2:
-		accessory = Equipment();
-		break;
-	default:
-		break;
+	if (equip[type].name == "MagicWand" || equip[type].name == "RitualSword") {
+		att = Skill::hand;
 	}
+	*this -= equip[type].status;
+	for (std::string i : equip[type].skills) {
+		if (i == "Provoke") {
+			pro = NULL;
+			CD[provoke] = -1;
+		}
+		else if (i == "Shock-Blast") {
+			sb = NULL;
+			CD[shock_blast] = -1;
+		}
+		else if (i == "Heal") {
+			pro = NULL;
+			CD[heal] = -1;
+		}
+		else if (i == "SpeedUp") {
+			pro = NULL;
+			CD[speedUp] = -1;
+		}
+	}
+	equip[type] = Equipment();
 }
 
 void Entity::use(Item item) {
 
+}
+
+bool Entity::flee()
+{
+	return false;
 }
