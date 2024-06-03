@@ -1,24 +1,32 @@
 #include "stat.h"
 
-Stat::Stat() {
-	vitality_max = rand() % 15 + 30;
-	focus_max = 3;
-	speed_max = rand() % 25 + 30;
+Stat::Stat(bool i) {
+	if (i) {
+		vitality_max = rand() % 15 + 30;
+		focus_max = 3;
 
-	hitrate_max = rand() % 20 + 40;
-	pAttack_max = rand() % 11 + 5;
-	mAttack_max = rand() % 11 + 5;
-	pDefense_max = rand() % 21;
-	mDefense_max = rand() % 21;
+		vitality = vitality_max;
+		focus = 3;
+		speed = rand() % 25 + 30;
+		hitrate = rand() % 20 + 40;
+		pAttack = rand() % 11 + 5;
+		mAttack = rand() % 11 + 5;
+		pDefense = rand() % 21;
+		mDefense = rand() % 21;
+	}
+	else {
+		vitality_max = 0;
+		focus_max = 0;
 
-	vitality = vitality_max;
-	focus = focus_max;
-	speed = speed_max;
-	hitrate = hitrate_max;
-	pAttack = pAttack_max;
-	mAttack = mAttack_max;
-	pDefense = pDefense_max;
-	mDefense = mDefense_max;
+		vitality = 0;
+		focus = 0;
+		speed = 0;
+		hitrate = 0;
+		pAttack = 0;
+		mAttack = 0;
+		pDefense = 0;
+		mDefense = 0;
+	}
 }
 
 void Stat::operator=(Stat value) {
@@ -68,31 +76,13 @@ double& Stat::getMax(int i) {
 	case 1:
 		return focus_max;
 		break;
-	case 2:
-		return speed_max;
-		break;
-	case 3:
-		return hitrate_max;
-		break;
-	case 4:
-		return pAttack_max;
-		break;
-	case 5:
-		return mAttack_max;
-		break;
-	case 6:
-		return pDefense_max;
-		break;
-	case 7:
-		return mDefense_max;
-		break;
 	default:
 		break;
 	}
 }
 
 void Stat::operator+=(Stat value) {
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < 2; i++) {
 		getMax(i) += value.getMax(i);
 	}
 	for (int i = 0; i < 8; i++) {
@@ -101,7 +91,7 @@ void Stat::operator+=(Stat value) {
 }
 
 void Stat::operator-=(Stat value) {
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < 2; i++) {
 		getMax(i) -= value.getMax(i);
 	}
 	for (int i = 0; i < 8; i++) {

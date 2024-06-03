@@ -1,13 +1,8 @@
 #pragma once
+
 #include <conio.h>
-#include <string>
-#include <vector>
-#include "rect.h"
+
 #include "bag.h"
-#include "money.h"
-#include "equipment.h"
-#include "item.h"
-#include "draw.h"
 
 using namespace Draw;
 

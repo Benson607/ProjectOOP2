@@ -1,17 +1,34 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include <conio.h>
 
-#include "equipment.h"
-#include "item.h"
-#include "rect.h"
-#include "stat.h"
+#include "bag.h"
 #include "dice.h"
-#include "draw.h"
 
 using ptr = void(*)();
+
+class Skill {
+public:
+	int attackDice;
+	int provokeDice;
+	int sbDice;
+	int healDice;
+	int suDice;
+
+	Skill() {
+		attackDice = 1;
+		provokeDice = 1;
+		sbDice = 3;
+		healDice = 2;
+		suDice = 2;
+	}
+	static void hand();
+	static void weaponAttack();
+	static void provoke();
+	static void shock_blast();
+	static void heal();
+	static void speedUp();
+};
 
 class Entity : public Stat {
 private:
@@ -38,6 +55,8 @@ private:
 	ptr sb;
 	ptr hl;
 	ptr su;
+
+	Skill skill;
 
 public:
 	int xDraw;

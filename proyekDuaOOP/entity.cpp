@@ -3,29 +3,22 @@
 Entity* attacker;
 Entity* choosen;
 
-namespace Skill {
-	int attackDice = 1;
-	int provokeDice = 1;
-	int sbDice = 3;
-	int healDice = 2;
-	int suDice = 2;
-	void hand() {
-		choosen->vitality--;
-	}
-	void weaponAttack() {
-		choosen->vitality--;
-	}
-	void provoke() {
-	}
-	void shock_blast() {
+void Skill::hand() {
+	choosen->vitality--;
+}
+void Skill::weaponAttack() {
+	choosen->vitality--;
+}
+void Skill::provoke() {
+}
+void Skill::shock_blast() {
 
-	}
-	void heal() {
+}
+void Skill::heal() {
 
-	}
-	void speedUp() {
+}
+void Skill::speedUp() {
 
-	}
 }
 
 std::string itos(int x) {
@@ -142,7 +135,7 @@ bool Entity::actionForFight(Entity& enemy) {
 			Draw::draw(fleeCheck, 64, 18);
 			do {
 				input = _getch();
-				if (input == 'y') {
+				if (input == 13) {
 					Draw::draw(temp, 64, 18);
 					attacker = NULL;
 					choosen = NULL;
@@ -162,7 +155,7 @@ bool Entity::actionForFight(Entity& enemy) {
 				Draw::gotoxy(78 - numberStr.length() / 2, 21);
 				std::cout << numberStr;
 				input = _getch();
-				if (input >= '0' && input <= '9' && number<=100000000) {
+				if (input >= '0' && input <= '9' && number <= 100000000) {
 					number *= 10;
 					number += input - '0';
 				}
@@ -177,7 +170,7 @@ bool Entity::actionForFight(Entity& enemy) {
 				}
 			} while (1);
 			Dice dice;
-			dice.attack(*this, number, Skill::attackDice, hitrate);
+			dice.attack(*this, number, skill.attackDice, hitrate);
 			choosen = &enemy;
 			att();
 			actionEnd = true;
@@ -192,6 +185,9 @@ bool Entity::actionForFight(Entity& enemy) {
 
 		}
 		else if (input == '5') {
+
+		}
+		else if (input == 'i') {
 
 		}
 	}
@@ -238,6 +234,9 @@ void Entity::use(Equipment equipment) {
 			pro = Skill::speedUp;
 			CD[speedUp] = 0;
 		}
+	}
+	if (equip[0].name == "Hammer" && equip[1].name == "WoodenShield") {
+		skill.provokeDice = 1;
 	}
 }
 

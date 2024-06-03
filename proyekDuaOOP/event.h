@@ -1,11 +1,9 @@
 #pragma once
 
 #include <iostream>
-#include <stdlib.h>
-#include <time.h>
 
-#include "money.h"
 #include "stat.h"
+#include "money.h"
 
 class Event {
 public:

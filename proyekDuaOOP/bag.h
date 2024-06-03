@@ -1,13 +1,12 @@
 #pragma once
 
+#include <conio.h>
+#include <map>
+
 #include "item.h"
 #include "equipment.h"
 #include "money.h"
 #include "draw.h"
-#include <conio.h>
-#include <map>
-#include <vector>
-#include <string>
 
 class Bag {
 public:

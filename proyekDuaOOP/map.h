@@ -1,10 +1,8 @@
 #pragma once
 
-#include "draw.h"
-#include "rect.h"
-#include <vector>
 #include <iostream>
-#include <Windows.h>
+
+#include "draw.h"
 
 class Map:public std::vector<std::vector<Rect>> {
 public:

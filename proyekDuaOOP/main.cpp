@@ -1,10 +1,6 @@
-#include <conio.h>
-
-#include "draw.h"
 #include "enemy.h"
 #include "map.h"
 #include "role.h"
-#include "dice.h"
 #include "shop.h"
 
 std::vector<std::string> pic = {
@@ -361,7 +357,8 @@ void pick_inventory()
 	}
 }
 
-void fight2(Entity& role, Entity& enemy) {
+void fight(Entity& role, Entity& enemy) {
+	Draw::setColor();
 	system("CLS");
 	Draw::draw(fight_ui, 0, 0);
 	std::vector<std::string> space = {
@@ -402,6 +399,8 @@ void fight2(Entity& role, Entity& enemy) {
 			flee = enemy.actionForFight(role);
 			enemy.addActionTimes();
 		}
+		Draw::draw(role.output(), role.xDraw, role.yDraw);
+		Draw::draw(enemy.output(), enemy.xDraw, enemy.yDraw);
 	}
 }
 
@@ -514,5 +513,5 @@ int main() {
 	bag.bag_ui();
 	pick_inventory();
 
-	fight2(player2, enemy1);
+	fight(player2, enemy1);
 }
