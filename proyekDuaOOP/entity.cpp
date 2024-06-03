@@ -3,22 +3,25 @@
 Entity* attacker;
 Entity* choosen;
 
-void Skill::hand() {
-	choosen->vitality--;
-}
-void Skill::weaponAttack() {
-	choosen->vitality--;
-}
-void Skill::provoke() {
-}
-void Skill::shock_blast() {
+namespace Skill {
+	void hand() {
+		choosen->vitality--;
+	}
+	void weaponAttack() {
 
-}
-void Skill::heal() {
+	}
+	void provoke() {
 
-}
-void Skill::speedUp() {
+	}
+	void shock_blast() {
 
+	}
+	void heal() {
+
+	}
+	void speedUp() {
+
+	}
 }
 
 std::string itos(int x) {
@@ -170,7 +173,7 @@ bool Entity::actionForFight(Entity& enemy) {
 				}
 			} while (1);
 			Dice dice;
-			dice.attack(*this, number, skill.attackDice, hitrate);
+			dice.attack(*this, number, attackDice, hitrate);
 			choosen = &enemy;
 			att();
 			actionEnd = true;
@@ -236,7 +239,7 @@ void Entity::use(Equipment equipment) {
 		}
 	}
 	if (equip[0].name == "Hammer" && equip[1].name == "WoodenShield") {
-		skill.provokeDice = 1;
+		provokeDice = 1;
 	}
 }
 
@@ -268,9 +271,4 @@ void Entity::takeOff(int type) {
 
 void Entity::use(Item item) {
 
-}
-
-bool Entity::flee()
-{
-	return false;
 }
