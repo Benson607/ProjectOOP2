@@ -11,7 +11,6 @@ class Entity : public Stat {
 private:
 	int priority;
 
-	std::vector<int> CD;
 	enum {
 		provoke,
 		shock_blast,
@@ -20,7 +19,6 @@ private:
 		fortify
 	};
 
-	std::vector<int> buff;
 	enum {
 		angry,
 		dizziness,
@@ -33,13 +31,18 @@ private:
 	ptr hl;
 	ptr su;
 
-
 public:
+	std::vector<int> CD;
+	std::vector<int> buff;
+
 	int attackDice;
+	int fleeDice;
 	int provokeDice;
 	int sbDice;
 	int healDice;
 	int suDice;
+
+	int useFocus;
 	
 	int xDraw;
 	int yDraw;
@@ -56,15 +59,19 @@ public:
 	Entity(int type, std::string name = "");
 	~Entity();
 	
-	void setName(std::string name);
 	std::vector<std::string> output();
+	
+	void mainPhaseStart();
 	void addActionTimes();
-	void setPosDraw(int x, int y);
-	bool cmp(Entity other);
 	bool actionForFight(Entity& enemy);
-	void action();
+	bool askFocus();
+	
+	bool cmp(Entity other);
+	void setName(std::string name);
+	void setPosDraw(int x, int y);
+	
 	void use(Equipment equipment);
-	void takeOff(int type);
 	void use(Item item);
+	void takeOff(int type);
 
 };

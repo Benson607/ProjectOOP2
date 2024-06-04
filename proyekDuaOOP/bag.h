@@ -15,7 +15,7 @@ public:
 	static int pos_x;
 	static int pos_y;
 	Bag();
-	void bag_ui();
+	static void bag_ui();
 
 	static std::vector<std::string> statment;
 	static std::vector<std::string> original_ui;
