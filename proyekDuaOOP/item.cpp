@@ -5,19 +5,7 @@ Item::Item(std::string name) {
 	amount = 0;
 	this->name = name;
 	item_names = std::vector<std::string>(4);
-	status.focus_max = 0;
-	status.hitrate_max = 0;
-	status.mAttack_max = 0;
-	status.mDefense_max = 0;
-	status.pAttack_max = 0;
-	status.pDefense_max = 0;
-	status.speed_max = 0;
-	status.vitality_max = 0;
-
-	for (int i = 0; i < 8; i++)
-	{
-		status[i] = 0;
-	}
+	status = Stat(0);
 }
 
 void Item::GoldenRoot()

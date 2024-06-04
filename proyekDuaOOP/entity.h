@@ -1,14 +1,9 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include <conio.h>
 
-#include "equipment.h"
-#include "item.h"
-#include "rect.h"
-#include "stat.h"
-#include "draw.h"
+#include "bag.h"
+#include "dice.h"
 
 using ptr = void(*)();
 
@@ -38,25 +33,35 @@ private:
 	ptr hl;
 	ptr su;
 
+
 public:
+	int attackDice;
+	int provokeDice;
+	int sbDice;
+	int healDice;
+	int suDice;
+	
 	int xDraw;
 	int yDraw;
-	Equipment weapon;
-	Equipment armour;
-	Equipment accessory;
+	
+	std::vector<Equipment> equip;
+	
 	Rect rect;
 	Rect under;
+	
 	std::string name;
 	bool inAction;
 	int actionTimes;
+	
 	Entity(int type, std::string name = "");
 	~Entity();
+	
 	void setName(std::string name);
 	std::vector<std::string> output();
 	void addActionTimes();
 	void setPosDraw(int x, int y);
 	bool cmp(Entity other);
-	bool actionForFight(std::vector<Entity*>& roles, std::vector<Entity*>& enemys);
+	bool actionForFight(Entity& enemy);
 	void action();
 	void use(Equipment equipment);
 	void takeOff(int type);

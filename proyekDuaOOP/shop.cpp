@@ -169,17 +169,18 @@ void Shop::select_product()
 								else {
 									equip[i].amount -= 1;
 									Money::money -= equip[i].price;
-									output = { equip[i].name," ", "Amount: "," ", "Price: " };
-									output[2] = output[2] + std::to_string((int)(equip[i].amount));
-									output[4] = output[4] + std::to_string((int)(equip[i].price));
+									Bag::buy_in_E[i].amount++;
 								}
 							}
 							else {
 								statment = { "Sold Out!                  " };
 							}
+							output = { equip[i].name," ", "Amount: "," ", "Price: " };
+							output[2] = output[2] + std::to_string((int)(equip[i].amount));
+							output[4] = output[4] + std::to_string((int)(equip[i].price));
 							break;
 						}
-						else if (pos_x_y[i][0] == tmp_x && pos_x_y[i][1] == tmp_y && i > 13) {
+						else if (pos_x_y[i][0] == tmp_x && pos_x_y[i][1] == tmp_y && i >= 13) {
 							if (i == 13) {
 								if (items[0].amount > 0) {
 									if (items[0].price > Money::money) {
@@ -188,15 +189,15 @@ void Shop::select_product()
 									else {
 										items[0].amount -= 1;
 										Money::money -= items[0].price;
-										output = { items[0].name," ", "Amount: "," ", "Price: " };
-										output[2] = output[2] + std::to_string((int)(items[0].amount));
-										output[4] = output[4] + std::to_string((int)(items[0].price));
+										Bag::buy_in_T[0].amount++;
 									}
 								}
 								else {
 									statment = { "Sold Out!                  " };
 								}
-								break;
+								output = { items[0].name," ", "Amount: "," ", "Price: " };
+								output[2] = output[2] + std::to_string((int)(items[0].amount));
+								output[4] = output[4] + std::to_string((int)(items[0].price));
 							}if (i == 14) {
 								if (items[1].amount > 0) {
 									if (items[1].price > Money::money) {
@@ -205,40 +206,45 @@ void Shop::select_product()
 									else {
 										items[1].amount -= 1;
 										Money::money -= items[1].price;
-										output = { items[1].name," ", "Amount: "," ", "Price: " };
-										output[2] = output[2] + std::to_string((int)(items[1].amount));
-										output[4] = output[4] + std::to_string((int)(items[1].price));
+										Bag::buy_in_T[1].amount++;
 									}
 								}
 								else {
 									statment = { "Sold Out!                  " };
 								}
-								break;
+								output = { items[1].name," ", "Amount: "," ", "Price: " };
+								output[2] = output[2] + std::to_string((int)(items[1].amount));
+								output[4] = output[4] + std::to_string((int)(items[1].price));
 							}if (i == 15) {
 								if (items[2].amount > 0) {
 									if (items[2].price > Money::money) {
 										statment = { "No enough money!              " };
 									}
 									else {
-                                        items[2].amount -= 1;
-                                        Money::money -= items[2].price;
-                                        output    = {items[2].name, " ", "Amount: ", " ", "Price: "};
-                                        output[2] = output[2] + std::to_string((int)(items[2].amount));
-                                        output[4] = output[4] + std::to_string((int)(items[2].price));
+										items[2].amount -= 1;
+										Money::money -= items[2].price;
+										Bag::buy_in_T[2].amount++;
 									}
 								}
 								else {
 									statment = { "Sold Out!                  " };
 								}
-								break;
+								output = { items[2].name, " ", "Amount: ", " ", "Price: " };
+								output[2] = output[2] + std::to_string((int)(items[2].amount));
+								output[4] = output[4] + std::to_string((int)(items[2].price));
 							}
+							break;
 						}
 					}
-					Draw::setColor(27);
+					Draw::setColor(246);
+					Draw::draw(grid_ui, pos_y, pos_x);
 					Draw::draw(output, tmp_y, tmp_x);
+					record = Draw::readSpace(pos_y, pos_x, 9, 30);
+					Draw::draw(record, pos_y, pos_x);
+
 					Draw::setColor();
-                    money_stat[0] = ("                           ");
-                    Draw::draw(money_stat, 127, 39);
+					money_stat[0] = ("                           ");
+					Draw::draw(money_stat, 127, 39);
 					money_stat[0] = ("Money: " + std::to_string(Money::money));
 					Draw::draw(money_stat, 127, 39);
 					Draw::draw(statment, 127, 13);
@@ -276,7 +282,8 @@ void Shop::select_product()
 		select_product();
 	}
 	else {
-		//back to map
+		system("CLS");
+		return;
 	}
 }
 
@@ -330,13 +337,10 @@ void Shop::show()
 	}
 
 	Draw::setColor(246);
-	Draw::draw(grid_ui, 1, 1);
-	output = { equip[0].name," ", "Amount: "," ", "Price: " };
-	output[2] = output[2] + std::to_string((int)(equip[0].amount));
-	output[4] = output[4] + std::to_string((int)(equip[0].price));
 	pos_x = 1;
 	pos_y = 1;
-	Draw::draw(output, 6, 3);
+	record = Draw::readSpace(pos_y, pos_x, 9, 30);
+	Draw::draw(record, pos_y, pos_x);
 	Draw::setColor();
 	money_stat[0] = ("Money: " + std::to_string(Money::money));
 	Draw::draw(money_stat, 127, 39);

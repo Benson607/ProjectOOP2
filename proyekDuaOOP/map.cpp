@@ -8,6 +8,8 @@
 
 using namespace Draw;
 
+void pick_inventory();
+
 Map::Map() :std::vector<std::vector<Rect>>(50, std::vector<Rect>(140, Rect(5))) {
 	for (int i = 0; i < 50; i++) {
 		for (int j = 0; j < 140; j++) {
@@ -142,7 +144,16 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 		switch (input)
 		{
 		case 119:  //w
-			if (nowx > 0 && this[0][nowx - 1][nowy].type != ' ') {
+			if (nowx > 0 && this[0][nowx-1][nowy].type == '$') {
+				system("CLS");
+				shop.show();
+				shop.select_product();
+				system("CLS");
+				this[0][nowx][nowy].type = player + 48;
+				can_walk = 1;
+				return;
+			}
+			else if (nowx > 0 && this[0][nowx - 1][nowy].type != ' ') {
 				nowx -= 1;
 				can_walk = 1;
 			}
@@ -150,7 +161,16 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 				can_walk = 0;
 			break;
 		case 97:  //a
-			if (nowy > 0 && this[0][nowx][nowy - 1].type != ' ') {
+			if (nowx > 0 && this[0][nowx][nowy - 1].type == '$') {
+				system("CLS");
+				shop.show();
+				shop.select_product();
+				system("CLS");
+				this[0][nowx][nowy].type = player + 48;
+				can_walk = 1;
+				return;
+			}
+			else if (nowy > 0 && this[0][nowx][nowy - 1].type != ' ') {
 				nowy -= 1;
 				can_walk = 1;
 			}
@@ -158,7 +178,16 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 				can_walk = 0;
 			break;
 		case 115:  //s
-			if (nowx < 50 && this[0][nowx + 1][nowy].type != ' ') {
+			if (nowx > 0 && this[0][nowx + 1][nowy].type == '$') {
+				system("CLS");
+				shop.show();
+				shop.select_product();
+				system("CLS");
+				this[0][nowx][nowy].type = player + 48;
+				can_walk = 1;
+				return;
+			}
+			else if (nowx < 50 && this[0][nowx + 1][nowy].type != ' ') {
 				nowx += 1;
 				can_walk = 1;
 			}
@@ -166,7 +195,16 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 				can_walk = 0;
 			break;
 		case 100:  //d
-			if (nowy < 140 && this[0][nowx][nowy + 1].type != ' ') {
+			if (nowx > 0 && this[0][nowx][nowy + 1].type == '$') {
+				system("CLS");
+				shop.show();
+				shop.select_product();
+				system("CLS");
+				this[0][nowx][nowy].type = player + 48;
+				can_walk = 1;
+				return;
+			}
+			else if (nowy < 140 && this[0][nowx][nowy + 1].type != ' ') {
 				nowy += 1;
 				can_walk = 1;
 			}
@@ -176,11 +214,11 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 
 		case 105:  //i
 			for (int i = 0; i < 26; i++) {
-				gotoxy(54, 2+0);
+				gotoxy(54, 2 + 0);
 				std::cout << "                             ";
 			}
-			//bag.items
-			//open backpack
+			bag.bag_ui();
+			pick_inventory();
 			break;
 
 		default:
@@ -194,16 +232,227 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 
 	this[0][nowx][nowy].type = player + 48;
 
-	if (this[0][nowx][nowy].type == '$') {
-		system("CLS");
-		shop.show();
-		shop.select_product();
-		system("CLS");
-		return;
-	}
 	return;
 }
 
 void Map::set_new_rect_type(int x, int y, char T) {
 	this[0][x][y].type = T;
+}
+
+void pick_inventory()
+{
+	int input = _getch();
+	while (input != 27) {
+		//int tmp_x = 2;
+		//int tmp_y = 53;
+		gotoxy(54, 2);
+		switch (input)
+		{
+		case 119://w
+			if (Bag::pos_xy.size() == 0) {
+				Draw::setColor();
+				Bag::statment = { "Empty                        " };
+				Draw::draw(Bag::statment, 53, 22);
+			}
+			else if (Bag::pos_x > 2) {
+				Draw::setColor();
+				Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
+				Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+				Bag::pos_x -= 1;
+				Draw::setColor(246);
+				Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
+				Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+			}
+			break;
+		case 115://s
+			if (Bag::pos_xy.size() == 0) {
+				Draw::setColor();
+				Bag::statment = { "Empty                        " };
+				Draw::draw(Bag::statment, 53, 22);
+			}
+			else if (Bag::pos_x < 21) {
+				Draw::setColor();
+				Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
+				Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+				Bag::pos_x += 1;
+				Draw::setColor(246);
+				Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
+				Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+			}
+			break;
+		case 114://r
+			if (Bag::pos_xy.size() == 0) {
+				Draw::setColor();
+				Bag::statment = { "Empty                        " };
+				Draw::draw(Bag::statment, 53, 22);
+				break;
+			}
+			else if (Bag::pos_x < Bag::pos_xy.size() + 2) {
+				Draw::setColor(27);
+				Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
+				Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+				Draw::setColor();
+				Bag::statment = { "Sure to use?                 " };
+				Draw::draw(Bag::statment, 53, 22);
+			}
+
+			while (input != 121 && input != 110 && Bag::pos_x < Bag::pos_xy.size() + 2) {
+				//if amount == 0;
+				input = _getch();
+				if (input == 121 && Bag::pos_x < Bag::pos_xy.size() + 2) {
+					Bag::statment = { "Used!                        " };
+					Draw::draw(Bag::statment, 53, 22);
+
+					int flag = 0;
+					for (int i = 0; i < Bag::pos_xy.size(); i++) {
+						if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] < 13) {
+							Bag::buy_in_E[Bag::pos_xy[i][2]].amount--;
+							if (Bag::buy_in_E[Bag::pos_xy[i][2]].amount == 0) {
+								flag = 1;
+							}
+							else {
+								Draw::setColor(246);
+								Bag::bagUI[0] = Bag::buy_in_E[Bag::pos_xy[i][2]].name + " x " + std::to_string((int)(Bag::buy_in_E[Bag::pos_xy[i][2]].amount));
+								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
+								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+							}
+							break;
+						}
+						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 13) {
+							Bag::buy_in_T[0].amount--;
+							if (Bag::buy_in_T[0].amount == 0) {
+								flag = 1;
+							}
+							else {
+								Draw::setColor(246);
+								Bag::bagUI[0] = Bag::buy_in_T[0].name + " x " + std::to_string((int)(Bag::buy_in_T[0].amount));
+								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
+								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+							}
+							break;
+						}
+						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 14) {
+							Bag::buy_in_T[1].amount--;
+							if (Bag::buy_in_T[1].amount == 0) {
+								flag = 1;
+							}
+							else {
+								Draw::setColor(246);
+								Bag::bagUI[0] = Bag::buy_in_T[1].name + " x " + std::to_string((int)(Bag::buy_in_T[1].amount));
+								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
+								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+							}
+							break;
+						}
+						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 15) {
+							Bag::buy_in_T[2].amount--;
+							if (Bag::buy_in_T[2].amount == 0) {
+								flag = 1;
+							}
+							else {
+								Draw::setColor(246);
+								Bag::bagUI[0] = Bag::buy_in_T[2].name + " x " + std::to_string((int)(Bag::buy_in_T[2].amount));
+								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
+								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+
+							}
+							break;
+						}
+					}
+
+					if (flag) {
+						Bag::pos_xy = std::vector<std::vector<int>>(0);
+						Draw::setColor();
+						Draw::draw(Bag::clear, 53, 2);
+						Bag::statment = { "___________Helper____________","Press W,S to select items    ","Press R to select the one you","want to use                  ","Press Y or N to confirm      " };
+						Draw::draw(Bag::statment, 53, 23);
+						Bag::pos_x = 2;
+						Bag::pos_y = 53;
+
+						for (int i = 0; i < 16; i++) {
+							if (i < 13) {
+								if (Bag::buy_in_E[i].amount > 0) {
+									Bag::store[0] = Bag::pos_x;
+									Bag::store[1] = Bag::pos_y;
+									Bag::store[2] = i;
+									Bag::pos_xy.push_back(Bag::store);
+									Bag::bagUI[0] = Bag::buy_in_E[i].name + " x " + std::to_string((int)(Bag::buy_in_E[i].amount));
+									Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+									Bag::pos_x++;
+								}
+							}
+							else {
+								if (i == 13) {
+									if (Bag::buy_in_T[0].amount > 0) {
+										Bag::store[0] = Bag::pos_x;
+										Bag::store[1] = Bag::pos_y;
+										Bag::store[2] = 13;
+										Bag::pos_xy.push_back(Bag::store);
+										Bag::bagUI[0] = Bag::buy_in_T[0].name + " x " + std::to_string((int)(Bag::buy_in_T[0].amount));
+										Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+										Bag::pos_x++;
+									}
+								}
+								if (i == 14) {
+									if (Bag::buy_in_T[1].amount > 0) {
+										Bag::store[0] = Bag::pos_x;
+										Bag::store[1] = Bag::pos_y;
+										Bag::store[2] = 14;
+										Bag::pos_xy.push_back(Bag::store);
+										Bag::bagUI[0] = Bag::buy_in_T[1].name + " x " + std::to_string((int)(Bag::buy_in_T[1].amount));
+										Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+										Bag::pos_x++;
+									}
+								}
+								if (i == 15) {
+									if (Bag::buy_in_T[2].amount > 0) {
+										Bag::store[0] = Bag::pos_x;
+										Bag::store[1] = Bag::pos_y;
+										Bag::store[2] = 15;
+										Bag::pos_xy.push_back(Bag::store);
+										Bag::bagUI[0] = Bag::buy_in_T[2].name + " x " + std::to_string((int)(Bag::buy_in_T[2].amount));
+										Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+										Bag::pos_x++;
+									}
+								}
+							}
+						}
+
+						if (Bag::pos_xy.size() == 0) {
+							Draw::setColor();
+							Bag::statment = { "Empty                        " };
+							Draw::draw(Bag::statment, 53, 22);
+						}
+						else {
+							Bag::bagUI = Draw::readSpace(53, 2, 1, 29);
+							Draw::setColor(246);
+							Draw::draw(Bag::bagUI, 53, 2);
+							Bag::pos_x = 2;
+							Bag::pos_y = 53;
+						}
+					}
+
+					break;
+				}
+				if (input == 110) {//n
+					Bag::statment = { "                             " };
+					Draw::draw(Bag::statment, 53, 22);
+					Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
+					Draw::setColor(246);
+					Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+					break;
+				}
+			}
+			break;
+		case 27:
+			Draw::setColor();
+			Draw::draw(Bag::original_ui, 53, 2);
+			return;
+		}
+		input = _getch();
+	}
 }

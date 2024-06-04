@@ -1,0 +1,18 @@
+dice.cpp
+action
+	result.clear();
+attack
+	result.clear();
+
+draw.h
+void drawMap(std::vector<std::vector<Rect>> map, int fromx, int fromy, int x = 2, int y = 2, int sizex = 25, int sizey = 50);
+
+main.cpp
+大改
+
+map.cpp
+gerinput大改+多一個function
+
+
+map.h
+多一個finction

@@ -1,12 +1,10 @@
 #pragma once
 
-#include <stdlib.h>
 #include <vector>
-#include <string>
-#include "stat.h"
 #include <cmath>
+
+#include "stat.h"
 #include "money.h"
-#include <time.h>
 
 class Dice {
 public:

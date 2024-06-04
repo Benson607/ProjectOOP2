@@ -2,13 +2,11 @@
 #define DRAW_H
 
 #include <Windows.h>
-
 #include <iostream>
 #include <string>
 #include <vector>
-#include <stdlib.h>
 
-#include "Rect.h"
+#include "rect.h"
 
 namespace Draw {
 	void draw(std::vector<std::string> out, int x, int y);
