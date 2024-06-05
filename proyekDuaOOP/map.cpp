@@ -1,22 +1,80 @@
 #include "map.h"
-#include "role.h"
+
+#include <conio.h>
+
 #include "dice.h"
-#include "shop.h"
 #include "draw.h"
 #include "enemy.h"
-#include <conio.h>
+#include "role.h"
+#include "shop.h"
 
 using namespace Draw;
 
 void pick_inventory();
 
-Map::Map() :std::vector<std::vector<Rect>>(50, std::vector<Rect>(140, Rect(5))) {
+Shop shop;
+std::vector<std::string> map_ui_again = {
+  "||--------------------------------------------------------------------------------|",
+  "||--------------------------------------------------|-----------------------------|",
+  "||                                                  |Turn :                       |",
+  "||                                                  |Player Name :                |",
+  "||                                                  |Action Points :              |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |___________Helper____________|",
+  "||                                                  |Arrow Key : Move             |",
+  "||                                                  |'P' Key : End Turn           |",
+  "||                                                  |'I' Key  : Open Bag,         |",
+  "||                                                  |   : Wall, . : Road, $ : Shop|",
+  "||----|--------------------|---|--------------------|---|--------------------|----|",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|-----|--------------------|---|--------------------|---|--------------------|----|" };
+void show_map_ui_again() {
+	draw(map_ui_again, 0, 0);
+	gotoxy(54, 27);
+	setColor(136);
+	std::cout << " ";
+	gotoxy(64, 27);
+	setColor(224);
+	std::cout << ".";
+	gotoxy(74, 27);
+	setColor(240);
+	std::cout << "$";
+	setColor();
+}
+
+Map::Map() : std::vector<std::vector<Rect>>(50, std::vector<Rect>(140, Rect(5))) {
 	for (int i = 0; i < 50; i++) {
 		for (int j = 0; j < 140; j++) {
 			this[0][i][j].x = i;
 			this[0][i][j].y = j;
 		}
 	}
+	Bag bag;
 }
 
 void Map::setRect(Rect& obj) {
@@ -53,7 +111,7 @@ void Map::setShop() {
 }
 
 void Map::setEvent() {
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 3; i++) {
 		int x = rand() % 50;
 		int y = rand() % 140;
 		if (this[0][x][y].type == '.') {
@@ -87,7 +145,7 @@ void Map::show() {
 			case '.':
 				setColor(224);
 				break;
-			case 'R'://random events
+			case '?':  // random events
 				setColor(211);
 			case '$':
 				setColor(240);
@@ -100,124 +158,132 @@ void Map::show() {
 		}
 		std::cout << std::endl;
 	}
-
 }
 
-void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int player2_y, int player3_x, int player3_y) {
-	Bag bag;
-	Shop shop;
-	int input;
+void Map::getinput(Entity& entity,int player, int player1_x, int player1_y, int player2_x, int player2_y, int player3_x, int player3_y) {
+	int  input;
 	bool can_walk = 0;
+
 	if (player == 1) {
-		if (player1_x == player2_x && player1_y == player2_y) //if Player1's position = Player2's position
+		if (player1_x == player2_x && player1_y == player2_y)  // if Player1's position = Player2's position
 			this[0][nowx][nowy].type = '2';
-		else if (player1_x == player3_x && player1_y == player3_y) //if Player1's position = Player3's position
+		else if (player1_x == player3_x && player1_y == player3_y)  // if Player1's position = Player3's position
 			this[0][nowx][nowy].type = '3';
 		else if (this[0][nowx][nowy].type == 'E')
 			this[0][nowx][nowy].type == 'E';
 		else
-			this[0][nowx][nowy].type = '.';   //turn the start postition to '.' rect
+			this[0][nowx][nowy].type = '.';  // turn the start postition to '.' rect
 	}
 	else if (player == 2) {
-		if (player2_x == player1_x && player2_y == player1_y) //if Player2's position = Player1's position
+		if (player2_x == player1_x && player2_y == player1_y)  // if Player2's position = Player1's position
 			this[0][nowx][nowy].type = '1';
-		else if (player2_x == player3_x && player2_y == player3_y) //if Player2's position = Player3's position
+		else if (player2_x == player3_x && player2_y == player3_y)  // if Player2's position = Player3's position
 			this[0][nowx][nowy].type = '3';
 		else if (this[0][nowx][nowy].type == 'E')
 			this[0][nowx][nowy].type == 'E';
 		else
-			this[0][nowx][nowy].type = '.';   //turn the start postition to '.' rect
+			this[0][nowx][nowy].type = '.';  // turn the start postition to '.' rect
 	}
 	else if (player == 3) {
-		if (player3_x == player1_x && player3_y == player1_y) //if Player3's position = Player1's position
+		if (player3_x == player1_x && player3_y == player1_y)  // if Player3's position = Player1's position
 			this[0][nowx][nowy].type = '1';
-		else if (player3_x == player2_x && player3_y == player2_y) //if Player3's position = Player2's position
+		else if (player3_x == player2_x && player3_y == player2_y)  // if Player3's position = Player2's position
 			this[0][nowx][nowy].type = '2';
 		else if (this[0][nowx][nowy].type == 'E')
 			this[0][nowx][nowy].type == 'E';
 		else
-			this[0][nowx][nowy].type = '.';   //turn the start postition to '.' rect
+			this[0][nowx][nowy].type = '.';  // turn the start postition to '.' rect
 	}
 
 	do {
 		input = _getch();
-		switch (input)
-		{
-		case 119:  //w
-			if (nowx > 0 && this[0][nowx-1][nowy].type == '$') {
-				system("CLS");
-				shop.show();
-				shop.select_product();
-				system("CLS");
-				this[0][nowx][nowy].type = player + 48;
-				can_walk = 1;
-				return;
+		switch (input) {
+		case 119:  // w
+			if (nowx > 0) {
+				if (this[0][nowx - 1][nowy].type == '$') {
+					system("CLS");
+					shop.show();
+					shop.select_product();
+					system("CLS");
+					show_map_ui_again();
+					this[0][nowx][nowy].type = player + 48;
+					can_walk = 1;
+					return;
+				}
+				else if (nowx > 0 && this[0][nowx - 1][nowy].type != ' ') {
+					nowx -= 1;
+					can_walk = 1;
+				}
+				else {
+					can_walk = 0;
+				}
 			}
-			else if (nowx > 0 && this[0][nowx - 1][nowy].type != ' ') {
-				nowx -= 1;
-				can_walk = 1;
-			}
-			else
-				can_walk = 0;
 			break;
-		case 97:  //a
-			if (nowx > 0 && this[0][nowx][nowy - 1].type == '$') {
-				system("CLS");
-				shop.show();
-				shop.select_product();
-				system("CLS");
-				this[0][nowx][nowy].type = player + 48;
-				can_walk = 1;
-				return;
+		case 97:  // a
+			if (nowy > 0) {
+				if (this[0][nowx][nowy - 1].type == '$') {
+					system("CLS");
+					shop.show();
+					shop.select_product();
+					system("CLS");
+					show_map_ui_again();
+					this[0][nowx][nowy].type = player + 48;
+					can_walk = 1;
+					return;
+				}
+				else if (this[0][nowx][nowy - 1].type != ' ') {
+					nowy -= 1;
+					can_walk = 1;
+				}
+				else {
+					can_walk = 0;
+				}
 			}
-			else if (nowy > 0 && this[0][nowx][nowy - 1].type != ' ') {
-				nowy -= 1;
-				can_walk = 1;
-			}
-			else
-				can_walk = 0;
 			break;
-		case 115:  //s
-			if (nowx > 0 && this[0][nowx + 1][nowy].type == '$') {
-				system("CLS");
-				shop.show();
-				shop.select_product();
-				system("CLS");
-				this[0][nowx][nowy].type = player + 48;
-				can_walk = 1;
-				return;
+		case 115:  // s
+			if (nowx < 49) {
+				if (this[0][nowx + 1][nowy].type == '$') {
+					system("CLS");
+					shop.show();
+					shop.select_product();
+					system("CLS");
+					show_map_ui_again();
+					this[0][nowx][nowy].type = player + 48;
+					can_walk = 1;
+					return;
+				}
+				else if (this[0][nowx + 1][nowy].type != ' ') {
+					nowx += 1;
+					can_walk = 1;
+				}
+				else {
+					can_walk = 0;
+				}
 			}
-			else if (nowx < 50 && this[0][nowx + 1][nowy].type != ' ') {
-				nowx += 1;
-				can_walk = 1;
-			}
-			else
-				can_walk = 0;
 			break;
-		case 100:  //d
-			if (nowx > 0 && this[0][nowx][nowy + 1].type == '$') {
-				system("CLS");
-				shop.show();
-				shop.select_product();
-				system("CLS");
-				this[0][nowx][nowy].type = player + 48;
-				can_walk = 1;
-				return;
+		case 100:  // d
+			if (nowy < 139) {
+				if (this[0][nowx][nowy + 1].type == '$') {
+					system("CLS");
+					shop.show();
+					shop.select_product();
+					system("CLS");
+					show_map_ui_again();
+					this[0][nowx][nowy].type = player + 48;
+					can_walk = 1;
+					return;
+				}
+				else if (this[0][nowx][nowy + 1].type != ' ') {
+					nowy += 1;
+					can_walk = 1;
+				}
+				else {
+					can_walk = 0;
+				}
 			}
-			else if (nowy < 140 && this[0][nowx][nowy + 1].type != ' ') {
-				nowy += 1;
-				can_walk = 1;
-			}
-			else
-				can_walk = 0;
 			break;
-
-		case 105:  //i
-			for (int i = 0; i < 26; i++) {
-				gotoxy(54, 2 + 0);
-				std::cout << "                             ";
-			}
-			bag.bag_ui();
+		case 105:  // i
+			Bag::bag_ui();
 			pick_inventory();
 			break;
 
@@ -227,7 +293,7 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 		}
 	} while (can_walk != 1);
 
-	if (this[0][nowx][nowy].type == 'E')  //if new position meet enemy, return, and fight
+	if (this[0][nowx][nowy].type == 'E')  // if new position meet enemy, return, and fight
 		return;
 
 	this[0][nowx][nowy].type = player + 48;
@@ -239,16 +305,14 @@ void Map::set_new_rect_type(int x, int y, char T) {
 	this[0][x][y].type = T;
 }
 
-void pick_inventory()
-{
+void pick_inventory() {
 	int input = _getch();
 	while (input != 27) {
-		//int tmp_x = 2;
-		//int tmp_y = 53;
+		// int tmp_x = 2;
+		// int tmp_y = 53;
 		gotoxy(54, 2);
-		switch (input)
-		{
-		case 119://w
+		switch (input) {
+		case 119:  // w
 			if (Bag::pos_xy.size() == 0) {
 				Draw::setColor();
 				Bag::statment = { "Empty                        " };
@@ -264,7 +328,7 @@ void pick_inventory()
 				Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
 			}
 			break;
-		case 115://s
+		case 115:  // s
 			if (Bag::pos_xy.size() == 0) {
 				Draw::setColor();
 				Bag::statment = { "Empty                        " };
@@ -280,7 +344,7 @@ void pick_inventory()
 				Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
 			}
 			break;
-		case 114://r
+		case 114:  // r
 			if (Bag::pos_xy.size() == 0) {
 				Draw::setColor();
 				Bag::statment = { "Empty                        " };
@@ -297,7 +361,7 @@ void pick_inventory()
 			}
 
 			while (input != 121 && input != 110 && Bag::pos_x < Bag::pos_xy.size() + 2) {
-				//if amount == 0;
+				// if amount == 0;
 				input = _getch();
 				if (input == 121 && Bag::pos_x < Bag::pos_xy.size() + 2) {
 					Bag::statment = { "Used!                        " };
@@ -312,7 +376,8 @@ void pick_inventory()
 							}
 							else {
 								Draw::setColor(246);
-								Bag::bagUI[0] = Bag::buy_in_E[Bag::pos_xy[i][2]].name + " x " + std::to_string((int)(Bag::buy_in_E[Bag::pos_xy[i][2]].amount));
+								Bag::bagUI[0] = Bag::buy_in_E[Bag::pos_xy[i][2]].name + " x "
+									+ std::to_string((int)(Bag::buy_in_E[Bag::pos_xy[i][2]].amount));
 								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
 								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
 								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
@@ -358,7 +423,6 @@ void pick_inventory()
 								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
 								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
 								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-
 							}
 							break;
 						}
@@ -368,7 +432,9 @@ void pick_inventory()
 						Bag::pos_xy = std::vector<std::vector<int>>(0);
 						Draw::setColor();
 						Draw::draw(Bag::clear, 53, 2);
-						Bag::statment = { "___________Helper____________","Press W,S to select items    ","Press R to select the one you","want to use                  ","Press Y or N to confirm      " };
+						Bag::statment = {
+						  "___________Helper____________", "Press W,S to select items    ", "Press R to select the one you",
+						  "want to use                  ", "Press Y or N to confirm      " };
 						Draw::draw(Bag::statment, 53, 23);
 						Bag::pos_x = 2;
 						Bag::pos_y = 53;
@@ -438,7 +504,7 @@ void pick_inventory()
 
 					break;
 				}
-				if (input == 110) {//n
+				if (input == 110) {  // n
 					Bag::statment = { "                             " };
 					Draw::draw(Bag::statment, 53, 22);
 					Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
@@ -454,5 +520,10 @@ void pick_inventory()
 			return;
 		}
 		input = _getch();
+	}
+	if (input == 27) {
+		Draw::setColor();
+		Draw::draw(Bag::original_ui, 53, 2);
+		return;
 	}
 }

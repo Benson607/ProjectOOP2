@@ -11,6 +11,7 @@ public:
 	int type;
 	int price;
 	int amount;
+	int numOfDice;
 	Stat status;
 	std::string name;
 	std::vector<std::string> skills;

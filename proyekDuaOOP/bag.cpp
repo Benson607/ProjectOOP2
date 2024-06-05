@@ -123,5 +123,12 @@ void Bag::bag_ui()
 		Draw::setColor(246);
 		Draw::draw(bagUI, 53, 2);
 	}
+	else {
+		if (Bag::pos_xy.size() == 0) {
+			Draw::setColor();
+			Bag::statment = { "Empty                        " };
+			Draw::draw(Bag::statment, 53, 22);
+		}
+	}
 
 }

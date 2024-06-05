@@ -1,18 +1,26 @@
-dice.cpp
-action
-	result.clear();
-attack
-	result.clear();
-
-draw.h
-void drawMap(std::vector<std::vector<Rect>> map, int fromx, int fromy, int x = 2, int y = 2, int sizex = 25, int sizey = 50);
-
 main.cpp
-大改
+	map.setEvent();
+	GameLoop大改
+	添加void show_player_equipment_buff(std::vector<Entity*>& roles);
+	void show_player_equipment_buff(std::vector<Entity*>& roles) { ... }
 
 map.cpp
-gerinput大改+多一個function
+	getinput新增Entity& entity
+	void Map::getinput(Entity& entity,int player, int player1_x, ...){ ... }
+	
+	新增std::vector<std::string> map_ui_again{ ... }
+	void show_map_ui_again(){ ... }
+	(在最上面)	
 
+	!!你老婆有改pick_inventory(){ ... }!!
 
 map.h
-多一個finction
+	getinput新增Entity& entity
+	void Map::getinput(Entity& entity,int player, int player1_x, ...);
+
+rect.cpp
+	Rect(int type){ ... }新增 else if(type==7){ ... }
+
+entity.cpp
+	Entity::Entity(int type, std::string name) :Stat(), name(name){ ... }內的Buff預設
+

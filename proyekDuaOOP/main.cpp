@@ -140,231 +140,11 @@ std::vector<std::string> choice_player = {
 "|                    |",
 "|--------------------|" };
 
-//void pick_inventory()
-//{
-//	int input = _getch();
-//	while (input != 27) {
-//		//int tmp_x = 2;
-//		//int tmp_y = 53;
-//		switch (input)
-//		{
-//		case 119://w
-//			if (Bag::pos_xy.size() == 0) {
-//				Draw::setColor();
-//				Bag::statment = { "Empty                        " };
-//				Draw::draw(Bag::statment, 53, 22);
-//			}
-//			else if (Bag::pos_x > 2) {
-//				Draw::setColor();
-//				Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
-//				Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//				Bag::pos_x -= 1;
-//				Draw::setColor(246);
-//				Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
-//				Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//			}
-//			break;
-//		case 115://s
-//			if (Bag::pos_xy.size() == 0) {
-//				Draw::setColor();
-//				Bag::statment = { "Empty                        " };
-//				Draw::draw(Bag::statment, 53, 22);
-//			}
-//			else if (Bag::pos_x < 21) {
-//				Draw::setColor();
-//				Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
-//				Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//				Bag::pos_x += 1;
-//				Draw::setColor(246);
-//				Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
-//				Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//			}
-//			break;
-//		case 114://r
-//			if (Bag::pos_xy.size() == 0) {
-//				Draw::setColor();
-//				Bag::statment = { "Empty                        " };
-//				Draw::draw(Bag::statment, 53, 22);
-//				break;
-//			}
-//			else if (Bag::pos_x < Bag::pos_xy.size() + 2) {
-//				Draw::setColor(27);
-//				Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
-//				Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//				Draw::setColor();
-//				Bag::statment = { "Sure to use?                 " };
-//				Draw::draw(Bag::statment, 53, 22);
-//			}
-//
-//			while (input != 121 && input != 110 && Bag::pos_x < Bag::pos_xy.size() + 2) {
-//				//if amount == 0;
-//				input = _getch();
-//				if (input == 121 && Bag::pos_x < Bag::pos_xy.size() + 2) {
-//					Bag::statment = { "Used!                        " };
-//					Draw::draw(Bag::statment, 53, 22);
-//
-//					int flag = 0;
-//					for (int i = 0; i < Bag::pos_xy.size(); i++) {
-//						if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] < 13) {
-//							Bag::buy_in_E[Bag::pos_xy[i][2]].amount--;
-//							if (Bag::buy_in_E[Bag::pos_xy[i][2]].amount == 0) {
-//								flag = 1;
-//							}
-//							else {
-//								Draw::setColor(246);
-//								Bag::bagUI[0] = Bag::buy_in_E[Bag::pos_xy[i][2]].name + " x " + std::to_string((int)(Bag::buy_in_E[Bag::pos_xy[i][2]].amount));
-//								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
-//								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//							}
-//							break;
-//						}
-//						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 13) {
-//							Bag::buy_in_T[0].amount--;
-//							if (Bag::buy_in_T[0].amount == 0) {
-//								flag = 1;
-//							}
-//							else {
-//								Draw::setColor(246);
-//								Bag::bagUI[0] = Bag::buy_in_T[0].name + " x " + std::to_string((int)(Bag::buy_in_T[0].amount));
-//								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
-//								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//							}
-//							break;
-//						}
-//						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 14) {
-//							Bag::buy_in_T[1].amount--;
-//							if (Bag::buy_in_T[1].amount == 0) {
-//								flag = 1;
-//							}
-//							else {
-//								Draw::setColor(246);
-//								Bag::bagUI[0] = Bag::buy_in_T[1].name + " x " + std::to_string((int)(Bag::buy_in_T[1].amount));
-//								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
-//								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//							}
-//							break;
-//						}
-//						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 15) {
-//							Bag::buy_in_T[2].amount--;
-//							if (Bag::buy_in_T[2].amount == 0) {
-//								flag = 1;
-//							}
-//							else {
-//								Draw::setColor(246);
-//								Bag::bagUI[0] = Bag::buy_in_T[2].name + " x " + std::to_string((int)(Bag::buy_in_T[2].amount));
-//								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
-//								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//
-//							}
-//							break;
-//						}
-//					}
-//
-//					if (flag) {
-//						Bag::pos_xy = std::vector<std::vector<int>>(0);
-//						Draw::setColor();
-//						Draw::draw(Bag::clear, 53, 2);
-//						Bag::statment = { "___________Helper____________","Press W,S to select items    ","Press R to select the one you","want to use                  ","Press Y or N to confirm      " };
-//						Draw::draw(Bag::statment, 53, 23);
-//						Bag::pos_x = 2;
-//						Bag::pos_y = 53;
-//
-//						for (int i = 0; i < 16; i++) {
-//							if (i < 13) {
-//								if (Bag::buy_in_E[i].amount > 0) {
-//									Bag::store[0] = Bag::pos_x;
-//									Bag::store[1] = Bag::pos_y;
-//									Bag::store[2] = i;
-//									Bag::pos_xy.push_back(Bag::store);
-//									Bag::bagUI[0] = Bag::buy_in_E[i].name + " x " + std::to_string((int)(Bag::buy_in_E[i].amount));
-//									Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//									Bag::pos_x++;
-//								}
-//							}
-//							else {
-//								if (i == 13) {
-//									if (Bag::buy_in_T[0].amount > 0) {
-//										Bag::store[0] = Bag::pos_x;
-//										Bag::store[1] = Bag::pos_y;
-//										Bag::store[2] = 13;
-//										Bag::pos_xy.push_back(Bag::store);
-//										Bag::bagUI[0] = Bag::buy_in_T[0].name + " x " + std::to_string((int)(Bag::buy_in_T[0].amount));
-//										Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//										Bag::pos_x++;
-//									}
-//								}
-//								if (i == 14) {
-//									if (Bag::buy_in_T[1].amount > 0) {
-//										Bag::store[0] = Bag::pos_x;
-//										Bag::store[1] = Bag::pos_y;
-//										Bag::store[2] = 14;
-//										Bag::pos_xy.push_back(Bag::store);
-//										Bag::bagUI[0] = Bag::buy_in_T[1].name + " x " + std::to_string((int)(Bag::buy_in_T[1].amount));
-//										Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//										Bag::pos_x++;
-//									}
-//								}
-//								if (i == 15) {
-//									if (Bag::buy_in_T[2].amount > 0) {
-//										Bag::store[0] = Bag::pos_x;
-//										Bag::store[1] = Bag::pos_y;
-//										Bag::store[2] = 15;
-//										Bag::pos_xy.push_back(Bag::store);
-//										Bag::bagUI[0] = Bag::buy_in_T[2].name + " x " + std::to_string((int)(Bag::buy_in_T[2].amount));
-//										Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//										Bag::pos_x++;
-//									}
-//								}
-//							}
-//						}
-//
-//						if (Bag::pos_xy.size() == 0) {
-//							Draw::setColor();
-//							Bag::statment = { "Empty                        " };
-//							Draw::draw(Bag::statment, 53, 22);
-//						}
-//						else {
-//							Bag::bagUI = Draw::readSpace(53, 2, 1, 29);
-//							Draw::setColor(246);
-//							Draw::draw(Bag::bagUI, 53, 2);
-//							Bag::pos_x = 2;
-//							Bag::pos_y = 53;
-//						}
-//					}
-//
-//					break;
-//				}
-//				if (input == 110) {//n
-//					Bag::statment = { "                             " };
-//					Draw::draw(Bag::statment, 53, 22);
-//					Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
-//					Draw::setColor(246);
-//					Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
-//					break;
-//				}
-//			}
-//			break;
-//		case 27:
-//			Draw::setColor();
-//			Draw::draw(Bag::original_ui, 53, 2);
-//			return;
-//		}
-//		input = _getch();
-//	}
-//}
-
 void fight(Entity& role, Entity& enemy) {
 	Draw::setColor();
 	system("CLS");
 	Draw::draw(fight_ui, 0, 0);
-	std::vector<std::string> space = {
-			"               ",
-			"               "
-	};
+	std::vector<std::string> space = { "               ", "               " };
 	role.setPosDraw(1, 29);
 	enemy.setPosDraw(135, 1);
 	Draw::draw(role.output(), role.xDraw, role.yDraw);
@@ -385,23 +165,69 @@ void fight(Entity& role, Entity& enemy) {
 		Draw::gotoxy(1, 21);
 		std::cout << role.name;
 	}
-	bool flee = 0;
-	int input = -1;
-	while (!flee) {
+	bool roleFlee = 0;
+	bool enemyFlee = 0;
+	int  input = -1;
+	while (!roleFlee && !enemyFlee && role.vitality > 0 && enemy.vitality > 0) {
 		if (input == 27) {
 			break;
 		}
 		if (role.cmp(enemy)) {
-			flee = role.actionForFight(enemy);
+			role.mainPhaseStart();
+			roleFlee = role.actionForFight(enemy);
 			role.addActionTimes();
 		}
 		else {
-			flee = enemy.actionForFight(role);
+			enemy.mainPhaseStart();
+			enemyFlee = enemy.actionForEnemy(role);
 			enemy.addActionTimes();
 		}
 		Draw::draw(role.output(), role.xDraw, role.yDraw);
 		Draw::draw(enemy.output(), enemy.xDraw, enemy.yDraw);
 	}
+	std::vector<std::string> end;
+	if (roleFlee) {
+		end = {
+			"------------------------------",
+			"|                            |",
+			"|          You Flee!         |",
+			"|                            |",
+			"| Press any bottom to leave  |",
+			"------------------------------"
+		};
+	}
+	else if (enemyFlee) {
+		end = {
+			"------------------------------",
+			"|                            |",
+			"|         Enemy flee!        |",
+			"|                            |",
+			"| Press any bottom to leave  |",
+			"------------------------------"
+		};
+	}
+	else if (role.vitality == 0 && enemy.vitality > 0) {
+		end = {
+			"------------------------------",
+			"|                            |",
+			"|          You Fail!         |",
+			"|                            |",
+			"| Press any bottom to leave  |",
+			"------------------------------"
+		};
+	}
+	else if (role.vitality == 0 && enemy.vitality > 0) {
+		end = {
+			"------------------------------",
+			"|                            |",
+			"|          You Win!          |",
+			"|                            |",
+			"| Press any bottom to leave  |",
+			"------------------------------"
+		};
+	}
+	Draw::draw(end, 64, 18);
+	input = _getch();
 }
 
 void show_map_ui() {
@@ -417,15 +243,15 @@ void show_map_ui() {
 	std::cout << "$";
 	setColor();
 }
+
 void Draw_Player_information(std::vector<Entity*>& roles);
 void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& map);
 void Decide_Turn(std::vector<Entity*>& roles);
 void select_players(std::vector<Entity*>& roles, int i);
+void show_player_equipment_buff(std::vector<Entity*>& roles);
 
 int main() {
 	inRange();
-	Bag bag;
-	Shop shop;
 	Draw::draw(pic, 0, 0);
 	Role player1(1, "chen-yon-fa");
 	Role player2(2, "Alus");
@@ -450,30 +276,19 @@ int main() {
 	system("CLS");
 
 	Map map;
-	map.setWall();  //Wall
+	map.setWall();
 	map.setShop();
-	map.setRect(player1.rect);   //Player1
-	map.setRect(player2.rect);   //Player2
-	map.setRect(player3.rect);   //Palyer3
-	map.setRect(enemy1.rect);    //Enemy1
-	map.setRect(enemy2.rect);    //Enemy2
+	map.setEvent();
+	map.setRect(player1.rect);
+	map.setRect(player2.rect);
+	map.setRect(player3.rect);
+	map.setRect(enemy1.rect);
+	map.setRect(enemy2.rect);
 	map.setRect(enemy3.rect);
 
 	GameLoop(roles, enemys, map);
-
-	//// operate
-	//int wheather_use_focus = 0;
-	//int Turn_Counted = 1;
-	//Dice dice;
-
-	///*shop.show();
-	//shop.select_product();
-
-	//bag.bag_ui();
-	//pick_inventory();
-
-	//fight(player2, enemy1);*/
 }
+
 
 void Draw_Player_information(std::vector<Entity*>& roles) {
 	std::vector<Entity*> Entity_map;
@@ -598,10 +413,33 @@ void Decide_Turn(std::vector<Entity*>& roles) {
 	}
 }
 
+void show_player_equipment_buff(std::vector<Entity*>& roles) {
+	std::vector<std::string> buff_name = { "Angry","Dizziness","Poisoned","SpeedUp" };
+	for (int i = 0; i < 3; i++) {
+		gotoxy(83 + 20*i, 0);
+		std::cout << roles[i]->name;
+		gotoxy(83 + 20 * i, 1);
+		std::cout << "Weapon : " << roles[i]->equip[0].name;
+		gotoxy(83 + 20 * i, 2);
+		std::cout << "Armour : " << roles[i]->equip[1].name;
+		gotoxy(83 + 20 * i, 3);
+		std::cout << "Accessory : " << roles[i]->equip[2].name;
+		gotoxy(83 + 20 * i, 4);
+		std::cout << "Buff : ";
+		for (int j = 0; j < roles[i]->buff.size(); j++) {
+			if (roles[i]->buff[j] != 0) {
+				std::cout << buff_name[j];
+				if (j != roles[i]->buff.size() - 1) {
+					std::cout << ", ";
+				}
+			}
+		}
+	}
+}
+
 void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& map) {
 	// operate
-	bool show_again = 0;
-	bool meet_enemy = 0;
+	char input = _getch();
 	int wheather_use_focus = 0;
 	int Turn_Counted = 1;
 	Dice dice;
@@ -609,8 +447,11 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 	Draw_Player_information(stay);
 	show_map_ui();
 	Decide_Turn(roles);
-	while (1) {  //while enemy still exist,loop
+	while (input!=27 || roles[0]->vitality != 0 && roles[1]->vitality != 0 && roles[2]->vitality != 0) {  //while enemy still exist,loop
 		for (int i = 0; i < 3; i++) {
+			if (roles[i]->vitality == 0) {
+				continue;
+			}
 			gotoxy(59, 2);
 			setColor();
 			std::cout << Turn_Counted;
@@ -625,12 +466,14 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 			int max_movement_points = floor(roles[i]->speed / 10);
 			select_players(roles, i);
 			Draw_Player_information(stay);
+			show_player_equipment_buff(stay);
 			setColor();
 			gotoxy(53, 5);
-			std::cout << "Do you wnat to use focus?" << std::endl;
+			std::cout << "Do you want to use focus?" << std::endl;
 			while (1) {
 				gotoxy(53, 6);
 				std::cin >> wheather_use_focus;
+
 				if (wheather_use_focus < 0 || wheather_use_focus>max_movement_points) {
 					gotoxy(53, 7);
 					std::cout << "It's not validable,try again." << std::endl;
@@ -639,8 +482,9 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					gotoxy(53, 6);
 					continue;
 				}
-				else
+				else {
 					break;
+				}
 			}
 			dice.action(*roles[i], wheather_use_focus);
 
@@ -657,19 +501,23 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 			}
 
 			for (int j = dice.movement_points; j > 0; j--) { //how many step player1 can move
+				if (roles[i]->vitality == 0) {
+					break;
+				}
 				setColor();
-				Draw_Player_information(roles);
+				Draw_Player_information(stay);
+				show_player_equipment_buff(stay);
 				map.nowx = roles[i]->rect.x;
 				map.nowy = roles[i]->rect.y;
-				if (roles[i]->name == "chen-yon-fa")
-					map.getinput(1, roles[0]->rect.x, roles[0]->rect.y, roles[1]->rect.x, roles[1]->rect.y, roles[2]->rect.x, roles[2]->rect.y);
-
-				else if (roles[i]->name == "Alus")
-					map.getinput(2, roles[0]->rect.x, roles[0]->rect.y, roles[1]->rect.x, roles[1]->rect.y, roles[2]->rect.x, roles[2]->rect.y);
-
-				else if (roles[i]->name == "boring bowling")
-					map.getinput(3, roles[0]->rect.x, roles[0]->rect.y, roles[1]->rect.x, roles[1]->rect.y, roles[2]->rect.x, roles[2]->rect.y);
-
+				if (roles[i]->name == "chen-yon-fa") {
+					map.getinput(*roles[i], 1, roles[0]->rect.x, roles[0]->rect.y, roles[1]->rect.x, roles[1]->rect.y, roles[2]->rect.x, roles[2]->rect.y);
+				}
+				else if (roles[i]->name == "Alus") {
+					map.getinput(*roles[i], 2, roles[0]->rect.x, roles[0]->rect.y, roles[1]->rect.x, roles[1]->rect.y, roles[2]->rect.x, roles[2]->rect.y);
+				}
+				else if (roles[i]->name == "boring bowling") {
+					map.getinput(*roles[i], 3, roles[0]->rect.x, roles[0]->rect.y, roles[1]->rect.x, roles[1]->rect.y, roles[2]->rect.x, roles[2]->rect.y);
+				}
 				gotoxy(68, 4);
 				for (int k = 0; k < dice.result.size(); k++) {
 					if (dice.result[k] == 'T') {
@@ -681,12 +529,28 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 						std::cout << "F";
 					}
 				}
+
 				//if getinput new position meet enemy, fight
-				if ((map.nowx == enemys[0]->rect.x && map.nowy == enemys[0]->rect.y) || (map.nowx == enemys[1]->rect.x && map.nowy == enemys[1]->rect.y) || (map.nowx == enemys[2]->rect.x && map.nowy == enemys[2]->rect.y)) {
-					meet_enemy = 1;
-					system("CLS");
-					setColor(7);
-					fight(*roles[i], *enemys[i]);
+				if (map[map.nowx][map.nowy].type == 'E') {
+					int which_enemy = 0;
+					if (map.nowx == enemys[0]->rect.x && map.nowy == enemys[0]->rect.y && roles[0]->vitality != 0) {
+						system("CLS");
+						setColor(7);
+						fight(*roles[i], *enemys[0]);
+						which_enemy = 0;
+					}
+					else if (map.nowx == enemys[1]->rect.x && map.nowy == enemys[1]->rect.y && roles[1]->vitality != 0) {
+						system("CLS");
+						setColor(7);
+						fight(*roles[i], *enemys[1]);
+						which_enemy = 1;
+					}
+					else if (map.nowx == enemys[2]->rect.x && map.nowy == enemys[2]->rect.y && roles[2]->vitality != 0) {
+						system("CLS");
+						setColor(7);
+						fight(*roles[i], *enemys[2]);
+						which_enemy = 2;
+					}
 					system("CLS");
 					show_map_ui();
 					gotoxy(59, 2);
@@ -698,10 +562,15 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					std::cout << roles[i]->name;
 					gotoxy(68, 4);
 					std::cout << "          ";
-					Draw_Player_information(roles);
+					Draw_Player_information(stay);
+					show_player_equipment_buff(stay);
+					if (roles[i]->vitality == 0) {
+						break;
+					}
 					select_players(roles, i);
-					if (enemys[i]->vitality == 0) {   //enemy die
-						map.set_new_rect_type(map.nowx, map.nowy, i + 48);
+					if (enemys[which_enemy]->vitality == 0) {   //enemy die
+						map.set_new_rect_type(map.nowx, map.nowy, '.');
+						map.set_new_rect_type(map.nowx, map.nowy, i+49);
 						roles[i]->rect.x = map.nowx;
 						roles[i]->rect.y = map.nowy;
 						Draw::drawMap(map, roles[i]->rect.x - 12, roles[i]->rect.y - 25);
@@ -709,57 +578,19 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					}
 					else {  //enemy doesn't die
 						map.set_new_rect_type(map.nowx, map.nowy, 'E');
-						show_map_ui();
-						gotoxy(59, 2);
-						setColor();
-						std::cout << Turn_Counted;
-						gotoxy(66, 3);
-						std::cout << "               ";
-						gotoxy(66, 3);
-						std::cout << roles[i]->name;
-						gotoxy(68, 4);
-						std::cout << "          ";
-						Draw_Player_information(roles);
-						select_players(roles, i);
+						map.set_new_rect_type(roles[i]->rect.x, roles[i]->rect.y, i + 49);
 						Draw::drawMap(map, roles[i]->rect.x - 12, roles[i]->rect.y - 25);
 					}
 
 				}
 				else {
-					if (show_again == 0 || meet_enemy == 1) {
-						setColor();
-						show_map_ui();
-						//system("pause");
-						gotoxy(68, 4);
-						for (int k = 0; k < dice.result.size(); k++) {
-							if (dice.result[k] == 'T') {
-								setColor(14);
-								std::cout << "T";
-							}
-							else if (dice.result[k] == 'F') {
-								setColor(8);
-								std::cout << "F";
-							}
-						}
-						gotoxy(59, 2);
-						setColor();
-						std::cout << Turn_Counted;
-						gotoxy(66, 3);
-						std::cout << roles[i]->name;
-
-						Draw_Player_information(roles);
-						select_players(roles, i);
-						meet_enemy = 0;
-						show_again = 1;
-					}
 					roles[i]->rect.x = map.nowx;
 					roles[i]->rect.y = map.nowy;
 					Draw::drawMap(map, roles[i]->rect.x - 12, roles[i]->rect.y - 25);
 				}
 			}
-			meet_enemy = 0;
-			show_again = 0;
 			Turn_Counted++;
 		}
 	}
+	return;
 }
