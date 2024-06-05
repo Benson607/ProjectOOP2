@@ -8,17 +8,21 @@ namespace Skill {
 		Dice dice;
 		dice.attack(*attacker, attacker->useFocus, attacker->attackDice, attacker->hitrate);
 		double times = 0;
+
 		for (int i = 0; i < dice.result.size(); i++) {
 			if (dice.result[i] == 'T') {
 				times += 1.0;
 			}
 		}
-		choosen->vitality -= attacker->pAttack * times / (double)dice.result.size() * ((double)1.0 - choosen->pDefense / (choosen->pDefense + (double)50.0));
+		int damage = attacker->pAttack * times / (double)dice.result.size() * ((double)1.0 - choosen->pDefense / (choosen->pDefense + (double)50.0));
+		Draw::gotoxy(20, 20);
+		std::cout << attacker->name << " attack " << choosen->name << ": " << damage;
+		choosen->vitality -= damage;
 		if (choosen->vitality < 0) {
 			choosen->vitality = 0;
 		}
 	}
-	
+
 	void weaponAttack() {
 		Dice dice;
 		dice.attack(*attacker, attacker->useFocus, attacker->attackDice, attacker->hitrate);
@@ -28,12 +32,15 @@ namespace Skill {
 				times += 1.0;
 			}
 		}
-		choosen->vitality -= attacker->mAttack * times / (double)dice.result.size() * ((double)1.0 - choosen->mDefense / (choosen->mDefense + (double)50.0));
+		int damage = attacker->mAttack * times / (double)dice.result.size() * ((double)1.0 - choosen->mDefense / (choosen->mDefense + (double)50.0));
+		Draw::gotoxy(20, 20);
+		std::cout << attacker->name << " attack " << choosen->name << ": " << damage;
+		choosen->vitality -= damage;
 		if (choosen->vitality < 0) {
 			choosen->vitality = 0;
 		}
 	}
-	
+
 	void provoke() {
 		Dice dice;
 		dice.attack(*attacker, attacker->useFocus, attacker->provokeDice, attacker->vitality / (attacker->vitality_max + attacker->pAttack + attacker->mAttack));
@@ -43,13 +50,16 @@ namespace Skill {
 				times += 1.0;
 			}
 		}
-		choosen->buff[0] = 3 * times / (double)dice.result.size() + 1;
+		int damage = 3 * times / (double)dice.result.size() + 1;
+		Draw::gotoxy(20, 20);
+		std::cout << attacker->name << " shock-blast " << choosen->name << ": " << damage;
+		choosen->buff[0] = damage;
 		if (choosen->vitality < 0) {
 			choosen->vitality = 0;
 		}
 		attacker->CD[0] = 3;
 	}
-	
+
 	void shock_blast() {
 		Dice dice;
 		dice.attack(*attacker, attacker->useFocus, attacker->sbDice, attacker->hitrate - 5);
@@ -59,7 +69,10 @@ namespace Skill {
 				times += 1.0;
 			}
 		}
-		choosen->vitality -= attacker->mAttack * 0.5 * times / (double)dice.result.size() * ((double)1.0 - choosen->mDefense / (choosen->mDefense + (double)50.0));
+		int damage = attacker->mAttack * 0.5 * times / (double)dice.result.size() * ((double)1.0 - choosen->mDefense / (choosen->mDefense + (double)50.0));
+		Draw::gotoxy(20, 20);
+		std::cout << attacker->name << " shock-blast " << choosen->name << ": " << damage;
+		choosen->vitality -= damage;
 		if (choosen->vitality < 0) {
 			choosen->vitality = 0;
 		}
@@ -75,7 +88,10 @@ namespace Skill {
 				times += 1.0;
 			}
 		}
-		attacker->vitality += attacker->mAttack * 1.5 * times / (double)dice.result.size();
+		int damage = attacker->mAttack * 1.5 * times / (double)dice.result.size();
+		attacker->vitality += damage;
+		Draw::gotoxy(20, 20);
+		std::cout << attacker->name << " heal himself: " << damage;
 		if (choosen->vitality < 0) {
 			choosen->vitality = 0;
 		}
@@ -249,6 +265,27 @@ bool Entity::actionForFight(Entity& enemy) {
 	}
 	attacker = NULL;
 	choosen = NULL;
+	return false;
+}
+
+bool Entity::actionForEnemy(Entity& role) {
+	attacker = this;
+	choosen = &role;
+	int needFlee = rand() % 100;
+	if (needFlee < 5) {
+		Dice dice;
+		double possible = vitality / (pDefense + mDefense) * speed;
+		if (possible > 98) {
+			possible = 98;
+		}
+		dice.attack(*this, 0, 1, possible / 100);
+		if (dice.result[0] == 'T') {
+			return true;
+		}
+	}
+	else {
+		att();
+	}
 	return false;
 }
 

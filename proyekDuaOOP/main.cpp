@@ -165,23 +165,69 @@ void fight(Entity& role, Entity& enemy) {
 		Draw::gotoxy(1, 21);
 		std::cout << role.name;
 	}
-	bool flee = 0;
+	bool roleFlee = 0;
+	bool enemyFlee = 0;
 	int  input = -1;
-	while (!flee) {
+	while (!roleFlee && !enemyFlee && role.vitality > 0 && enemy.vitality > 0) {
 		if (input == 27) {
 			break;
 		}
 		if (role.cmp(enemy)) {
-			flee = role.actionForFight(enemy);
+			role.mainPhaseStart();
+			roleFlee = role.actionForFight(enemy);
 			role.addActionTimes();
 		}
 		else {
-			flee = enemy.actionForFight(role);
+			enemy.mainPhaseStart();
+			enemyFlee = enemy.actionForEnemy(role);
 			enemy.addActionTimes();
 		}
 		Draw::draw(role.output(), role.xDraw, role.yDraw);
 		Draw::draw(enemy.output(), enemy.xDraw, enemy.yDraw);
 	}
+	std::vector<std::string> end;
+	if (roleFlee) {
+		end = {
+			"------------------------------",
+			"|                            |",
+			"|          You Flee!         |",
+			"|                            |",
+			"| Press any bottom to leave  |",
+			"------------------------------"
+		};
+	}
+	else if (enemyFlee) {
+		end = {
+			"------------------------------",
+			"|                            |",
+			"|         Enemy flee!        |",
+			"|                            |",
+			"| Press any bottom to leave  |",
+			"------------------------------"
+		};
+	}
+	else if (role.vitality == 0 && enemy.vitality > 0) {
+		end = {
+			"------------------------------",
+			"|                            |",
+			"|          You Fail!         |",
+			"|                            |",
+			"| Press any bottom to leave  |",
+			"------------------------------"
+		};
+	}
+	else if (role.vitality == 0 && enemy.vitality > 0) {
+		end = {
+			"------------------------------",
+			"|                            |",
+			"|          You Win!          |",
+			"|                            |",
+			"| Press any bottom to leave  |",
+			"------------------------------"
+		};
+	}
+	Draw::draw(end, 64, 18);
+	input = _getch();
 }
 
 void show_map_ui() {

@@ -64,6 +64,7 @@ public:
 	void mainPhaseStart();
 	void addActionTimes();
 	bool actionForFight(Entity& enemy);
+	bool actionForEnemy(Entity& role);
 	bool askFocus();
 	
 	bool cmp(Entity other);

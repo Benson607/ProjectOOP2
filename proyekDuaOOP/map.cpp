@@ -21,7 +21,7 @@ Map::Map() : std::vector<std::vector<Rect>>(50, std::vector<Rect>(140, Rect(5)))
 			this[0][i][j].y = j;
 		}
 	}
-	Bag  bag;
+	Bag bag;
 }
 
 void Map::setRect(Rect& obj) {
@@ -145,38 +145,58 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 		input = _getch();
 		switch (input) {
 		case 119:  // w
-			if (nowx > 0 && this[0][nowx - 1][nowy].type == '$') {
-				system("CLS");
-				shop.show();
-				shop.select_product();
-				system("CLS");
-				this[0][nowx][nowy].type = player + 48;
-				can_walk = 1;
-				return;
+			if (nowx > 0) {
+				if (this[0][nowx - 1][nowy].type == '$') {
+					system("CLS");
+					shop.show();
+					shop.select_product();
+					system("CLS");
+					this[0][nowx][nowy].type = player + 48;
+					can_walk = 1;
+					return;
+				}
+				else if (nowx > 0 && this[0][nowx - 1][nowy].type != ' ') {
+					nowx -= 1;
+					can_walk = 1;
+				}
+				else {
+					can_walk = 0;
+				}
 			}
 			else if (nowx > 0 && this[0][nowx - 1][nowy].type != ' ') {
 				nowx -= 1;
 				can_walk = 1;
 			}
-			else
+			else {
 				can_walk = 0;
+			}
 			break;
 		case 97:  // a
-			if (nowx > 0 && this[0][nowx][nowy - 1].type == '$') {
-				system("CLS");
-				shop.show();
-				shop.select_product();
-				system("CLS");
-				this[0][nowx][nowy].type = player + 48;
-				can_walk = 1;
-				return;
+			if (nowy > 0) {
+				if (this[0][nowx][nowy - 1].type == '$') {
+					system("CLS");
+					shop.show();
+					shop.select_product();
+					system("CLS");
+					this[0][nowx][nowy].type = player + 48;
+					can_walk = 1;
+					return;
+				}
+				else if (nowy > 0 && this[0][nowx][nowy - 1].type != ' ') {
+					nowy -= 1;
+					can_walk = 1;
+				}
+				else {
+					can_walk = 0;
+				}
 			}
 			else if (nowy > 0 && this[0][nowx][nowy - 1].type != ' ') {
 				nowy -= 1;
 				can_walk = 1;
 			}
-			else
+			else {
 				can_walk = 0;
+			}
 			break;
 		case 115:  // s
 			if (nowx < 49) {

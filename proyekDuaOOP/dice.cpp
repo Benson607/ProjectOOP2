@@ -14,6 +14,7 @@ void Dice::action(Stat& stat, int used_focus) {
     result.clear();
     movement_points = 0;
     max_movement_points = floor(stat.speed / 10);
+    stat.focus -= used_focus;
     success_percent = stat.speed / 100;  // max = 90
     if (success_percent > 0.9) {
         success_percent = 0.9;
@@ -53,14 +54,12 @@ void Dice::attack(Stat& stat, int used_focus, int num_of_dice, double success) {
     int isSuccess = 0;
     srand(time(NULL));
     result.clear();
-
     isSuccess += used_focus;
     for (int i = 0; i < isSuccess; i++) {
         result.push_back('T');
     }
-
     success_percent = success;
-
+    stat.focus -= used_focus;
     int tmp_isS = isSuccess;
     for (int i = 0; i < num_of_dice - tmp_isS; i++) {
         int dice_result = rand() % 100;
