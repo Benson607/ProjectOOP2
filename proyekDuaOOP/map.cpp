@@ -13,6 +13,59 @@ using namespace Draw;
 void pick_inventory();
 
 Shop shop;
+std::vector<std::string> map_ui_again = {
+  "||--------------------------------------------------------------------------------|",
+  "||--------------------------------------------------|-----------------------------|",
+  "||                                                  |Turn :                       |",
+  "||                                                  |Player Name :                |",
+  "||                                                  |Action Points :              |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |                             |",
+  "||                                                  |___________Helper____________|",
+  "||                                                  |Arrow Key : Move             |",
+  "||                                                  |'P' Key : End Turn           |",
+  "||                                                  |'I' Key  : Open Bag,         |",
+  "||                                                  |   : Wall, . : Road, $ : Shop|",
+  "||----|--------------------|---|--------------------|---|--------------------|----|",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|     |                    |   |                    |   |                    |    |",
+  "|-----|--------------------|---|--------------------|---|--------------------|----|" };
+void show_map_ui_again() {
+	draw(map_ui_again, 0, 0);
+	gotoxy(54, 27);
+	setColor(136);
+	std::cout << " ";
+	gotoxy(64, 27);
+	setColor(224);
+	std::cout << ".";
+	gotoxy(74, 27);
+	setColor(240);
+	std::cout << "$";
+	setColor();
+}
 
 Map::Map() : std::vector<std::vector<Rect>>(50, std::vector<Rect>(140, Rect(5))) {
 	for (int i = 0; i < 50; i++) {
@@ -58,7 +111,7 @@ void Map::setShop() {
 }
 
 void Map::setEvent() {
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 3; i++) {
 		int x = rand() % 50;
 		int y = rand() % 140;
 		if (this[0][x][y].type == '.') {
@@ -92,7 +145,7 @@ void Map::show() {
 			case '.':
 				setColor(224);
 				break;
-			case 'R':  // random events
+			case '?':  // random events
 				setColor(211);
 			case '$':
 				setColor(240);
@@ -107,9 +160,10 @@ void Map::show() {
 	}
 }
 
-void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int player2_y, int player3_x, int player3_y) {
+void Map::getinput(Entity& entity, int player, int player1_x, int player1_y, int player2_x, int player2_y, int player3_x, int player3_y) {
 	int  input;
 	bool can_walk = 0;
+
 	if (player == 1) {
 		if (player1_x == player2_x && player1_y == player2_y)  // if Player1's position = Player2's position
 			this[0][nowx][nowy].type = '2';
@@ -151,6 +205,7 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 					shop.show();
 					shop.select_product();
 					system("CLS");
+					show_map_ui_again();
 					this[0][nowx][nowy].type = player + 48;
 					can_walk = 1;
 					return;
@@ -163,13 +218,6 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 					can_walk = 0;
 				}
 			}
-			else if (nowx > 0 && this[0][nowx - 1][nowy].type != ' ') {
-				nowx -= 1;
-				can_walk = 1;
-			}
-			else {
-				can_walk = 0;
-			}
 			break;
 		case 97:  // a
 			if (nowy > 0) {
@@ -178,24 +226,18 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 					shop.show();
 					shop.select_product();
 					system("CLS");
+					show_map_ui_again();
 					this[0][nowx][nowy].type = player + 48;
 					can_walk = 1;
 					return;
 				}
-				else if (nowy > 0 && this[0][nowx][nowy - 1].type != ' ') {
+				else if (this[0][nowx][nowy - 1].type != ' ') {
 					nowy -= 1;
 					can_walk = 1;
 				}
 				else {
 					can_walk = 0;
 				}
-			}
-			else if (nowy > 0 && this[0][nowx][nowy - 1].type != ' ') {
-				nowy -= 1;
-				can_walk = 1;
-			}
-			else {
-				can_walk = 0;
 			}
 			break;
 		case 115:  // s
@@ -205,11 +247,12 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 					shop.show();
 					shop.select_product();
 					system("CLS");
+					show_map_ui_again();
 					this[0][nowx][nowy].type = player + 48;
 					can_walk = 1;
 					return;
 				}
-				else if (nowx < 50 && this[0][nowx + 1][nowy].type != ' ') {
+				else if (this[0][nowx + 1][nowy].type != ' ') {
 					nowx += 1;
 					can_walk = 1;
 				}
@@ -217,8 +260,6 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 					can_walk = 0;
 				}
 			}
-			else
-				can_walk = 0;
 			break;
 		case 100:  // d
 			if (nowy < 139) {
@@ -227,20 +268,18 @@ void Map::getinput(int player, int player1_x, int player1_y, int player2_x, int 
 					shop.show();
 					shop.select_product();
 					system("CLS");
+					show_map_ui_again();
 					this[0][nowx][nowy].type = player + 48;
 					can_walk = 1;
 					return;
 				}
-				else if (nowy < 140 && this[0][nowx][nowy + 1].type != ' ') {
+				else if (this[0][nowx][nowy + 1].type != ' ') {
 					nowy += 1;
 					can_walk = 1;
 				}
 				else {
 					can_walk = 0;
 				}
-			}
-			else {
-				can_walk = 0;
 			}
 			break;
 		case 105:  // i
