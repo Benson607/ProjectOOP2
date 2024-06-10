@@ -57,7 +57,6 @@ namespace Skill {
 		if (choosen->vitality < 0) {
 			choosen->vitality = 0;
 		}
-		attacker->CD[0] = 3;
 	}
 
 	void shock_blast() {
@@ -76,7 +75,6 @@ namespace Skill {
 		if (choosen->vitality < 0) {
 			choosen->vitality = 0;
 		}
-		attacker->CD[1] = 2;
 	}
 
 	void heal() {
@@ -95,11 +93,22 @@ namespace Skill {
 		if (choosen->vitality < 0) {
 			choosen->vitality = 0;
 		}
-		attacker->CD[2] = 2;
 	}
 
 	void speedUp() {
-
+		Dice dice;
+		dice.attack(*attacker, attacker->useFocus, attacker->suDice, attacker->hitrate);
+		int times = 0;
+		for (int i = 0; i < dice.result.size(); i++) {
+			if (dice.result[i] == 'T') {
+				times++;
+			}
+		}
+		int damage = 2 * (double)times / (double)dice.result.size();
+		attacker->vitality += damage;
+		Draw::gotoxy(20, 20);
+		std::cout << attacker->name << " get SpeedUp for " << damage - 1 << " turns";
+		attacker->buff[3] = damage;
 	}
 }
 
@@ -240,27 +249,67 @@ bool Entity::actionForFight(Entity& enemy) {
 		}
 		else if (input == '2') {
 			if (CD[provoke] == 0) {
-
-				CD[provoke] = 2;
+				if (askFocus()) {
+					actionEnd = true;
+					pro();
+					useFocus = 0;
+				}
+				else {
+					actionEnd = false;
+				}
+				CD[provoke] = 3;
 			}
 		}
 		else if (input == '3') {
 			if (CD[shock_blast] == 0) {
-
+				if (askFocus()) {
+					actionEnd = true;
+					sb();
+					useFocus = 0;
+				}
+				else {
+					actionEnd = false;
+				}
+				CD[shock_blast] = 2;
 			}
 		}
 		else if (input == '4') {
 			if (CD[heal] == 0) {
-
+				if (askFocus()) {
+					actionEnd = true;
+					hl();
+					useFocus = 0;
+				}
+				else {
+					actionEnd = false;
+				}
+				CD[heal] = 2;
 			}
 		}
 		else if (input == '5') {
 			if (CD[speedUp] == 0) {
-
+				if (askFocus()) {
+					actionEnd = true;
+					att();
+					useFocus = 0;
+				}
+				else {
+					actionEnd = false;
+				}
+				CD[speedUp] = 4;
 			}
 		}
-		else if (input == 'i') {
-
+		else if (input == '6') {
+			if (Bag::buy_in_T[0].amount) {
+				use(Bag::buy_in_T[0]);
+				Bag::buy_in_T[0].amount--;
+			}
+		}
+		else if (input == '7') {
+			if (Bag::buy_in_T[1].amount) {
+				use(Bag::buy_in_T[0]);
+				Bag::buy_in_T[0].amount--;
+			}
 		}
 	}
 	attacker = NULL;

@@ -160,7 +160,7 @@ void Map::show() {
 	}
 }
 
-void Map::getinput(Entity& entity,int player, int player1_x, int player1_y, int player2_x, int player2_y, int player3_x, int player3_y) {
+void Map::getinput(Entity& entity, int player, int player1_x, int player1_y, int player2_x, int player2_y, int player3_x, int player3_y) {
 	int  input;
 	bool can_walk = 0;
 
@@ -170,7 +170,7 @@ void Map::getinput(Entity& entity,int player, int player1_x, int player1_y, int 
 		else if (player1_x == player3_x && player1_y == player3_y)  // if Player1's position = Player3's position
 			this[0][nowx][nowy].type = '3';
 		else if (this[0][nowx][nowy].type == 'E')
-			this[0][nowx][nowy].type == 'E';
+			this[0][nowx][nowy].type = 'E';
 		else
 			this[0][nowx][nowy].type = '.';  // turn the start postition to '.' rect
 	}
@@ -180,7 +180,7 @@ void Map::getinput(Entity& entity,int player, int player1_x, int player1_y, int 
 		else if (player2_x == player3_x && player2_y == player3_y)  // if Player2's position = Player3's position
 			this[0][nowx][nowy].type = '3';
 		else if (this[0][nowx][nowy].type == 'E')
-			this[0][nowx][nowy].type == 'E';
+			this[0][nowx][nowy].type = 'E';
 		else
 			this[0][nowx][nowy].type = '.';  // turn the start postition to '.' rect
 	}
@@ -190,7 +190,7 @@ void Map::getinput(Entity& entity,int player, int player1_x, int player1_y, int 
 		else if (player3_x == player2_x && player3_y == player2_y)  // if Player3's position = Player2's position
 			this[0][nowx][nowy].type = '2';
 		else if (this[0][nowx][nowy].type == 'E')
-			this[0][nowx][nowy].type == 'E';
+			this[0][nowx][nowy].type = 'E';
 		else
 			this[0][nowx][nowy].type = '.';  // turn the start postition to '.' rect
 	}
@@ -286,7 +286,10 @@ void Map::getinput(Entity& entity,int player, int player1_x, int player1_y, int 
 			Bag::bag_ui();
 			pick_inventory();
 			break;
-
+		case 27:
+			end_game = 1;
+			return;
+			break;
 		default:
 			can_walk = 0;
 			break;

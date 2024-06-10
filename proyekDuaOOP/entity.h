@@ -31,6 +31,8 @@ private:
 	ptr hl;
 	ptr su;
 
+	std::vector<std::string> introduce;
+
 public:
 	std::vector<int> CD;
 	std::vector<int> buff;
@@ -74,5 +76,4 @@ public:
 	void use(Equipment equipment);
 	void use(Item item);
 	void takeOff(int type);
-
 };

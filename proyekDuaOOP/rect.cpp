@@ -14,7 +14,7 @@ Rect::Rect(int type) {
 	if (type == 0) {
 		this->type = ' ';
 	}
-	else if(type == 1){
+	else if (type == 1) {
 		this->type = '1';
 	}
 	else if (type == 2) {
@@ -30,8 +30,8 @@ Rect::Rect(int type) {
 		this->type = '.';
 	}
 	else if (type == 6) {
-        this->type = '$';
-    }
+		this->type = '$';
+	}
 	else if (type == 7) {
 		this->type == '?';
 	}
