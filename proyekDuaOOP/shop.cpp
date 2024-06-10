@@ -3,15 +3,19 @@
 Shop::Shop() {
 	pos_x = 0;
 	pos_y = 0;
+	rand_no1 = 0;
+	rand_no2 = 0;
+	rand_no3 = 0;
 
 	position = std::vector<int>(2);
 	pos_x_y = std::vector<std::vector<int>>(0);
 	record = { "" };
 
-	items = std::vector<Item>(3, Item());
+	items = std::vector<Item>(4, Item());
 	items[0].Godsbeard();
 	items[1].TeleportScroll();
 	items[2].Tent();
+	items[3].GoldenRoot();
 
 	equip = std::vector<Equipment>(13, Equipment());
 	equip[0].Weapon("WoodenSword");
@@ -182,56 +186,56 @@ void Shop::select_product()
 						}
 						else if (pos_x_y[i][0] == tmp_x && pos_x_y[i][1] == tmp_y && i >= 13) {
 							if (i == 13) {
-								if (items[0].amount > 0) {
-									if (items[0].price > Money::money) {
+								if (items[rand_no1].amount > 0) {
+									if (items[rand_no1].price > Money::money) {
 										statment = { "No enough money!              " };
 									}
 									else {
-										items[0].amount -= 1;
-										Money::money -= items[0].price;
-										Bag::buy_in_T[0].amount++;
+										items[rand_no1].amount -= 1;
+										Money::money -= items[rand_no1].price;
+										Bag::buy_in_T[rand_no1].amount++;
 									}
 								}
 								else {
 									statment = { "Sold Out!                  " };
 								}
-								output = { items[0].name," ", "Amount: "," ", "Price: " };
-								output[2] = output[2] + std::to_string((int)(items[0].amount));
-								output[4] = output[4] + std::to_string((int)(items[0].price));
+								output = { items[rand_no1].name," ", "Amount: "," ", "Price: " };
+								output[2] = output[2] + std::to_string((int)(items[rand_no1].amount));
+								output[4] = output[4] + std::to_string((int)(items[rand_no1].price));
 							}if (i == 14) {
-								if (items[1].amount > 0) {
-									if (items[1].price > Money::money) {
+								if (items[rand_no2].amount > 0) {
+									if (items[rand_no2].price > Money::money) {
 										statment = { "No enough money!              " };
 									}
 									else {
-										items[1].amount -= 1;
-										Money::money -= items[1].price;
-										Bag::buy_in_T[1].amount++;
+										items[rand_no2].amount -= 1;
+										Money::money -= items[rand_no2].price;
+										Bag::buy_in_T[rand_no2].amount++;
 									}
 								}
 								else {
 									statment = { "Sold Out!                  " };
 								}
-								output = { items[1].name," ", "Amount: "," ", "Price: " };
-								output[2] = output[2] + std::to_string((int)(items[1].amount));
-								output[4] = output[4] + std::to_string((int)(items[1].price));
+								output = { items[rand_no2].name," ", "Amount: "," ", "Price: " };
+								output[2] = output[2] + std::to_string((int)(items[rand_no2].amount));
+								output[4] = output[4] + std::to_string((int)(items[rand_no2].price));
 							}if (i == 15) {
-								if (items[2].amount > 0) {
-									if (items[2].price > Money::money) {
+								if (items[rand_no3].amount > 0) {
+									if (items[rand_no3].price > Money::money) {
 										statment = { "No enough money!              " };
 									}
 									else {
-										items[2].amount -= 1;
-										Money::money -= items[2].price;
-										Bag::buy_in_T[2].amount++;
+										items[rand_no3].amount -= 1;
+										Money::money -= items[rand_no3].price;
+										Bag::buy_in_T[rand_no3].amount++;
 									}
 								}
 								else {
 									statment = { "Sold Out!                  " };
 								}
-								output = { items[2].name, " ", "Amount: ", " ", "Price: " };
-								output[2] = output[2] + std::to_string((int)(items[2].amount));
-								output[4] = output[4] + std::to_string((int)(items[2].price));
+								output = { items[rand_no3].name, " ", "Amount: ", " ", "Price: " };
+								output[2] = output[2] + std::to_string((int)(items[rand_no3].amount));
+								output[4] = output[4] + std::to_string((int)(items[rand_no3].price));
 							}
 							break;
 						}
@@ -289,6 +293,14 @@ void Shop::select_product()
 
 void Shop::show()
 {
+	srand(time(NULL));
+
+	do {
+		rand_no1 = rand() % 4;
+		rand_no2 = rand() % 4;
+		rand_no3 = rand() % 4;
+	} while (rand_no1 == rand_no2 || rand_no2 == rand_no3 || rand_no1 == rand_no3);
+
 	Draw::draw(shop_ui, 0, 0);
 	pos_x = 3;
 	pos_y = 6;
@@ -309,25 +321,28 @@ void Shop::show()
 				position[0] = pos_x;
 				position[1] = pos_y;
 				pos_x_y.push_back(position);
-				output = { items[0].name," ", "Amount: "," ", "Price: " };
-				output[2] = output[2] + std::to_string((int)(items[0].amount));
-				output[4] = output[4] + std::to_string((int)(items[0].price));
+
+				output = { items[rand_no1].name," ", "Amount: "," ", "Price: " };
+				output[2] = output[2] + std::to_string((int)(items[rand_no1].amount));
+				output[4] = output[4] + std::to_string((int)(items[rand_no1].price));
 				Draw::draw(output, pos_y, pos_x);
 				pos_y += 31;
 				position[0] = pos_x;
 				position[1] = pos_y;
 				pos_x_y.push_back(position);
-				output = { items[1].name," ", "Amount: "," ", "Price: " };
-				output[2] = output[2] + std::to_string((int)(items[1].amount));
-				output[4] = output[4] + std::to_string((int)(items[1].price));
+
+				output = { items[rand_no2].name," ", "Amount: "," ", "Price: " };
+				output[2] = output[2] + std::to_string((int)(items[rand_no2].amount));
+				output[4] = output[4] + std::to_string((int)(items[rand_no2].price));
 				Draw::draw(output, pos_y, pos_x);
 				pos_y += 31;
 				position[0] = pos_x;
 				position[1] = pos_y;
 				pos_x_y.push_back(position);
-				output = { items[2].name," ", "Amount: "," ", "Price: " };
-				output[2] = output[2] + std::to_string((int)(items[2].amount));
-				output[4] = output[4] + std::to_string((int)(items[2].price));
+
+				output = { items[rand_no3].name," ", "Amount: "," ", "Price: " };
+				output[2] = output[2] + std::to_string((int)(items[rand_no3].amount));
+				output[4] = output[4] + std::to_string((int)(items[rand_no3].price));
 				Draw::draw(output, pos_y, pos_x);
 				break;
 			}

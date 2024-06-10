@@ -2,14 +2,16 @@
 
 #include <string>
 #include <vector>
+
 #include "stat.h"
 
 class Equipment {
 public:
-	Equipment(std::string name = "");
+	Equipment();
 	int type;
 	int price;
 	int amount;
+	int numOfDice;
 	Stat status;
 	std::string name;
 	std::vector<std::string> skills;

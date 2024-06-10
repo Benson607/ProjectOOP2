@@ -1,18 +1,16 @@
 #pragma once
 
-#include <stdlib.h>
 #include <vector>
-#include <string>
-#include "stat.h"
 #include <cmath>
+
+#include "stat.h"
 #include "money.h"
-#include <time.h>
 
 class Dice {
 public:
 	Dice();
 	std::vector<char> result;
-	double max_movement_points;
+	int max_movement_points;
 	double movement_points = 0.0;
 	double success_percent;
 	void action(Stat& status, int used_focus);

@@ -16,12 +16,13 @@ Bag::Bag() {
 	pos_y = 0;
 	statment = { "" };
 
-	buy_in_T = std::vector<Item>(3, Item());
+	buy_in_T = std::vector<Item>(4, Item());
 	buy_in_T[0].Godsbeard();
 	buy_in_T[1].TeleportScroll();
 	buy_in_T[2].Tent();
+	buy_in_T[3].GoldenRoot();
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		buy_in_T[i].amount = 0;
 	}
 
@@ -62,7 +63,7 @@ void Bag::bag_ui()
 	pos_y = 53;
 
 	int flag = 0;
-	for (int i = 0; i < 16; i++) {
+	for (int i = 0; i < 17; i++) {
 		if (i < 13) {
 			if (buy_in_E[i].amount > 0) {
 				store[0] = pos_x;
@@ -112,6 +113,18 @@ void Bag::bag_ui()
 					flag = 1;
 				}
 			}
+			if (i == 16) {
+				if (buy_in_T[3].amount > 0) {
+					store[0] = pos_x;
+					store[1] = pos_y;
+					store[2] = 16;
+					pos_xy.push_back(store);
+					bagUI[0] = buy_in_T[3].name + " x " + std::to_string((int)(buy_in_T[3].amount));
+					Draw::draw(bagUI, pos_y, pos_x);
+					pos_x++;
+					flag = 1;
+				}
+			}
 		}
 	}
 
@@ -122,6 +135,13 @@ void Bag::bag_ui()
 		bagUI = Draw::readSpace(53, 2, 1, 29);
 		Draw::setColor(246);
 		Draw::draw(bagUI, 53, 2);
+	}
+	else {
+		if (Bag::pos_xy.size() == 0) {
+			Draw::setColor();
+			Bag::statment = { "Empty                        " };
+			Draw::draw(Bag::statment, 53, 22);
+		}
 	}
 
 }

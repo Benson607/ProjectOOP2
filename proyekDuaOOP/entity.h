@@ -1,14 +1,9 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include <conio.h>
 
-#include "equipment.h"
-#include "item.h"
-#include "rect.h"
-#include "stat.h"
-#include "draw.h"
+#include "bag.h"
+#include "dice.h"
 
 using ptr = void(*)();
 
@@ -16,7 +11,6 @@ class Entity : public Stat {
 private:
 	int priority;
 
-	std::vector<int> CD;
 	enum {
 		provoke,
 		shock_blast,
@@ -25,7 +19,6 @@ private:
 		fortify
 	};
 
-	std::vector<int> buff;
 	enum {
 		angry,
 		dizziness,
@@ -39,27 +32,47 @@ private:
 	ptr su;
 
 public:
+	std::vector<int> CD;
+	std::vector<int> buff;
+
+	int attackDice;
+	int fleeDice;
+	int provokeDice;
+	int sbDice;
+	int healDice;
+	int suDice;
+
+	int useFocus;
+	
 	int xDraw;
 	int yDraw;
-	Equipment weapon;
-	Equipment armour;
-	Equipment accessory;
+	
+	std::vector<Equipment> equip;
+	
 	Rect rect;
 	Rect under;
+	
 	std::string name;
 	bool inAction;
 	int actionTimes;
+	
 	Entity(int type, std::string name = "");
 	~Entity();
-	void setName(std::string name);
+	
 	std::vector<std::string> output();
+	
+	void mainPhaseStart();
 	void addActionTimes();
-	void setPosDraw(int x, int y);
+	bool actionForFight(Entity& enemy);
+	bool actionForEnemy(Entity& role);
+	bool askFocus();
+	
 	bool cmp(Entity other);
-	bool actionForFight(std::vector<Entity*>& roles, std::vector<Entity*>& enemys);
-	void action();
+	void setName(std::string name);
+	void setPosDraw(int x, int y);
+	
 	void use(Equipment equipment);
-	void takeOff(int type);
 	void use(Item item);
+	void takeOff(int type);
 
 };

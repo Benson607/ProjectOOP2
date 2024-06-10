@@ -10,7 +10,6 @@ Event::Event() {
 	stat.pAttack = 0;
 	stat.pDefense = 0;
 	stat.speed = 0;
-	mon.money = 0;
 }
 
 void Event::Random_Event(Stat& status) {
@@ -29,7 +28,7 @@ void Event::Random_Event(Stat& status) {
 		for (int i = 0; i < 8; i++) {
 			stat[i] += 10;
 		}
-		mon.money_increase(100);
+		Money().money_increase(100);
 		std::cout << "Met the LUCKY Cat! Increase all Status by 10 points and money increases by $100!!" << std::endl;
 		break;
 	default:

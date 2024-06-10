@@ -2,17 +2,15 @@
 #define DRAW_H
 
 #include <Windows.h>
-
 #include <iostream>
 #include <string>
 #include <vector>
-#include <stdlib.h>
 
-#include "Rect.h"
+#include "rect.h"
 
 namespace Draw {
 	void draw(std::vector<std::string> out, int x, int y);
-	void drawMap(std::vector<std::vector<Rect>> map, int fromx, int fromy, int x = 0, int y = 0, int sizex = 25, int sizey = 50);
+	void drawMap(std::vector<std::vector<Rect>> map, int fromx, int fromy, int x = 2, int y = 2, int sizex = 25, int sizey = 50);
 	void gotoxy(int x, int y);
 	void inRange();
 	void setColor(int color = 7);

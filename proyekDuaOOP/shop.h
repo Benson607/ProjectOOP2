@@ -1,13 +1,8 @@
 #pragma once
+
 #include <conio.h>
-#include <string>
-#include <vector>
-#include "rect.h"
+
 #include "bag.h"
-#include "money.h"
-#include "equipment.h"
-#include "item.h"
-#include "draw.h"
 
 using namespace Draw;
 
@@ -16,6 +11,9 @@ public:
 	Shop();
 	int pos_x;
 	int pos_y;
+	int rand_no1;
+	int rand_no2;
+	int rand_no3;
 	std::vector<Item> items;
 	std::vector<Equipment> equip;
 	std::vector<std::string> output;

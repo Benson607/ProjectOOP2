@@ -1,13 +1,12 @@
 #pragma once
 
+#include <conio.h>
+#include <map>
+
 #include "item.h"
 #include "equipment.h"
 #include "money.h"
 #include "draw.h"
-#include <conio.h>
-#include <map>
-#include <vector>
-#include <string>
 
 class Bag {
 public:
@@ -16,7 +15,7 @@ public:
 	static int pos_x;
 	static int pos_y;
 	Bag();
-	void bag_ui();
+	static void bag_ui();
 
 	static std::vector<std::string> statment;
 	static std::vector<std::string> original_ui;
@@ -25,3 +24,5 @@ public:
 	static std::vector<std::vector<int>> pos_xy;
 	static std::vector<int> store;//change to save position
 };
+
+//want lower limit
