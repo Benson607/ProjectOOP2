@@ -11,6 +11,7 @@ class Map :public std::vector<std::vector<Rect>> {
 public:
 	int nowx = 0;
 	int nowy = 0;
+	bool end_game = 0;
 	Map();
 	void setRect(Rect& obj);
 	void setWall();

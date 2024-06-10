@@ -361,11 +361,11 @@ int main() {
 	map.setRect(enemy2.rect);    //Enemy2
 	map.setRect(enemy3.rect);
 
-	Item i;
+	/*Item i;
 	i.TeleportScroll();
-	player1.use(i);
+	player1.use(i);*/
 
-	//GameLoop(roles, enemys, map);
+	GameLoop(roles, enemys, map);
 
 	//// operate
 	//int wheather_use_focus = 0;
@@ -536,7 +536,6 @@ void show_player_equipment_buff(std::vector<Entity*>& roles) {
 
 void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& map) {
 	// operate
-	char input = _getch();
 	int wheather_use_focus = 0;
 	int Turn_Counted = 1;
 	Dice dice;
@@ -544,7 +543,7 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 	Draw_Player_information(stay);
 	show_map_ui();
 	Decide_Turn(roles);
-	while (input != 27 || roles[0]->vitality != 0 && roles[1]->vitality != 0 && roles[2]->vitality != 0) {  //while enemy still exist,loop
+	while (roles[0]->vitality != 0 && roles[1]->vitality != 0 && roles[2]->vitality != 0) {  //while enemy still exist,loop
 		for (int i = 0; i < 3; i++) {
 			if (roles[i]->vitality == 0) {
 				continue;
@@ -569,9 +568,13 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 			std::cout << "Do you want to use focus?" << std::endl;
 			while (1) {
 				gotoxy(53, 6);
-				std::cin >> wheather_use_focus;
-
-				if (wheather_use_focus < 0 || wheather_use_focus>max_movement_points) {
+				char input = _getch();
+				wheather_use_focus = input - 48;
+				if (input == 27) {
+					gotoxy(0, 39);
+					return;
+				}
+				else if (input == '0a' || !isdigit(input) || wheather_use_focus < 0 || wheather_use_focus >roles[i]->focus) {
 					gotoxy(53, 7);
 					std::cout << "It's not validable,try again." << std::endl;
 					gotoxy(53, 6);
@@ -579,6 +582,7 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					gotoxy(53, 6);
 					continue;
 				}
+
 				else {
 					break;
 				}
@@ -608,13 +612,26 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 				map.nowy = roles[i]->rect.y;
 				if (roles[i]->name == "chen-yon-fa") {
 					map.getinput(*roles[i], 1, roles[0]->rect.x, roles[0]->rect.y, roles[1]->rect.x, roles[1]->rect.y, roles[2]->rect.x, roles[2]->rect.y);
+					if (map.end_game == 1) {
+						gotoxy(0, 39);
+						return;
+					}
 				}
 				else if (roles[i]->name == "Alus") {
 					map.getinput(*roles[i], 2, roles[0]->rect.x, roles[0]->rect.y, roles[1]->rect.x, roles[1]->rect.y, roles[2]->rect.x, roles[2]->rect.y);
+					if (map.end_game == 1) {
+						gotoxy(0, 39);
+						return;
+					}
 				}
 				else if (roles[i]->name == "boring bowling") {
 					map.getinput(*roles[i], 3, roles[0]->rect.x, roles[0]->rect.y, roles[1]->rect.x, roles[1]->rect.y, roles[2]->rect.x, roles[2]->rect.y);
+					if (map.end_game == 1) {
+						gotoxy(0, 39);
+						return;
+					}
 				}
+
 				gotoxy(68, 4);
 				for (int k = 0; k < dice.result.size(); k++) {
 					if (dice.result[k] == 'T') {
