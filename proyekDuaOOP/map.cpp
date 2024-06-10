@@ -13,6 +13,7 @@ using namespace Draw;
 void pick_inventory();
 
 Shop shop;
+
 std::vector<std::string> map_ui_again = {
   "||--------------------------------------------------------------------------------|",
   "||--------------------------------------------------|-----------------------------|",
@@ -308,8 +309,6 @@ void Map::set_new_rect_type(int x, int y, char T) {
 void pick_inventory() {
 	int input = _getch();
 	while (input != 27) {
-		// int tmp_x = 2;
-		// int tmp_y = 53;
 		gotoxy(54, 2);
 		switch (input) {
 		case 119:  // w
@@ -361,7 +360,6 @@ void pick_inventory() {
 			}
 
 			while (input != 121 && input != 110 && Bag::pos_x < Bag::pos_xy.size() + 2) {
-				// if amount == 0;
 				input = _getch();
 				if (input == 121 && Bag::pos_x < Bag::pos_xy.size() + 2) {
 					Bag::statment = { "Used!                        " };
@@ -382,6 +380,7 @@ void pick_inventory() {
 								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
 								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
 							}
+							//.use(Bag::buy_in_E[Bag::pos_xy[i][2]]);
 							break;
 						}
 						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 13) {
@@ -426,6 +425,20 @@ void pick_inventory() {
 							}
 							break;
 						}
+						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 16) {
+							Bag::buy_in_T[3].amount--;
+							if (Bag::buy_in_T[3].amount == 0) {
+								flag = 1;
+							}
+							else {
+								Draw::setColor(246);
+								Bag::bagUI[0] = Bag::buy_in_T[3].name + " x " + std::to_string((int)(Bag::buy_in_T[3].amount));
+								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
+								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+							}
+							break;
+						}
 					}
 
 					if (flag) {
@@ -439,7 +452,7 @@ void pick_inventory() {
 						Bag::pos_x = 2;
 						Bag::pos_y = 53;
 
-						for (int i = 0; i < 16; i++) {
+						for (int i = 0; i < 17; i++) {
 							if (i < 13) {
 								if (Bag::buy_in_E[i].amount > 0) {
 									Bag::store[0] = Bag::pos_x;
@@ -481,6 +494,17 @@ void pick_inventory() {
 										Bag::store[2] = 15;
 										Bag::pos_xy.push_back(Bag::store);
 										Bag::bagUI[0] = Bag::buy_in_T[2].name + " x " + std::to_string((int)(Bag::buy_in_T[2].amount));
+										Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+										Bag::pos_x++;
+									}
+								}
+								if (i == 16) {
+									if (Bag::buy_in_T[3].amount > 0) {
+										Bag::store[0] = Bag::pos_x;
+										Bag::store[1] = Bag::pos_y;
+										Bag::store[2] = 16;
+										Bag::pos_xy.push_back(Bag::store);
+										Bag::bagUI[0] = Bag::buy_in_T[3].name + " x " + std::to_string((int)(Bag::buy_in_T[3].amount));
 										Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
 										Bag::pos_x++;
 									}
