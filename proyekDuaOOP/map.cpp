@@ -10,9 +10,10 @@
 
 using namespace Draw;
 
-void pick_inventory();
+void pick_inventory(Entity& entity);
 
 Shop shop;
+
 std::vector<std::string> map_ui_again = {
   "||--------------------------------------------------------------------------------|",
   "||--------------------------------------------------|-----------------------------|",
@@ -55,6 +56,19 @@ std::vector<std::string> map_ui_again = {
   "|-----|--------------------|---|--------------------|---|--------------------|----|" };
 void show_map_ui_again() {
 	draw(map_ui_again, 0, 0);
+	gotoxy(54, 27);
+	setColor(136);
+	std::cout << " ";
+	gotoxy(64, 27);
+	setColor(224);
+	std::cout << ".";
+	gotoxy(74, 27);
+	setColor(240);
+	std::cout << "$";
+	setColor();
+}
+
+void show_partial_ui() {
 	gotoxy(54, 27);
 	setColor(136);
 	std::cout << " ";
@@ -115,7 +129,7 @@ void Map::setEvent() {
 		int x = rand() % 50;
 		int y = rand() % 140;
 		if (this[0][x][y].type == '.') {
-			this[0][x][y] = Rect(7);
+			this[0][x][y].type = '?';
 		}
 		else {
 			i--;
@@ -160,37 +174,43 @@ void Map::show() {
 	}
 }
 
-void Map::getinput(Entity& entity, int player, int player1_x, int player1_y, int player2_x, int player2_y, int player3_x, int player3_y) {
+void Map::getinput(Entity& entity, int player, std::vector<Entity*>& stay) {
 	int  input;
 	bool can_walk = 0;
 
 	if (player == 1) {
-		if (player1_x == player2_x && player1_y == player2_y)  // if Player1's position = Player2's position
+		if (stay[0]->rect.x == stay[1]->rect.x && stay[0]->rect.y == stay[1]->rect.y && stay[1]->vitality!=0)  // if Player1's position = Player2's position
 			this[0][nowx][nowy].type = '2';
-		else if (player1_x == player3_x && player1_y == player3_y)  // if Player1's position = Player3's position
+		else if (stay[0]->rect.x == stay[2]->rect.x && stay[0]->rect.y == stay[2]->rect.y && stay[2]->vitality != 0)  // if Player1's position = Player3's position
 			this[0][nowx][nowy].type = '3';
 		else if (this[0][nowx][nowy].type == 'E')
 			this[0][nowx][nowy].type = 'E';
+		else if (this[0][nowx][nowy].type == 'T')
+			this[0][nowx][nowy].type='T';
 		else
 			this[0][nowx][nowy].type = '.';  // turn the start postition to '.' rect
 	}
 	else if (player == 2) {
-		if (player2_x == player1_x && player2_y == player1_y)  // if Player2's position = Player1's position
+		if (stay[1]->rect.x == stay[0]->rect.x && stay[1]->rect.y == stay[0]->rect.y && stay[0]->vitality != 0)  // if Player2's position = Player1's position
 			this[0][nowx][nowy].type = '1';
-		else if (player2_x == player3_x && player2_y == player3_y)  // if Player2's position = Player3's position
+		else if (stay[1]->rect.x == stay[2]->rect.x && stay[1]->rect.y == stay[2]->rect.y && stay[2]->vitality != 0)  // if Player2's position = Player3's position
 			this[0][nowx][nowy].type = '3';
 		else if (this[0][nowx][nowy].type == 'E')
 			this[0][nowx][nowy].type = 'E';
+		else if (this[0][nowx][nowy].type == 'T')
+			this[0][nowx][nowy].type = 'T';
 		else
 			this[0][nowx][nowy].type = '.';  // turn the start postition to '.' rect
 	}
 	else if (player == 3) {
-		if (player3_x == player1_x && player3_y == player1_y)  // if Player3's position = Player1's position
+		if (stay[2]->rect.x == stay[0]->rect.x && stay[2]->rect.y == stay[0]->rect.y && stay[0]->vitality != 0)  // if Player3's position = Player1's position
 			this[0][nowx][nowy].type = '1';
-		else if (player3_x == player2_x && player3_y == player2_y)  // if Player3's position = Player2's position
+		else if (stay[2]->rect.x == stay[1]->rect.x && stay[2]->rect.y == stay[1]->rect.y && stay[1]->vitality != 0)  // if Player3's position = Player2's position
 			this[0][nowx][nowy].type = '2';
 		else if (this[0][nowx][nowy].type == 'E')
 			this[0][nowx][nowy].type = 'E';
+		else if (this[0][nowx][nowy].type == 'T')
+			this[0][nowx][nowy].type = 'T';
 		else
 			this[0][nowx][nowy].type = '.';  // turn the start postition to '.' rect
 	}
@@ -284,11 +304,12 @@ void Map::getinput(Entity& entity, int player, int player1_x, int player1_y, int
 			break;
 		case 105:  // i
 			Bag::bag_ui();
-			pick_inventory();
+			pick_inventory(entity);
+			show_partial_ui();
 			break;
 		case 27:
-			end_game = 1;
-			return;
+			//end_game = 1;
+			//return;
 			break;
 		default:
 			can_walk = 0;
@@ -299,7 +320,20 @@ void Map::getinput(Entity& entity, int player, int player1_x, int player1_y, int
 	if (this[0][nowx][nowy].type == 'E')  // if new position meet enemy, return, and fight
 		return;
 
-	this[0][nowx][nowy].type = player + 48;
+	else if (this[0][nowx][nowy].type == 'T') {
+		stay_tent_x = nowx;
+		stay_tent_y = nowy;
+		this[0][nowx][nowy].type = player + 48;
+	}
+
+	else if (entity.teleportScroll) {
+		entity.teleportScroll = false;
+		nowx = entity.rect.x;
+		nowy = entity.rect.y;
+	}
+	else {
+		this[0][nowx][nowy].type = player + 48;
+	}
 
 	return;
 }
@@ -308,11 +342,9 @@ void Map::set_new_rect_type(int x, int y, char T) {
 	this[0][x][y].type = T;
 }
 
-void pick_inventory() {
+void pick_inventory(Entity& entity) {
 	int input = _getch();
 	while (input != 27) {
-		// int tmp_x = 2;
-		// int tmp_y = 53;
 		gotoxy(54, 2);
 		switch (input) {
 		case 119:  // w
@@ -364,7 +396,6 @@ void pick_inventory() {
 			}
 
 			while (input != 121 && input != 110 && Bag::pos_x < Bag::pos_xy.size() + 2) {
-				// if amount == 0;
 				input = _getch();
 				if (input == 121 && Bag::pos_x < Bag::pos_xy.size() + 2) {
 					Bag::statment = { "Used!                        " };
@@ -373,6 +404,7 @@ void pick_inventory() {
 					int flag = 0;
 					for (int i = 0; i < Bag::pos_xy.size(); i++) {
 						if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] < 13) {
+							entity.use(Bag::buy_in_E[Bag::pos_xy[i][2]]);
 							Bag::buy_in_E[Bag::pos_xy[i][2]].amount--;
 							if (Bag::buy_in_E[Bag::pos_xy[i][2]].amount == 0) {
 								flag = 1;
@@ -385,9 +417,11 @@ void pick_inventory() {
 								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
 								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
 							}
+							//.use(Bag::buy_in_E[Bag::pos_xy[i][2]]);
 							break;
 						}
 						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 13) {
+							entity.use(Bag::buy_in_T[0]);
 							Bag::buy_in_T[0].amount--;
 							if (Bag::buy_in_T[0].amount == 0) {
 								flag = 1;
@@ -402,6 +436,8 @@ void pick_inventory() {
 							break;
 						}
 						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 14) {
+							entity.use(Bag::buy_in_T[1]);
+							entity.teleportScroll = true;
 							Bag::buy_in_T[1].amount--;
 							if (Bag::buy_in_T[1].amount == 0) {
 								flag = 1;
@@ -429,6 +465,21 @@ void pick_inventory() {
 							}
 							break;
 						}
+						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 16) {
+							entity.use(Bag::buy_in_T[3]);
+							Bag::buy_in_T[3].amount--;
+							if (Bag::buy_in_T[3].amount == 0) {
+								flag = 1;
+							}
+							else {
+								Draw::setColor(246);
+								Bag::bagUI[0] = Bag::buy_in_T[3].name + " x " + std::to_string((int)(Bag::buy_in_T[3].amount));
+								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+								Bag::bagUI = Draw::readSpace(Bag::pos_y, Bag::pos_x, 1, 29);
+								Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+							}
+							break;
+						}
 					}
 
 					if (flag) {
@@ -442,7 +493,7 @@ void pick_inventory() {
 						Bag::pos_x = 2;
 						Bag::pos_y = 53;
 
-						for (int i = 0; i < 16; i++) {
+						for (int i = 0; i < 17; i++) {
 							if (i < 13) {
 								if (Bag::buy_in_E[i].amount > 0) {
 									Bag::store[0] = Bag::pos_x;
@@ -484,6 +535,17 @@ void pick_inventory() {
 										Bag::store[2] = 15;
 										Bag::pos_xy.push_back(Bag::store);
 										Bag::bagUI[0] = Bag::buy_in_T[2].name + " x " + std::to_string((int)(Bag::buy_in_T[2].amount));
+										Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
+										Bag::pos_x++;
+									}
+								}
+								if (i == 16) {
+									if (Bag::buy_in_T[3].amount > 0) {
+										Bag::store[0] = Bag::pos_x;
+										Bag::store[1] = Bag::pos_y;
+										Bag::store[2] = 16;
+										Bag::pos_xy.push_back(Bag::store);
+										Bag::bagUI[0] = Bag::buy_in_T[3].name + " x " + std::to_string((int)(Bag::buy_in_T[3].amount));
 										Draw::draw(Bag::bagUI, Bag::pos_y, Bag::pos_x);
 										Bag::pos_x++;
 									}

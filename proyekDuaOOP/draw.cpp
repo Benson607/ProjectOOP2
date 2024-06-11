@@ -36,7 +36,14 @@ void Draw::drawMap(std::vector<std::vector<Rect>> map, int fromx, int fromy, int
 				case '$':
 					setColor(240);
 					break;
+				case 'T':
+					setColor(240);
+					break;
+				case '?':
+					setColor(240);
+					break;
 				default:
+					setColor();
 					break;
 				}
 				std::cout << map[i][j].type;

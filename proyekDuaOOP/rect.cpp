@@ -1,5 +1,4 @@
 #include "rect.h"
-#include <stdlib.h>
 
 Rect::Rect() {
 	type = ' ';
@@ -33,7 +32,10 @@ Rect::Rect(int type) {
 		this->type = '$';
 	}
 	else if (type == 7) {
-		this->type == '?';
+		this->type = '?';
+	}
+	else if (type == 8) {
+		this->type = 'T';
 	}
 }
 

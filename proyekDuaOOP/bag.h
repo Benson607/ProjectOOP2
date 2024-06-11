@@ -24,3 +24,5 @@ public:
 	static std::vector<std::vector<int>> pos_xy;
 	static std::vector<int> store;//change to save position
 };
+
+//want lower limit

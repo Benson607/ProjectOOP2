@@ -10,7 +10,7 @@ Dice::Dice() {
 void Dice::action(Stat& stat, int used_focus) {
     int isFail = 0;
     int isSuccess = 0;
-    srand(time(NULL));
+    //srand(time(NULL));
     result.clear();
     movement_points = 0;
     max_movement_points = floor(stat.speed / 10);
@@ -42,7 +42,7 @@ void Dice::action(Stat& stat, int used_focus) {
 
     Money::money += 2 * isSuccess;
     if (isFail == max_movement_points) {
-        stat.vitality_max *= 0.9;
+        stat.vitality *= 0.9;
     }
     if (isSuccess == max_movement_points) {
         // Perfect action
@@ -52,7 +52,7 @@ void Dice::action(Stat& stat, int used_focus) {
 void Dice::attack(Stat& stat, int used_focus, int num_of_dice, double success) {
     int isFail = 0;
     int isSuccess = 0;
-    srand(time(NULL));
+    //srand(time(NULL));
     result.clear();
     isSuccess += used_focus;
     for (int i = 0; i < isSuccess; i++) {
@@ -74,7 +74,7 @@ void Dice::attack(Stat& stat, int used_focus, int num_of_dice, double success) {
     }
 
     if (isFail == num_of_dice) {
-        stat.vitality_max *= 0.9;
+        stat.vitality *= 0.9;
     }
 
     if (isSuccess == num_of_dice) {
