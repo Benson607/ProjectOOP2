@@ -116,7 +116,7 @@ void Map::setEvent() {
 		int x = rand() % 50;
 		int y = rand() % 140;
 		if (this[0][x][y].type == '.') {
-			this[0][x][y] = Rect(7);
+			this[0][x][y].type = '?';
 		}
 		else {
 			i--;
@@ -288,8 +288,8 @@ void Map::getinput(Entity& entity, int player, int player1_x, int player1_y, int
 			pick_inventory(entity);
 			break;
 		case 27:
-			end_game = 1;
-			return;
+			//end_game = 1;
+			//return;
 			break;
 		default:
 			can_walk = 0;
@@ -300,7 +300,14 @@ void Map::getinput(Entity& entity, int player, int player1_x, int player1_y, int
 	if (this[0][nowx][nowy].type == 'E')  // if new position meet enemy, return, and fight
 		return;
 
-	this[0][nowx][nowy].type = player + 48;
+	if (entity.teleportScroll) {
+		entity.teleportScroll = false;
+		nowx = entity.rect.x;
+		nowy = entity.rect.y;
+	}
+	else {
+		this[0][nowx][nowy].type = player + 48;
+	}
 
 	return;
 }
@@ -371,6 +378,7 @@ void pick_inventory(Entity& entity) {
 					int flag = 0;
 					for (int i = 0; i < Bag::pos_xy.size(); i++) {
 						if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] < 13) {
+							entity.use(Bag::buy_in_E[Bag::pos_xy[i][2]]);
 							Bag::buy_in_E[Bag::pos_xy[i][2]].amount--;
 							if (Bag::buy_in_E[Bag::pos_xy[i][2]].amount == 0) {
 								flag = 1;
@@ -387,6 +395,7 @@ void pick_inventory(Entity& entity) {
 							break;
 						}
 						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 13) {
+							entity.use(Bag::buy_in_T[0]);
 							Bag::buy_in_T[0].amount--;
 							if (Bag::buy_in_T[0].amount == 0) {
 								flag = 1;
@@ -401,6 +410,8 @@ void pick_inventory(Entity& entity) {
 							break;
 						}
 						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 14) {
+							entity.use(Bag::buy_in_T[1]);
+							entity.teleportScroll = true;
 							Bag::buy_in_T[1].amount--;
 							if (Bag::buy_in_T[1].amount == 0) {
 								flag = 1;
@@ -429,6 +440,7 @@ void pick_inventory(Entity& entity) {
 							break;
 						}
 						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 16) {
+							entity.use(Bag::buy_in_T[3]);
 							Bag::buy_in_T[3].amount--;
 							if (Bag::buy_in_T[3].amount == 0) {
 								flag = 1;

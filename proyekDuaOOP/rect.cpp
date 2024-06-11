@@ -32,10 +32,10 @@ Rect::Rect(int type) {
 		this->type = '$';
 	}
 	else if (type == 7) {
-		this->type == '?';
+		this->type = '?';
 	}
 	else if (type == 8) {
-		this->type == 'T';
+		this->type = 'T';
 	}
 }
 

@@ -43,6 +43,8 @@ public:
 	ptr hl;
 	ptr su;
 
+	bool teleportScroll;
+
 	std::vector<bool> passive;
 	std::vector<int> CD;
 	std::vector<int> buff;

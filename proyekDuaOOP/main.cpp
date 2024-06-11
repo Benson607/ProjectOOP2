@@ -209,7 +209,7 @@ void fight(Entity& role, Entity& enemy) {
 		std::cout << "         ";
 	}
 	Draw::gotoxy(41, 34);
-	if (Bag::buy_in_T[1].amount) {
+	if (Bag::buy_in_T[3].amount) {
 		std::cout << "GoldenRoot";
 	}
 	else {
@@ -233,6 +233,13 @@ void fight(Entity& role, Entity& enemy) {
 			std::cout << enemy.name;
 			role.mainPhaseStart();
 			roleFlee = role.actionForFight(enemy);
+			for (int i = 30; i < 34; i++) {
+				Draw::gotoxy(74, i);
+				std::cout << " ";
+				if (role.CD[i - 30] != -1) {
+					std::cout << role.CD[i - 30];
+				}
+			}
 		}
 		else {
 			Draw::gotoxy(1, 20);
@@ -241,13 +248,6 @@ void fight(Entity& role, Entity& enemy) {
 			std::cout << role.name;
 			enemy.mainPhaseStart();
 			enemyFlee = enemy.actionForEnemy(role);
-		}
-		for (int i = 30; i < 34; i++) {
-			Draw::gotoxy(74, i);
-			std::cout << " ";
-			if (role.CD[i - 30] != -1) {
-				std::cout << role.CD[i - 30];
-			}
 		}
 		Draw::draw(entitySpace, role.xDraw, role.yDraw);
 		Draw::draw(entitySpace, enemy.xDraw, enemy.yDraw);
@@ -325,6 +325,7 @@ void Decide_Turn(std::vector<Entity*>& roles);
 void select_players(std::vector<Entity*>& roles, int i);
 
 int main() {
+	srand(time(NULL));
 	inRange();
 	Draw::draw(pic, 0, 0);
 	Role player1(1, "chen-yon-fa");
@@ -350,16 +351,29 @@ int main() {
 	system("CLS");
 
 	Map map;
-	std::vector<std::vector<Rect>>* temp = &map;
-	Entity::map = temp;
+	Entity::map = &map;
 	map.setWall();  //Wall
 	map.setShop();
+	map.setEvent();
 	map.setRect(player1.rect);   //Player1
 	map.setRect(player2.rect);   //Player2
 	map.setRect(player3.rect);   //Palyer3
 	map.setRect(enemy1.rect);    //Enemy1
 	map.setRect(enemy2.rect);    //Enemy2
 	map.setRect(enemy3.rect);
+
+	Rect e(8);
+	e.x = player1.rect.x - 1;
+	e.y = player1.rect.y - 1;
+	map.setRect(e);
+
+	Bag::buy_in_E[0].amount = 1;
+	Bag::buy_in_E[5].amount = 1;
+	Bag::buy_in_E[12].amount = 1;
+
+	Bag::buy_in_T[0].amount = 1;
+	Bag::buy_in_T[1].amount = 9;
+	Bag::buy_in_T[3].amount = 1;
 
 	/*Item i;
 	i.TeleportScroll();
@@ -543,7 +557,7 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 	Draw_Player_information(stay);
 	show_map_ui();
 	Decide_Turn(roles);
-	while (roles[0]->vitality != 0 && roles[1]->vitality != 0 && roles[2]->vitality != 0) {  //while enemy still exist,loop
+	while (roles[0]->vitality != 0 || roles[1]->vitality != 0 || roles[2]->vitality != 0) {  //while enemy still exist,loop
 		for (int i = 0; i < 3; i++) {
 			if (roles[i]->vitality == 0) {
 				continue;
@@ -570,11 +584,11 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 				gotoxy(53, 6);
 				char input = _getch();
 				wheather_use_focus = input - 48;
-				if (input == 27) {
+				/*if (input == 27) {
 					gotoxy(0, 39);
 					return;
-				}
-				else if (input == '0a' || !isdigit(input) || wheather_use_focus < 0 || wheather_use_focus >roles[i]->focus) {
+				}*/
+				if (input == '0a' || !isdigit(input) || wheather_use_focus < 0 || wheather_use_focus >roles[i]->focus) {
 					gotoxy(53, 7);
 					std::cout << "It's not validable,try again." << std::endl;
 					gotoxy(53, 6);

@@ -14,9 +14,10 @@ namespace Skill {
 				times += 1.0;
 			}
 		}
-		int damage = attacker->pAttack * times / (double)dice.result.size() * ((double)1.0 - choosen->pDefense / (choosen->pDefense + (double)50.0));
+		double isAngry = 1.0 - (attacker->buff[0] > 0) * 0.3;
+		int damage = attacker->pAttack * isAngry * times / (double)dice.result.size() * ((double)1.0 - choosen->pDefense / (choosen->pDefense + (double)50.0));
 		Draw::gotoxy(20, 20);
-		std::cout << attacker->name << " attack " << choosen->name << ": " << damage;
+		std::cout << attacker->name << " attack " << choosen->name << ": " << damage << times;
 		choosen->vitality -= damage;
 		if (choosen->vitality < 0) {
 			choosen->vitality = 0;
@@ -32,7 +33,8 @@ namespace Skill {
 				times += 1.0;
 			}
 		}
-		int damage = attacker->mAttack * times / (double)dice.result.size() * ((double)1.0 - choosen->mDefense / (choosen->mDefense + (double)50.0));
+		double isAngry = 1.0 - (attacker->buff[0] > 0) * 0.3;
+		int damage = attacker->mAttack * isAngry * times / (double)dice.result.size() * ((double)1.0 - choosen->mDefense / (choosen->mDefense + (double)50.0));
 		Draw::gotoxy(20, 20);
 		std::cout << attacker->name << " attack " << choosen->name << ": " << damage;
 		choosen->vitality -= damage;
@@ -50,9 +52,10 @@ namespace Skill {
 				times += 1.0;
 			}
 		}
-		int damage = 3.0 * times / (double)dice.result.size() + 1.0;
+		double isAngry = 1.0 - (attacker->buff[0] > 0) * 0.3;
+		int damage = 3.0 * isAngry * times / (double)dice.result.size() + 1.0;
 		Draw::gotoxy(20, 20);
-		std::cout << attacker->name << " make " << choosen->name << " angry for " << damage - 1 << "turns";
+		std::cout << attacker->name << " make " << choosen->name << " angry for " << damage - 1 << " turns";
 		choosen->buff[0] = damage;
 	}
 
@@ -65,7 +68,8 @@ namespace Skill {
 				times += 1.0;
 			}
 		}
-		int damage = attacker->mAttack * 0.5 * times / (double)dice.result.size() * ((double)1.0 - choosen->mDefense / (choosen->mDefense + (double)50.0));
+		double isAngry = 1.0 - (attacker->buff[0] > 0) * 0.3;
+		int damage = attacker->mAttack * isAngry * 0.5 * times / (double)dice.result.size() * ((double)1.0 - choosen->mDefense / (choosen->mDefense + (double)50.0));
 		Draw::gotoxy(20, 20);
 		std::cout << attacker->name << " shock-blast " << choosen->name << ": " << damage;
 		choosen->vitality -= damage;
@@ -83,7 +87,8 @@ namespace Skill {
 				times += 1.0;
 			}
 		}
-		int damage = attacker->mAttack * 1.5 * times / (double)dice.result.size();
+		double isAngry = 1.0 - (attacker->buff[0] > 0) * 0.3;
+		int damage = attacker->mAttack * isAngry * 1.5 * times / (double)dice.result.size();
 		attacker->vitality += damage;
 		Draw::gotoxy(20, 20);
 		std::cout << attacker->name << " heal himself: " << damage;
@@ -101,7 +106,8 @@ namespace Skill {
 				times++;
 			}
 		}
-		int damage = attacker->speed_max * 0.5 * (double)times / (double)dice.result.size();
+		double isAngry = 1.0 - (attacker->buff[0] > 0) * 0.3;
+		int damage = attacker->speed_max * isAngry * 0.5 * (double)times / (double)dice.result.size();
 		attacker->speed += damage;
 		Draw::gotoxy(20, 20);
 		std::cout << attacker->name << " get SpeedUp: " << attacker->speed;
@@ -148,6 +154,8 @@ Entity::Entity(int type, std::string name) :Stat(), name(name) {
 	CD = std::vector<int>(5, -1);
 	buff = std::vector<int>(4, 0);
 	equip = std::vector<Equipment>(3, Equipment());
+
+	teleportScroll = false;
 }
 
 Entity::~Entity() {
@@ -208,6 +216,9 @@ bool Entity::cmp(Entity other) {
 }
 
 bool Entity::actionForFight(Entity& enemy) {
+	if (buff[1]) {
+		return false;
+	}
 	attacker = this;
 	choosen = &enemy;
 	int input = -1;
@@ -253,11 +264,11 @@ bool Entity::actionForFight(Entity& enemy) {
 					actionEnd = true;
 					pro();
 					useFocus = 0;
+					CD[provoke] = 3;
 				}
 				else {
 					actionEnd = false;
 				}
-				CD[provoke] = 3;
 			}
 		}
 		else if (input == '3') {
@@ -266,11 +277,11 @@ bool Entity::actionForFight(Entity& enemy) {
 					actionEnd = true;
 					sb();
 					useFocus = 0;
+					CD[shock_blast] = 2;
 				}
 				else {
 					actionEnd = false;
 				}
-				CD[shock_blast] = 2;
 			}
 		}
 		else if (input == '4') {
@@ -279,11 +290,11 @@ bool Entity::actionForFight(Entity& enemy) {
 					actionEnd = true;
 					hl();
 					useFocus = 0;
+					CD[heal] = 2;
 				}
 				else {
 					actionEnd = false;
 				}
-				CD[heal] = 2;
 			}
 		}
 		else if (input == '5') {
@@ -292,11 +303,11 @@ bool Entity::actionForFight(Entity& enemy) {
 					actionEnd = true;
 					att();
 					useFocus = 0;
+					CD[speedUp] = 4;
 				}
 				else {
 					actionEnd = false;
 				}
-				CD[speedUp] = 4;
 			}
 		}
 		else if (input == '6') {
@@ -313,13 +324,13 @@ bool Entity::actionForFight(Entity& enemy) {
 			}
 		}
 		else if (input == '7') {
-			if (Bag::buy_in_T[1].amount) {
-				use(Bag::buy_in_T[1]);
-				Bag::buy_in_T[1].amount--;
+			if (Bag::buy_in_T[3].amount) {
+				use(Bag::buy_in_T[3]);
+				Bag::buy_in_T[3].amount--;
 				actionEnd = true;
 				Draw::gotoxy(20, 20);
 				std::cout << attacker->name << " use GoldenRoot";
-				if (Bag::buy_in_T[1].amount <= 0) {
+				if (Bag::buy_in_T[3].amount <= 0) {
 					Draw::gotoxy(41, 34);
 					std::cout << "          ";
 				}
@@ -637,7 +648,7 @@ void Entity::use(Item item) {
 				}
 				break;
 			case 13:
-				if (under.type != ' ') {
+				if (under.type != ' ' && under.type != '$') {
 					out = true;
 				}
 				break;
@@ -647,6 +658,7 @@ void Entity::use(Item item) {
 		}
 		map[0][rect.x][rect.y].type = originType;
 		rect = map[0][rect.x][rect.y];
+		Draw::drawMap(map[0], rect.x - 12, rect.y - 25);
 	}
 	if (item.name == "Tent") {
 
