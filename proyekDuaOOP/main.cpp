@@ -76,10 +76,10 @@ std::vector<std::string> fight_ui = {
   "|                                                                                                                                                         |",
   "|-------------------|-------------------------------------------------------------------------------------------------------------------------------------|",
   "|                   |                                                                                                                                     |",
-  "|                   | 1.Attack         5.SpeedUp          CD: Provoke                                                                                     |",
-  "|                   |                                         Shock-Blast                                                                                 |",
-  "|                   | 2.Provoke        6.Godsbeard            Heal                                                                                        |",
-  "|                   |                                         SpeedUp                                                                                     |",
+  "|                   | 1.Attack         5.SpeedUp          CD: Provoke          Buff:Angry                                                                 |",
+  "|                   |                                         Shock-Blast           Dizziness                                                             |",
+  "|                   | 2.Provoke        6.Godsbeard            Heal                  Poisoned                                                              |",
+  "|                   |                                         SpeedUp               SpeedUp                                                               |",
   "|                   | 3.Shock-Blast    7.GoldenRoot                                                                                                       |",
   "|                   |                                                                                                                                     |",
   "|                   | 4.Heal           ESC.Flee                                                                                                           |",
@@ -223,7 +223,10 @@ void fight(Entity& role, Entity& enemy) {
 			std::cout << role.CD[i - 30];
 		}
 	}
-
+	for (int i = 30; i < 34; i++) {
+		Draw::gotoxy(94, i);
+		std::cout << role.buff[i - 30];
+	}
 	while (!roleFlee && !enemyFlee && role.vitality > 0 && enemy.vitality > 0) {
 		Draw::draw(space, 1, 20);
 		if (role.cmp(enemy)) {
@@ -232,7 +235,6 @@ void fight(Entity& role, Entity& enemy) {
 			Draw::gotoxy(1, 21);
 			std::cout << enemy.name;
 			role.mainPhaseStart();
-			roleFlee = role.actionForFight(enemy);
 			for (int i = 30; i < 34; i++) {
 				Draw::gotoxy(74, i);
 				std::cout << " ";
@@ -240,6 +242,11 @@ void fight(Entity& role, Entity& enemy) {
 					std::cout << role.CD[i - 30];
 				}
 			}
+			for (int i = 30; i < 34; i++) {
+				Draw::gotoxy(94, i);
+				std::cout << role.buff[i - 30];
+			}
+			roleFlee = role.actionForFight(enemy);
 		}
 		else {
 			Draw::gotoxy(1, 20);
@@ -549,7 +556,7 @@ void show_player_equipment_buff(std::vector<Entity*>& roles) {
 }
 
 void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& map) {
-	// operate
+	int which_enemy = 0, which_player = 0;
 	int wheather_use_focus = 0;
 	int Turn_Counted = 1;
 	Dice dice;
@@ -580,6 +587,8 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 			setColor();
 			gotoxy(53, 5);
 			std::cout << "Do you want to use focus?" << std::endl;
+			gotoxy(53, 7);
+			std::cout << "                             ";
 			while (1) {
 				gotoxy(53, 6);
 				char input = _getch();
@@ -625,27 +634,34 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 				map.nowx = roles[i]->rect.x;
 				map.nowy = roles[i]->rect.y;
 				if (roles[i]->name == "chen-yon-fa") {
-					map.getinput(*roles[i], 1, roles[0]->rect.x, roles[0]->rect.y, roles[1]->rect.x, roles[1]->rect.y, roles[2]->rect.x, roles[2]->rect.y);
+					map.getinput(*roles[i], 1, stay);
 					if (map.end_game == 1) {
 						gotoxy(0, 39);
 						return;
 					}
+					which_player = 1;
 				}
 				else if (roles[i]->name == "Alus") {
-					map.getinput(*roles[i], 2, roles[0]->rect.x, roles[0]->rect.y, roles[1]->rect.x, roles[1]->rect.y, roles[2]->rect.x, roles[2]->rect.y);
+					map.getinput(*roles[i], 2, stay);
 					if (map.end_game == 1) {
 						gotoxy(0, 39);
 						return;
 					}
+					which_player = 2;
 				}
 				else if (roles[i]->name == "boring bowling") {
-					map.getinput(*roles[i], 3, roles[0]->rect.x, roles[0]->rect.y, roles[1]->rect.x, roles[1]->rect.y, roles[2]->rect.x, roles[2]->rect.y);
+					map.getinput(*roles[i], 3, stay);
 					if (map.end_game == 1) {
 						gotoxy(0, 39);
 						return;
 					}
+					which_player = 3;
 				}
 
+				if (roles[i]->teleportScroll) {
+					roles[i]->teleportScroll = false;
+					j++;
+				}
 				gotoxy(68, 4);
 				for (int k = 0; k < dice.result.size(); k++) {
 					if (dice.result[k] == 'T') {
@@ -658,9 +674,16 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					}
 				}
 
+				if (map.stay_tent_x != -1 || map.stay_tent_y != -1) {
+					map.set_new_rect_type(map.stay_tent_x, map.stay_tent_y, 'T');
+					map.stay_tent_x = -1;
+					map.stay_tent_y = -1;
+					roles[i]->rect.x = map.nowx;
+					roles[i]->rect.y = map.nowy;
+					Draw::drawMap(map, roles[i]->rect.x - 12, roles[i]->rect.y - 25);
+				}
 				//if getinput new position meet enemy, fight
 				if (map[map.nowx][map.nowy].type == 'E') {
-					int which_enemy = 0;
 					if (map.nowx == enemys[0]->rect.x && map.nowy == enemys[0]->rect.y && roles[0]->vitality != 0) {
 						system("CLS");
 						setColor(7);
@@ -716,6 +739,17 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					roles[i]->rect.y = map.nowy;
 					Draw::drawMap(map, roles[i]->rect.x - 12, roles[i]->rect.y - 25);
 				}
+			}
+			if (map[roles[i]->rect.x][roles[i]->rect.y].type == 'T') {
+				roles[i]->vitality += 50;
+				roles[i]->focus += 5;
+				if (roles[i]->vitality > roles[i]->vitality_max) {
+					roles[i]->vitality = roles[i]->vitality_max;
+				}
+				if (roles[i]->focus > roles[i]->focus_max) {
+					roles[i]->focus = roles[i]->focus_max;
+				}
+				map[roles[i]->rect.x][roles[i]->rect.y].type = roles[i]->rect.type;
 			}
 			Turn_Counted++;
 		}

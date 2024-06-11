@@ -17,7 +17,7 @@ namespace Skill {
 		double isAngry = 1.0 - (attacker->buff[0] > 0) * 0.3;
 		int damage = attacker->pAttack * isAngry * times / (double)dice.result.size() * ((double)1.0 - choosen->pDefense / (choosen->pDefense + (double)50.0));
 		Draw::gotoxy(20, 20);
-		std::cout << attacker->name << " attack " << choosen->name << ": " << damage << times;
+		std::cout << attacker->name << " attack " << choosen->name << ": " << damage;
 		choosen->vitality -= damage;
 		if (choosen->vitality < 0) {
 			choosen->vitality = 0;
@@ -235,21 +235,29 @@ bool Entity::actionForFight(Entity& enemy) {
 	while (!actionEnd) {
 		input = _getch();
 		if (input == 27) {//esc
-			temp = Draw::readSpace(64, 18, 6, 30);
-			Draw::draw(fleeCheck, 64, 18);
-			do {
-				input = _getch();
-				if (input == 13) {
-					Draw::draw(temp, 64, 18);
+			if (askFocus(fleeDice)) {
+				Dice dice;
+				double possible = vitality / (vitality_max + pDefense + mDefense) * speed;
+				if (possible > 98.0) {
+					possible = 98.0;
+				}
+				dice.attack(*this, useFocus, 1, possible);
+				if (dice.result[0] == 'T') {
 					attacker = NULL;
 					choosen = NULL;
+					speed = speed_max;
+					for (int i = 0; i < 4; i++) {
+						buff[i] = 0;
+					}
+					for (int i = 0; i < 5; i++) {
+						CD[i] = 0;
+					}
 					return true;
 				}
-			} while (input != 13 && input != 27);
-			Draw::draw(temp, 64, 18);
+			}
 		}
 		if (input == '1') {
-			if (askFocus()) {
+			if (askFocus(attackDice)) {
 				actionEnd = true;
 				att();
 				useFocus = 0;
@@ -260,7 +268,7 @@ bool Entity::actionForFight(Entity& enemy) {
 		}
 		else if (input == '2') {
 			if (pro && CD[provoke] == 0) {
-				if (askFocus()) {
+				if (askFocus(provokeDice)) {
 					actionEnd = true;
 					pro();
 					useFocus = 0;
@@ -273,7 +281,7 @@ bool Entity::actionForFight(Entity& enemy) {
 		}
 		else if (input == '3') {
 			if (sb && CD[shock_blast] == 0) {
-				if (askFocus()) {
+				if (askFocus(sbDice)) {
 					actionEnd = true;
 					sb();
 					useFocus = 0;
@@ -286,7 +294,7 @@ bool Entity::actionForFight(Entity& enemy) {
 		}
 		else if (input == '4') {
 			if (hl && CD[heal] == 0) {
-				if (askFocus()) {
+				if (askFocus(healDice)) {
 					actionEnd = true;
 					hl();
 					useFocus = 0;
@@ -299,9 +307,9 @@ bool Entity::actionForFight(Entity& enemy) {
 		}
 		else if (input == '5') {
 			if (su && CD[speedUp] == 0) {
-				if (askFocus()) {
+				if (askFocus(suDice)) {
 					actionEnd = true;
-					att();
+					su();
 					useFocus = 0;
 					CD[speedUp] = 4;
 				}
@@ -366,7 +374,7 @@ bool Entity::actionForEnemy(Entity& role) {
 	return false;
 }
 
-bool Entity::askFocus() {
+bool Entity::askFocus(int numOfDice) {
 	std::vector<std::string> focusCheck = {
 		"------------------------------",
 		"|     Enter fucus amount     |",
@@ -384,7 +392,7 @@ bool Entity::askFocus() {
 		Draw::draw(focusCheck, 64, 18);
 		Draw::gotoxy(81, 22);
 		std::cout << focus;
-		std::string numberStr = itos(useFocus) + "/" + itos(attackDice);
+		std::string numberStr = itos(useFocus) + "/" + itos(numOfDice);
 		Draw::gotoxy(78 - numberStr.length() / 2, 21);
 		std::cout << numberStr;
 		input = _getch();
@@ -396,7 +404,7 @@ bool Entity::askFocus() {
 			useFocus /= 10;
 		}
 		else if (input == 13) {
-			if (useFocus <= focus && useFocus <= attackDice) {
+			if (useFocus <= focus && useFocus <= numOfDice) {
 				Draw::draw(temp, 64, 18);
 				return true;
 				break;
@@ -467,11 +475,11 @@ void Entity::use(Equipment equipment) {
 			CD[shock_blast] = 0;
 		}
 		else if (i == "Heal") {
-			pro = Skill::heal;
+			hl = Skill::heal;
 			CD[heal] = 0;
 		}
 		else if (i == "SpeedUp") {
-			pro = Skill::speedUp;
+			su = Skill::speedUp;
 			CD[speedUp] = 0;
 		}
 		else if (i == "Run") {
@@ -536,6 +544,12 @@ void Entity::takeOff(int type) {
 			CD[fortify] = -1;
 		}
 	}
+	for (Equipment& i : Bag::buy_in_E) {
+		if (i.name == equip[type].name) {
+			i.amount++;
+			break;
+		}
+	}
 	equip[type] = Equipment();
 	checkDice();
 }
@@ -598,9 +612,15 @@ void Entity::checkDice() {
 void Entity::use(Item item) {
 	if (item.name == "Godsbeard") {
 		*this += item.status;
+		if (vitality > vitality_max) {
+			vitality = vitality_max;
+		}
 	}
 	if (item.name == "GoldenRoot") {
 		*this += item.status;
+		if (focus > focus_max) {
+			focus = focus_max;
+		}
 	}
 	if (item.name == "TeleportScroll") {
 		char originType = rect.type;
@@ -648,7 +668,7 @@ void Entity::use(Item item) {
 				}
 				break;
 			case 13:
-				if (under.type != ' ' && under.type != '$') {
+				if (under.type == '.' || under.type == 'T') {
 					out = true;
 				}
 				break;
@@ -658,9 +678,13 @@ void Entity::use(Item item) {
 		}
 		map[0][rect.x][rect.y].type = originType;
 		rect = map[0][rect.x][rect.y];
+		if (under.type == 'T') {
+			map[0][rect.x][rect.y].type = 'T';
+		}
 		Draw::drawMap(map[0], rect.x - 12, rect.y - 25);
 	}
 	if (item.name == "Tent") {
-
+		map[0][rect.x][rect.y].type = 'T';
+		Draw::drawMap(map[0], rect.x - 12, rect.y - 25);
 	}
 }

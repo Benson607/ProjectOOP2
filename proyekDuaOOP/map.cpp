@@ -68,6 +68,19 @@ void show_map_ui_again() {
 	setColor();
 }
 
+void show_partial_ui() {
+	gotoxy(54, 27);
+	setColor(136);
+	std::cout << " ";
+	gotoxy(64, 27);
+	setColor(224);
+	std::cout << ".";
+	gotoxy(74, 27);
+	setColor(240);
+	std::cout << "$";
+	setColor();
+}
+
 Map::Map() : std::vector<std::vector<Rect>>(50, std::vector<Rect>(140, Rect(5))) {
 	for (int i = 0; i < 50; i++) {
 		for (int j = 0; j < 140; j++) {
@@ -161,37 +174,43 @@ void Map::show() {
 	}
 }
 
-void Map::getinput(Entity& entity, int player, int player1_x, int player1_y, int player2_x, int player2_y, int player3_x, int player3_y) {
+void Map::getinput(Entity& entity, int player, std::vector<Entity*>& stay) {
 	int  input;
 	bool can_walk = 0;
 
 	if (player == 1) {
-		if (player1_x == player2_x && player1_y == player2_y)  // if Player1's position = Player2's position
+		if (stay[0]->rect.x == stay[1]->rect.x && stay[0]->rect.y == stay[1]->rect.y && stay[1]->vitality != 0)  // if Player1's position = Player2's position
 			this[0][nowx][nowy].type = '2';
-		else if (player1_x == player3_x && player1_y == player3_y)  // if Player1's position = Player3's position
+		else if (stay[0]->rect.x == stay[2]->rect.x && stay[0]->rect.y == stay[2]->rect.y && stay[2]->vitality != 0)  // if Player1's position = Player3's position
 			this[0][nowx][nowy].type = '3';
 		else if (this[0][nowx][nowy].type == 'E')
 			this[0][nowx][nowy].type = 'E';
+		else if (this[0][nowx][nowy].type == 'T')
+			this[0][nowx][nowy].type = 'T';
 		else
 			this[0][nowx][nowy].type = '.';  // turn the start postition to '.' rect
 	}
 	else if (player == 2) {
-		if (player2_x == player1_x && player2_y == player1_y)  // if Player2's position = Player1's position
+		if (stay[1]->rect.x == stay[0]->rect.x && stay[1]->rect.y == stay[0]->rect.y && stay[0]->vitality != 0)  // if Player2's position = Player1's position
 			this[0][nowx][nowy].type = '1';
-		else if (player2_x == player3_x && player2_y == player3_y)  // if Player2's position = Player3's position
+		else if (stay[1]->rect.x == stay[2]->rect.x && stay[1]->rect.y == stay[2]->rect.y && stay[2]->vitality != 0)  // if Player2's position = Player3's position
 			this[0][nowx][nowy].type = '3';
 		else if (this[0][nowx][nowy].type == 'E')
 			this[0][nowx][nowy].type = 'E';
+		else if (this[0][nowx][nowy].type == 'T')
+			this[0][nowx][nowy].type = 'T';
 		else
 			this[0][nowx][nowy].type = '.';  // turn the start postition to '.' rect
 	}
 	else if (player == 3) {
-		if (player3_x == player1_x && player3_y == player1_y)  // if Player3's position = Player1's position
+		if (stay[2]->rect.x == stay[0]->rect.x && stay[2]->rect.y == stay[0]->rect.y && stay[0]->vitality != 0)  // if Player3's position = Player1's position
 			this[0][nowx][nowy].type = '1';
-		else if (player3_x == player2_x && player3_y == player2_y)  // if Player3's position = Player2's position
+		else if (stay[2]->rect.x == stay[1]->rect.x && stay[2]->rect.y == stay[1]->rect.y && stay[1]->vitality != 0)  // if Player3's position = Player2's position
 			this[0][nowx][nowy].type = '2';
 		else if (this[0][nowx][nowy].type == 'E')
 			this[0][nowx][nowy].type = 'E';
+		else if (this[0][nowx][nowy].type == 'T')
+			this[0][nowx][nowy].type = 'T';
 		else
 			this[0][nowx][nowy].type = '.';  // turn the start postition to '.' rect
 	}
@@ -286,6 +305,12 @@ void Map::getinput(Entity& entity, int player, int player1_x, int player1_y, int
 		case 105:  // i
 			Bag::bag_ui();
 			pick_inventory(entity);
+			if (entity.teleportScroll) {
+				nowx = entity.rect.x;
+				nowy = entity.rect.y;
+			}
+			show_partial_ui();
+			can_walk = 0;
 			break;
 		case 27:
 			//end_game = 1;
@@ -300,8 +325,13 @@ void Map::getinput(Entity& entity, int player, int player1_x, int player1_y, int
 	if (this[0][nowx][nowy].type == 'E')  // if new position meet enemy, return, and fight
 		return;
 
+	else if (this[0][nowx][nowy].type == 'T') {
+		stay_tent_x = nowx;
+		stay_tent_y = nowy;
+		this[0][nowx][nowy].type = player + 48;
+	}
+
 	if (entity.teleportScroll) {
-		entity.teleportScroll = false;
 		nowx = entity.rect.x;
 		nowy = entity.rect.y;
 	}
@@ -426,6 +456,7 @@ void pick_inventory(Entity& entity) {
 							break;
 						}
 						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 15) {
+							entity.use(Bag::buy_in_T[2]);
 							Bag::buy_in_T[2].amount--;
 							if (Bag::buy_in_T[2].amount == 0) {
 								flag = 1;

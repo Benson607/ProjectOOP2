@@ -79,7 +79,7 @@ public:
 	void addActionTimes();
 	bool actionForFight(Entity& enemy);
 	bool actionForEnemy(Entity& role);
-	bool askFocus();
+	bool askFocus(int numOfDice);
 
 	bool cmp(Entity other);
 	void setName(std::string name);
