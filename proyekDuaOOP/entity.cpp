@@ -8,10 +8,17 @@ namespace Skill {
 		Dice dice;
 		dice.attack(*attacker, attacker->useFocus, attacker->attackDice, attacker->hitrate);
 		double times = 0;
-
+		if (attacker->passive[0]) {
+			dice.result[0] = 'T';
+		}
 		for (int i = 0; i < dice.result.size(); i++) {
 			if (dice.result[i] == 'T') {
 				times += 1.0;
+			}
+		}
+		if (attacker->passive[1]) {
+			if ((int)times == dice.result.size()) {
+				choosen->buff[1] = 2;
 			}
 		}
 		double isAngry = 1.0 - (attacker->buff[0] > 0) * 0.3;
@@ -28,6 +35,9 @@ namespace Skill {
 		Dice dice;
 		dice.attack(*attacker, attacker->useFocus, attacker->attackDice, attacker->hitrate);
 		double times = 0;
+		if (attacker->passive[0]) {
+			dice.result[0] = 'T';
+		}
 		for (int i = 0; i < dice.result.size(); i++) {
 			if (dice.result[i] == 'T') {
 				times += 1.0;
@@ -47,6 +57,9 @@ namespace Skill {
 		Dice dice;
 		dice.attack(*attacker, attacker->useFocus, attacker->provokeDice, attacker->vitality / (attacker->vitality_max + attacker->pAttack + attacker->mAttack));
 		double times = 0;
+		if (attacker->passive[0]) {
+			dice.result[0] = 'T';
+		}
 		for (int i = 0; i < dice.result.size(); i++) {
 			if (dice.result[i] == 'T') {
 				times += 1.0;
@@ -63,6 +76,9 @@ namespace Skill {
 		Dice dice;
 		dice.attack(*attacker, attacker->useFocus, attacker->sbDice, attacker->hitrate - 5);
 		double times = 0;
+		if (attacker->passive[0]) {
+			dice.result[0] = 'T';
+		}
 		for (int i = 0; i < dice.result.size(); i++) {
 			if (dice.result[i] == 'T') {
 				times += 1.0;
@@ -82,6 +98,9 @@ namespace Skill {
 		Dice dice;
 		dice.attack(*attacker, attacker->useFocus, attacker->healDice, attacker->hitrate - 5);
 		double times = 0;
+		if (attacker->passive[0]) {
+			dice.result[0] = 'T';
+		}
 		for (int i = 0; i < dice.result.size(); i++) {
 			if (dice.result[i] == 'T') {
 				times += 1.0;
@@ -101,6 +120,9 @@ namespace Skill {
 		Dice dice;
 		dice.attack(*attacker, attacker->useFocus, attacker->suDice, attacker->hitrate);
 		int times = 0;
+		if (attacker->passive[0]) {
+			dice.result[0] = 'T';
+		}
 		for (int i = 0; i < dice.result.size(); i++) {
 			if (dice.result[i] == 'T') {
 				times++;
@@ -244,6 +266,9 @@ bool Entity::actionForFight(Entity& enemy) {
 					possible = 98.0;
 				}
 				dice.attack(*this, useFocus, 1, possible);
+				if (attacker->passive[0]) {
+					dice.result[0] = 'T';
+				}
 				if (dice.result[0] == 'T') {
 					attacker = NULL;
 					choosen = NULL;

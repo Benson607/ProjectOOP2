@@ -9,8 +9,6 @@
 #include "shop.h"
 #include "event.h"
 
-using namespace Draw;
-
 void pick_inventory(Entity& entity);
 
 Shop shop;

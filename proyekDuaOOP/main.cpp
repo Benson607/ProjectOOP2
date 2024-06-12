@@ -373,42 +373,8 @@ int main() {
 	map.setRect(enemy2.rect);    //Enemy2
 	map.setRect(enemy3.rect);
 
-	Rect e(8);
-	e.x = player1.rect.x - 1;
-	e.y = player1.rect.y - 1;
-	map.setRect(e);
-
-	Bag::buy_in_E[0].amount = 1;
-	Bag::buy_in_E[5].amount = 1;
-	Bag::buy_in_E[12].amount = 1;
-
-	Bag::buy_in_T[0].amount = 1;
-	Bag::buy_in_T[1].amount = 9;
-	Bag::buy_in_T[3].amount = 1;
-
-	/*Item i;
-	i.TeleportScroll();
-	player1.use(i);*/
-
 	GameLoop(roles, enemys, map);
 
-	//// operate
-	//int wheather_use_focus = 0;
-	//int Turn_Counted = 1;
-	//Dice dice;
-
-	///*shop.show();
-	//shop.select_product();
-
-	//bag.bag_ui();
-	//pick_inventory();
-	/*Bag();
-	Bag::buy_in_T[0].amount = 1;
-	Bag::buy_in_T[1].amount = 1;
-	Equipment e;
-	e.Weapon("Hammer");
-	player2.use(e);
-	fight(player2, enemy1);*/
 }
 
 
@@ -537,16 +503,17 @@ void Decide_Turn(std::vector<Entity*>& roles) {
 
 void show_player_equipment_buff(std::vector<Entity*>& roles) {
 	std::vector<std::string> buff_name = { "Angry","Dizziness","Poisoned","SpeedUp" };
+	Draw::draw(std::vector<std::string>(5, "                                                              "), 83, 0);
 	for (int i = 0; i < 3; i++) {
-		gotoxy(83 + 25 * i, 0);
+		gotoxy(83 + 20 * i, 0);
 		std::cout << roles[i]->name;
-		gotoxy(83 + 25 * i, 1);
+		gotoxy(83 + 20 * i, 1);
 		std::cout << "Weapon : " << roles[i]->equip[0].name;
-		gotoxy(83 + 25 * i, 2);
+		gotoxy(83 + 20 * i, 2);
 		std::cout << "Armour : " << roles[i]->equip[1].name;
-		gotoxy(83 + 25 * i, 3);
+		gotoxy(83 + 20 * i, 3);
 		std::cout << "Accessory : " << roles[i]->equip[2].name;
-		gotoxy(83 + 25 * i, 4);
+		gotoxy(83 + 20 * i, 4);
 		std::cout << "Buff : ";
 		for (int j = 0; j < roles[i]->buff.size(); j++) {
 			if (roles[i]->buff[j] != 0) {
@@ -590,7 +557,7 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 			show_player_equipment_buff(stay);
 			setColor();
 			gotoxy(53, 5);
-			std::cout << "Do you want to use focus?" << std::endl;
+			std::cout << "Do you want to use focus?";
 			gotoxy(53, 7);
 			std::cout << "                             ";
 			while (1) {
@@ -603,7 +570,7 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 				}*/
 				if (input < '0' || input > '9') {
 					gotoxy(53, 7);
-					std::cout << "It's not validable,try again." << std::endl;
+					std::cout << "It's not validable,try again.";
 					gotoxy(53, 6);
 					std::cout << "         ";
 					gotoxy(53, 6);
@@ -611,6 +578,8 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 				}
 
 				else {
+					gotoxy(53, 7);
+					std::cout << "                             ";
 					break;
 				}
 			}
@@ -726,6 +695,7 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					}
 					select_players(roles, i);
 					if (enemys[which_enemy]->vitality == 0) {   //enemy die
+						map.set_new_rect_type(roles[i]->rect.x, roles[i]->rect.y, '.');
 						map.set_new_rect_type(map.nowx, map.nowy, '.');
 						map.set_new_rect_type(map.nowx, map.nowy, which_player + 48);
 						roles[i]->rect.x = map.nowx;
