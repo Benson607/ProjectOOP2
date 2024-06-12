@@ -7,6 +7,7 @@
 #include "enemy.h"
 #include "role.h"
 #include "shop.h"
+#include "event.h"
 
 using namespace Draw;
 
@@ -179,14 +180,14 @@ void Map::getinput(Entity& entity, int player, std::vector<Entity*>& stay) {
 	bool can_walk = 0;
 
 	if (player == 1) {
-		if (stay[0]->rect.x == stay[1]->rect.x && stay[0]->rect.y == stay[1]->rect.y && stay[1]->vitality!=0)  // if Player1's position = Player2's position
+		if (stay[0]->rect.x == stay[1]->rect.x && stay[0]->rect.y == stay[1]->rect.y && stay[1]->vitality != 0)  // if Player1's position = Player2's position
 			this[0][nowx][nowy].type = '2';
 		else if (stay[0]->rect.x == stay[2]->rect.x && stay[0]->rect.y == stay[2]->rect.y && stay[2]->vitality != 0)  // if Player1's position = Player3's position
 			this[0][nowx][nowy].type = '3';
 		else if (this[0][nowx][nowy].type == 'E')
 			this[0][nowx][nowy].type = 'E';
 		else if (this[0][nowx][nowy].type == 'T')
-			this[0][nowx][nowy].type='T';
+			this[0][nowx][nowy].type = 'T';
 		else
 			this[0][nowx][nowy].type = '.';  // turn the start postition to '.' rect
 	}
@@ -305,7 +306,12 @@ void Map::getinput(Entity& entity, int player, std::vector<Entity*>& stay) {
 		case 105:  // i
 			Bag::bag_ui();
 			pick_inventory(entity);
+			if (entity.teleportScroll) {
+				nowx = entity.rect.x;
+				nowy = entity.rect.y;
+			}
 			show_partial_ui();
+			can_walk = 0;
 			break;
 		case 27:
 			//end_game = 1;
@@ -326,8 +332,13 @@ void Map::getinput(Entity& entity, int player, std::vector<Entity*>& stay) {
 		this[0][nowx][nowy].type = player + 48;
 	}
 
-	else if (entity.teleportScroll) {
-		entity.teleportScroll = false;
+	else if (this[0][nowx][nowy].type == '?') {
+		Event event;
+		event.Random_Event(entity);
+		this[0][nowx][nowy].type = player + 48;
+	}
+
+	if (entity.teleportScroll) {
 		nowx = entity.rect.x;
 		nowy = entity.rect.y;
 	}
@@ -452,6 +463,7 @@ void pick_inventory(Entity& entity) {
 							break;
 						}
 						else if (Bag::pos_x == Bag::pos_xy[i][0] && Bag::pos_y == Bag::pos_xy[i][1] && Bag::pos_xy[i][2] == 15) {
+							entity.use(Bag::buy_in_T[2]);
 							Bag::buy_in_T[2].amount--;
 							if (Bag::buy_in_T[2].amount == 0) {
 								flag = 1;

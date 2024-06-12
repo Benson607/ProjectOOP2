@@ -76,10 +76,10 @@ std::vector<std::string> fight_ui = {
   "|                                                                                                                                                         |",
   "|-------------------|-------------------------------------------------------------------------------------------------------------------------------------|",
   "|                   |                                                                                                                                     |",
-  "|                   | 1.Attack         5.SpeedUp          CD: Provoke                                                                                     |",
-  "|                   |                                         Shock-Blast                                                                                 |",
-  "|                   | 2.Provoke        6.Godsbeard            Heal                                                                                        |",
-  "|                   |                                         SpeedUp                                                                                     |",
+  "|                   | 1.Attack         5.SpeedUp          CD: Provoke          Buff:Angry                                                                 |",
+  "|                   |                                         Shock-Blast           Dizziness                                                             |",
+  "|                   | 2.Provoke        6.Godsbeard            Heal                  Poisoned                                                              |",
+  "|                   |                                         SpeedUp               SpeedUp                                                               |",
   "|                   | 3.Shock-Blast    7.GoldenRoot                                                                                                       |",
   "|                   |                                                                                                                                     |",
   "|                   | 4.Heal           ESC.Flee                                                                                                           |",
@@ -223,7 +223,10 @@ void fight(Entity& role, Entity& enemy) {
 			std::cout << role.CD[i - 30];
 		}
 	}
-
+	for (int i = 30; i < 34; i++) {
+		Draw::gotoxy(94, i);
+		std::cout << role.buff[i - 30];
+	}
 	while (!roleFlee && !enemyFlee && role.vitality > 0 && enemy.vitality > 0) {
 		Draw::draw(space, 1, 20);
 		if (role.cmp(enemy)) {
@@ -232,13 +235,21 @@ void fight(Entity& role, Entity& enemy) {
 			Draw::gotoxy(1, 21);
 			std::cout << enemy.name;
 			role.mainPhaseStart();
-			roleFlee = role.actionForFight(enemy);
 			for (int i = 30; i < 34; i++) {
 				Draw::gotoxy(74, i);
 				std::cout << " ";
 				if (role.CD[i - 30] != -1) {
 					std::cout << role.CD[i - 30];
 				}
+			}
+			for (int i = 30; i < 34; i++) {
+				Draw::gotoxy(94, i);
+				std::cout << role.buff[i - 30];
+			}
+			roleFlee = role.actionForFight(enemy);
+			for (int i = 30; i < 34; i++) {
+				Draw::gotoxy(94, i);
+				std::cout << role.buff[i - 30];
 			}
 		}
 		else {
@@ -527,15 +538,15 @@ void Decide_Turn(std::vector<Entity*>& roles) {
 void show_player_equipment_buff(std::vector<Entity*>& roles) {
 	std::vector<std::string> buff_name = { "Angry","Dizziness","Poisoned","SpeedUp" };
 	for (int i = 0; i < 3; i++) {
-		gotoxy(83 + 20 * i, 0);
+		gotoxy(83 + 25 * i, 0);
 		std::cout << roles[i]->name;
-		gotoxy(83 + 20 * i, 1);
+		gotoxy(83 + 25 * i, 1);
 		std::cout << "Weapon : " << roles[i]->equip[0].name;
-		gotoxy(83 + 20 * i, 2);
+		gotoxy(83 + 25 * i, 2);
 		std::cout << "Armour : " << roles[i]->equip[1].name;
-		gotoxy(83 + 20 * i, 3);
+		gotoxy(83 + 25 * i, 3);
 		std::cout << "Accessory : " << roles[i]->equip[2].name;
-		gotoxy(83 + 20 * i, 4);
+		gotoxy(83 + 25 * i, 4);
 		std::cout << "Buff : ";
 		for (int j = 0; j < roles[i]->buff.size(); j++) {
 			if (roles[i]->buff[j] != 0) {
@@ -590,7 +601,7 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					gotoxy(0, 39);
 					return;
 				}*/
-				if (input == '0a' || !isdigit(input) || wheather_use_focus < 0 || wheather_use_focus >roles[i]->focus) {
+				if (input < '0' || input > '9') {
 					gotoxy(53, 7);
 					std::cout << "It's not validable,try again." << std::endl;
 					gotoxy(53, 6);
@@ -626,7 +637,6 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 				show_player_equipment_buff(stay);
 				map.nowx = roles[i]->rect.x;
 				map.nowy = roles[i]->rect.y;
-				//map.getinput(*roles[i], 1, stay[0]->rect.x, stay[0]->rect.y, stay[1]->rect.x, stay[1]->rect.y, stay[2]->rect.x, stay[2]->rect.y);
 				if (roles[i]->name == "chen-yon-fa") {
 					map.getinput(*roles[i], 1, stay);
 					if (map.end_game == 1) {
@@ -652,6 +662,10 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					which_player = 3;
 				}
 
+				if (roles[i]->teleportScroll) {
+					roles[i]->teleportScroll = false;
+					j++;
+				}
 				gotoxy(68, 4);
 				for (int k = 0; k < dice.result.size(); k++) {
 					if (dice.result[k] == 'T') {
@@ -673,20 +687,20 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					Draw::drawMap(map, roles[i]->rect.x - 12, roles[i]->rect.y - 25);
 				}
 				//if getinput new position meet enemy, fight
-				else if (map[map.nowx][map.nowy].type == 'E') {
-					if (map.nowx == enemys[0]->rect.x && map.nowy == enemys[0]->rect.y && roles[0]->vitality != 0) {
+				if (map[map.nowx][map.nowy].type == 'E') {
+					if (map.nowx == enemys[0]->rect.x && map.nowy == enemys[0]->rect.y && enemys[0]->vitality != 0) {
 						system("CLS");
 						setColor(7);
 						fight(*roles[i], *enemys[0]);
 						which_enemy = 0;
 					}
-					else if (map.nowx == enemys[1]->rect.x && map.nowy == enemys[1]->rect.y && roles[1]->vitality != 0) {
+					else if (map.nowx == enemys[1]->rect.x && map.nowy == enemys[1]->rect.y && enemys[1]->vitality != 0) {
 						system("CLS");
 						setColor(7);
 						fight(*roles[i], *enemys[1]);
 						which_enemy = 1;
 					}
-					else if (map.nowx == enemys[2]->rect.x && map.nowy == enemys[2]->rect.y && roles[2]->vitality != 0) {
+					else if (map.nowx == enemys[2]->rect.x && map.nowy == enemys[2]->rect.y && enemys[2]->vitality != 0) {
 						system("CLS");
 						setColor(7);
 						fight(*roles[i], *enemys[2]);
@@ -706,6 +720,8 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					Draw_Player_information(stay);
 					show_player_equipment_buff(stay);
 					if (roles[i]->vitality == 0) {
+						map.set_new_rect_type(roles[i]->rect.x, roles[i]->rect.y, '.');
+						Draw::drawMap(map, roles[i]->rect.x - 12, roles[i]->rect.y - 25);
 						break;
 					}
 					select_players(roles, i);
@@ -729,6 +745,17 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					roles[i]->rect.y = map.nowy;
 					Draw::drawMap(map, roles[i]->rect.x - 12, roles[i]->rect.y - 25);
 				}
+			}
+			if (map[roles[i]->rect.x][roles[i]->rect.y].type == 'T') {
+				roles[i]->vitality += 50;
+				roles[i]->focus += 5;
+				if (roles[i]->vitality > roles[i]->vitality_max) {
+					roles[i]->vitality = roles[i]->vitality_max;
+				}
+				if (roles[i]->focus > roles[i]->focus_max) {
+					roles[i]->focus = roles[i]->focus_max;
+				}
+				map[roles[i]->rect.x][roles[i]->rect.y].type = roles[i]->rect.type;
 			}
 			Turn_Counted++;
 		}
