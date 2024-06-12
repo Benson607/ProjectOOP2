@@ -108,10 +108,12 @@ namespace Skill {
 		}
 		double isAngry = 1.0 - (attacker->buff[0] > 0) * 0.3;
 		int damage = attacker->speed_max * isAngry * 0.5 * (double)times / (double)dice.result.size();
-		attacker->speed += damage;
+		if (damage) {
+			attacker->buff[3] = 1;
+		}
+		attacker->speed *= 1.5;
 		Draw::gotoxy(20, 20);
-		std::cout << attacker->name << " get SpeedUp: " << attacker->speed;
-		attacker->buff[3] = 2;
+		std::cout << attacker->name << " use SpeedUp: " << (bool)(attacker->buff[3]);
 	}
 }
 

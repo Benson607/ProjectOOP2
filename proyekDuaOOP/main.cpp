@@ -247,6 +247,10 @@ void fight(Entity& role, Entity& enemy) {
 				std::cout << role.buff[i - 30];
 			}
 			roleFlee = role.actionForFight(enemy);
+			for (int i = 30; i < 34; i++) {
+				Draw::gotoxy(94, i);
+				std::cout << role.buff[i - 30];
+			}
 		}
 		else {
 			Draw::gotoxy(1, 20);
@@ -597,7 +601,7 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					gotoxy(0, 39);
 					return;
 				}*/
-				if (input == '0a' || !isdigit(input) || wheather_use_focus < 0 || wheather_use_focus >roles[i]->focus) {
+				if (input < '0' || input > '9') {
 					gotoxy(53, 7);
 					std::cout << "It's not validable,try again." << std::endl;
 					gotoxy(53, 6);
