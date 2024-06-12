@@ -538,15 +538,15 @@ void Decide_Turn(std::vector<Entity*>& roles) {
 void show_player_equipment_buff(std::vector<Entity*>& roles) {
 	std::vector<std::string> buff_name = { "Angry","Dizziness","Poisoned","SpeedUp" };
 	for (int i = 0; i < 3; i++) {
-		gotoxy(83 + 20 * i, 0);
+		gotoxy(83 + 25 * i, 0);
 		std::cout << roles[i]->name;
-		gotoxy(83 + 20 * i, 1);
+		gotoxy(83 + 25 * i, 1);
 		std::cout << "Weapon : " << roles[i]->equip[0].name;
-		gotoxy(83 + 20 * i, 2);
+		gotoxy(83 + 25 * i, 2);
 		std::cout << "Armour : " << roles[i]->equip[1].name;
-		gotoxy(83 + 20 * i, 3);
+		gotoxy(83 + 25 * i, 3);
 		std::cout << "Accessory : " << roles[i]->equip[2].name;
-		gotoxy(83 + 20 * i, 4);
+		gotoxy(83 + 25 * i, 4);
 		std::cout << "Buff : ";
 		for (int j = 0; j < roles[i]->buff.size(); j++) {
 			if (roles[i]->buff[j] != 0) {
@@ -688,19 +688,19 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 				}
 				//if getinput new position meet enemy, fight
 				if (map[map.nowx][map.nowy].type == 'E') {
-					if (map.nowx == enemys[0]->rect.x && map.nowy == enemys[0]->rect.y && roles[0]->vitality != 0) {
+					if (map.nowx == enemys[0]->rect.x && map.nowy == enemys[0]->rect.y && enemys[0]->vitality != 0) {
 						system("CLS");
 						setColor(7);
 						fight(*roles[i], *enemys[0]);
 						which_enemy = 0;
 					}
-					else if (map.nowx == enemys[1]->rect.x && map.nowy == enemys[1]->rect.y && roles[1]->vitality != 0) {
+					else if (map.nowx == enemys[1]->rect.x && map.nowy == enemys[1]->rect.y && enemys[1]->vitality != 0) {
 						system("CLS");
 						setColor(7);
 						fight(*roles[i], *enemys[1]);
 						which_enemy = 1;
 					}
-					else if (map.nowx == enemys[2]->rect.x && map.nowy == enemys[2]->rect.y && roles[2]->vitality != 0) {
+					else if (map.nowx == enemys[2]->rect.x && map.nowy == enemys[2]->rect.y && enemys[2]->vitality != 0) {
 						system("CLS");
 						setColor(7);
 						fight(*roles[i], *enemys[2]);
@@ -720,12 +720,14 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					Draw_Player_information(stay);
 					show_player_equipment_buff(stay);
 					if (roles[i]->vitality == 0) {
+						map.set_new_rect_type(roles[i]->rect.x, roles[i]->rect.y, '.');
+						Draw::drawMap(map, roles[i]->rect.x - 12, roles[i]->rect.y - 25);
 						break;
 					}
 					select_players(roles, i);
 					if (enemys[which_enemy]->vitality == 0) {   //enemy die
 						map.set_new_rect_type(map.nowx, map.nowy, '.');
-						map.set_new_rect_type(map.nowx, map.nowy, i + 49);
+						map.set_new_rect_type(map.nowx, map.nowy, which_player + 48);
 						roles[i]->rect.x = map.nowx;
 						roles[i]->rect.y = map.nowy;
 						Draw::drawMap(map, roles[i]->rect.x - 12, roles[i]->rect.y - 25);
@@ -733,7 +735,7 @@ void GameLoop(std::vector<Entity*>& roles, std::vector<Entity*>& enemys, Map& ma
 					}
 					else {  //enemy doesn't die
 						map.set_new_rect_type(map.nowx, map.nowy, 'E');
-						map.set_new_rect_type(roles[i]->rect.x, roles[i]->rect.y, i + 49);
+						map.set_new_rect_type(roles[i]->rect.x, roles[i]->rect.y, which_player + 48);
 						Draw::drawMap(map, roles[i]->rect.x - 12, roles[i]->rect.y - 25);
 					}
 

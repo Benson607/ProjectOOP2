@@ -7,6 +7,7 @@
 #include "enemy.h"
 #include "role.h"
 #include "shop.h"
+#include "event.h"
 
 using namespace Draw;
 
@@ -328,6 +329,12 @@ void Map::getinput(Entity& entity, int player, std::vector<Entity*>& stay) {
 	else if (this[0][nowx][nowy].type == 'T') {
 		stay_tent_x = nowx;
 		stay_tent_y = nowy;
+		this[0][nowx][nowy].type = player + 48;
+	}
+
+	else if (this[0][nowx][nowy].type == '?') {
+		Event event;
+		event.Random_Event(entity);
 		this[0][nowx][nowy].type = player + 48;
 	}
 
