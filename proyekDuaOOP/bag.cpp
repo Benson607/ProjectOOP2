@@ -26,6 +26,10 @@ Bag::Bag() {
 		buy_in_T[i].amount = 0;
 	}
 
+	buy_in_T[0].amount = 1;
+	buy_in_T[1].amount = 9;
+	buy_in_T[3].amount = 1;
+
 	buy_in_E = std::vector<Equipment>(13, Equipment());
 	buy_in_E[0].Weapon("WoodenSword");
 	buy_in_E[1].Weapon("Hammer");
@@ -45,6 +49,10 @@ Bag::Bag() {
 		buy_in_E[i].amount = 0;
 	}
 
+	buy_in_E[0].amount = 1;
+	buy_in_E[5].amount = 1;
+	buy_in_E[12].amount = 1;
+
 	bagUI = { "" };
 	//26
 	clear = { "                             ", "                             ", "                             ", "                             ", "                             ","                             ",  "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             ", "                             " };
@@ -58,6 +66,7 @@ void Bag::bag_ui()
 	Draw::draw(clear, 53, 2);
 	statment = { "___________Helper____________","Press W,S to select items    ","Press R to select the one you","want to use                  ","Press Y or N to confirm      " };
 	Draw::draw(statment, 53, 23);
+	pos_xy = std::vector<std::vector<int>>(0);
 
 	pos_x = 2;
 	pos_y = 53;
